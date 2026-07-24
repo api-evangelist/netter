@@ -1,0 +1,259 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions step-output API
+  version: 0.1.0
+tags:
+- name: step-output
+paths:
+  /api/v1/steps/{step_id}/output:
+    get:
+      tags:
+      - step-output
+      summary: Get Step Output
+      description: Return schema + 20-row sample (or scalar JSON) for a step's latest output.
+      operationId: get_step_output_api_v1_steps__step_id__output_get
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      - name: table
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: Output table name for multi-output steps
+          title: Table
+        description: Output table name for multi-output steps
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepOutputResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/output/query:
+    post:
+      tags:
+      - step-output
+      summary: Query Step Output
+      description: Run a DuckDB SQL query over the step's latest Parquet output (table alias 'data').
+      operationId: query_step_output_api_v1_steps__step_id__output_query_post
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 10000
+          default: 1000
+          title: Limit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepOutputQueryRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StepRunSummary:
+      properties:
+        status:
+          type: string
+          title: Status
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+      type: object
+      required:
+      - status
+      title: StepRunSummary
+    StepOutputSchemaField:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          title: Type
+      type: object
+      required:
+      - name
+      - type
+      title: StepOutputSchemaField
+    StepOutputResponse:
+      properties:
+        format:
+          type: string
+          title: Format
+        table:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table
+        available_tables:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Available Tables
+        schema:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/StepOutputSchemaField'
+            type: array
+          - type: 'null'
+          title: Schema
+        rows:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Rows
+        row_count_sample:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Row Count Sample
+        row_count_total:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Row Count Total
+        meta:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Meta
+        value:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Value
+        step_run:
+          $ref: '#/components/schemas/StepRunSummary'
+      type: object
+      required:
+      - format
+      - step_run
+      title: StepOutputResponse
+    StepOutputQueryRequest:
+      properties:
+        sql:
+          type: string
+          title: Sql
+        table:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table
+      type: object
+      required:
+      - sql
+      title: StepOutputQueryRequest

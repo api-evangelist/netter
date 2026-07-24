@@ -1,0 +1,55 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions internal API
+  version: 0.1.0
+tags:
+- name: internal
+paths:
+  /api/v1/internal/provision-new-user:
+    post:
+      tags:
+      - internal
+      summary: Provision New User
+      description: 'Bootstrap tenancy for a freshly-created ``auth.user``.
+
+
+        The body is the same bytes the front signed — we re-parse them with
+
+        Pydantic here rather than declaring ``body: ProvisionNewUserRequest``
+
+        on the signature because FastAPI would otherwise read the request
+
+        stream before the HMAC dep gets a chance, leaving the dep with an
+
+        empty body to hash.'
+      operationId: provision_new_user_api_v1_internal_provision_new_user_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProvisionNewUserResponse'
+components:
+  schemas:
+    ProvisionNewUserResponse:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        default_company_id:
+          type: string
+          format: uuid
+          title: Default Company Id
+        phase:
+          type: string
+          title: Phase
+          description: 'Which provisioning branch was taken: scim | invitation | personal'
+      type: object
+      required:
+      - user_id
+      - default_company_id
+      - phase
+      title: ProvisionNewUserResponse
+      description: Echoed for debugging only — front-end ignores the body.

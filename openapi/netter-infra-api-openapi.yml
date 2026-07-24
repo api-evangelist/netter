@@ -1,0 +1,23 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions infra API
+  version: 0.1.0
+tags:
+- name: infra
+paths:
+  /healthz:
+    get:
+      tags:
+      - infra
+      summary: Healthz
+      operationId: healthz_healthz_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties:
+                  type: string
+                type: object
+                title: Response Healthz Healthz Get

@@ -1,0 +1,47 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions me API
+  version: 0.1.0
+tags:
+- name: me
+paths:
+  /api/v1/me:
+    get:
+      tags:
+      - me
+      summary: Get Me
+      operationId: get_me_api_v1_me_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeRead'
+components:
+  schemas:
+    MeRead:
+      properties:
+        name:
+          type: string
+          title: Name
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+        attributes:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+          title: Attributes
+      type: object
+      required:
+      - name
+      - email
+      - role
+      - attributes
+      title: MeRead

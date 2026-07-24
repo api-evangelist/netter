@@ -1,0 +1,145 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions workflow-architect API
+  version: 0.1.0
+tags:
+- name: workflow-architect
+paths:
+  /api/v1/workflow-architect/automations/{automation_id}/chat:
+    get:
+      tags:
+      - workflow-architect
+      summary: Get Or Create Chat
+      operationId: get_or_create_chat_api_v1_workflow_architect_automations__automation_id__chat_get
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/workflow-architect/chats/{chat_id}/message:
+    post:
+      tags:
+      - workflow-architect
+      summary: Send Message
+      operationId: send_message_api_v1_workflow_architect_chats__chat_id__message_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowMessageRequest'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowTurnResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    WorkflowMessageRequest:
+      properties:
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - content
+      title: WorkflowMessageRequest
+    WorkflowChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        automation_id:
+          type: string
+          format: uuid
+          title: Automation Id
+        chat_type:
+          type: string
+          title: Chat Type
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - id
+      - automation_id
+      - chat_type
+      - status
+      title: WorkflowChatRead
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    WorkflowTurnResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: WorkflowTurnResponse

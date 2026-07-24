@@ -1,0 +1,154 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions join-advisor API
+  version: 0.1.0
+tags:
+- name: join-advisor
+paths:
+  /api/v1/steps/{step_id}/join-advisor-chat:
+    get:
+      tags:
+      - join-advisor
+      summary: Get Join Advisor Chat
+      description: Return the existing join advisor chat for a step, or 404.
+      operationId: get_join_advisor_chat_api_v1_steps__step_id__join_advisor_chat_get
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Join Advisor Chat Api V1 Steps  Step Id  Join Advisor Chat Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/join-advisor:
+    post:
+      tags:
+      - join-advisor
+      summary: Start Join Advisor
+      description: 'Start a Join Advisor session for a join operator step.
+
+
+        Validates the step is a join operator, finds the latest successful run,
+
+        creates or reuses an advisor chat, and dispatches the agent task.'
+      operationId: start_join_advisor_api_v1_steps__step_id__join_advisor_post
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Start Join Advisor Api V1 Steps  Step Id  Join Advisor Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/join-advisor-message:
+    post:
+      tags:
+      - join-advisor
+      summary: Send Join Advisor Message
+      description: Send a follow-up message to an existing Join Advisor chat.
+      operationId: send_join_advisor_message_api_v1_chats__chat_id__join_advisor_message_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/_JoinAdvisorFollowupRequest'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Send Join Advisor Message Api V1 Chats  Chat Id  Join Advisor Message Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    _JoinAdvisorFollowupRequest:
+      properties:
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - content
+      title: _JoinAdvisorFollowupRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

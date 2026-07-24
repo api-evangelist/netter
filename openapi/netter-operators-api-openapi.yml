@@ -1,0 +1,25 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions operators API
+  version: 0.1.0
+tags:
+- name: operators
+paths:
+  /api/v1/operators/:
+    get:
+      tags:
+      - operators
+      summary: List Operators
+      description: Return the full operator catalog (names, schemas, DAG rules).
+      operationId: list_operators_api_v1_operators__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  additionalProperties: true
+                  type: object
+                type: array
+                title: Response List Operators Api V1 Operators  Get

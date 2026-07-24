@@ -1,0 +1,504 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions permissions API
+  version: 0.1.0
+tags:
+- name: permissions
+paths:
+  /api/v1/permissions/resource/{resource_type}/{resource_id}:
+    get:
+      tags:
+      - permissions
+      summary: List Resource Permissions
+      description: List all permissions on a resource. Requires admin.
+      operationId: list_resource_permissions_api_v1_permissions_resource__resource_type___resource_id__get
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ResourceType'
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PermissionRead'
+                title: Response List Resource Permissions Api V1 Permissions Resource  Resource Type   Resource Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - permissions
+      summary: Grant Resource Permission
+      description: Grant a permission on a resource to a user or group. Requires admin.
+      operationId: grant_resource_permission_api_v1_permissions_resource__resource_type___resource_id__post
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ResourceType'
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionGrant'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/permissions/resource/{resource_type}/{resource_id}/{grantee_type}/{grantee_id}:
+    patch:
+      tags:
+      - permissions
+      summary: Update Resource Permission
+      description: Update a grantee's permission level on a resource. Requires admin.
+      operationId: update_resource_permission_api_v1_permissions_resource__resource_type___resource_id___grantee_type___grantee_id__patch
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ResourceType'
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      - name: grantee_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/GranteeType'
+      - name: grantee_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Grantee Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PermissionUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PermissionRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - permissions
+      summary: Revoke Resource Permission
+      description: Revoke a grantee's permission on a resource. Requires admin.
+      operationId: revoke_resource_permission_api_v1_permissions_resource__resource_type___resource_id___grantee_type___grantee_id__delete
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ResourceType'
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      - name: grantee_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/GranteeType'
+      - name: grantee_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Grantee Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/permissions/user/{target_user_id}:
+    get:
+      tags:
+      - permissions
+      summary: List User Permissions
+      description: 'List all permissions for a user with resource names. Requires owner.
+
+
+        Includes both direct user grants and grants via the user''s effective
+
+        groups. Role check lives inside
+
+        :class:`ListUserPermissions.execute_with_names` — raises
+
+        :class:`PermissionDenied` (→ HTTP 403) when the caller isn''t an owner.'
+      operationId: list_user_permissions_api_v1_permissions_user__target_user_id__get
+      parameters:
+      - name: target_user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Target User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserPermissionRead'
+                title: Response List User Permissions Api V1 Permissions User  Target User Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/permissions/my:
+    get:
+      tags:
+      - permissions
+      summary: List My Permissions
+      description: List all permissions granted to the current user (direct + group grants).
+      operationId: list_my_permissions_api_v1_permissions_my_get
+      parameters:
+      - name: resource_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - $ref: '#/components/schemas/ResourceType'
+          - type: 'null'
+          title: Resource Type
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PermissionRead'
+                title: Response List My Permissions Api V1 Permissions My Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/permissions/effective/{resource_type}/{resource_id}:
+    get:
+      tags:
+      - permissions
+      summary: Effective Access
+      description: 'Every user''s effective level on the resource, with provenance — feeds the share panel.
+
+
+        Returns one entry per user who has any access (direct or via group/ancestor),
+
+        with the contributing grant paths and whether each path is data-flow-capped.
+
+        Requires ADMIN on the resource.'
+      operationId: effective_access_api_v1_permissions_effective__resource_type___resource_id__get
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          $ref: '#/components/schemas/ResourceType'
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EffectiveAccessEntry'
+                title: Response Effective Access Api V1 Permissions Effective  Resource Type   Resource Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    PermissionLevel:
+      type: string
+      enum:
+      - viewer
+      - editor
+      - admin
+      title: PermissionLevel
+      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
+    GranteeType:
+      type: string
+      enum:
+      - user
+      - group
+      title: GranteeType
+      description: Who a resource grant targets — a user or a user group.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UserPermissionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        resource_type:
+          $ref: '#/components/schemas/ResourceType'
+        resource_id:
+          type: string
+          format: uuid
+          title: Resource Id
+        resource_name:
+          type: string
+          title: Resource Name
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+      type: object
+      required:
+      - id
+      - resource_type
+      - resource_id
+      - resource_name
+      - level
+      title: UserPermissionRead
+      description: Permission with resource name for display in user permission lists.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    PermissionUpdate:
+      properties:
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+      type: object
+      required:
+      - level
+      title: PermissionUpdate
+    PermissionGrant:
+      properties:
+        grantee_type:
+          $ref: '#/components/schemas/GranteeType'
+        grantee_id:
+          type: string
+          format: uuid
+          title: Grantee Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+      type: object
+      required:
+      - grantee_type
+      - grantee_id
+      - level
+      title: PermissionGrant
+    ResourceType:
+      type: string
+      enum:
+      - project
+      - database
+      - folder
+      - app
+      - entity
+      - automation
+      - dashboard
+      - file
+      - file_folder
+      - integration
+      title: ResourceType
+      description: Resources that can carry permissions. Polymorphic ``resource_id``.
+    PermissionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        resource_type:
+          $ref: '#/components/schemas/ResourceType'
+        resource_id:
+          type: string
+          format: uuid
+          title: Resource Id
+        grantee_type:
+          $ref: '#/components/schemas/GranteeType'
+        grantee_id:
+          type: string
+          format: uuid
+          title: Grantee Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - resource_type
+      - resource_id
+      - grantee_type
+      - grantee_id
+      - level
+      - created_at
+      - updated_at
+      title: PermissionRead
+    EffectiveAccessEntry:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+        sources:
+          items:
+            $ref: '#/components/schemas/AccessSource'
+          type: array
+          title: Sources
+      type: object
+      required:
+      - user_id
+      - level
+      - sources
+      title: EffectiveAccessEntry
+      description: A user's effective access level on a resource, with all contributing sources.
+    AccessSource:
+      properties:
+        via_resource_type:
+          type: string
+          title: Via Resource Type
+        via_resource_id:
+          type: string
+          format: uuid
+          title: Via Resource Id
+        via_resource_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Via Resource Name
+        grantee_type:
+          $ref: '#/components/schemas/GranteeType'
+        grantee_id:
+          type: string
+          format: uuid
+          title: Grantee Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+        dataflow_capped:
+          type: boolean
+          title: Dataflow Capped
+      type: object
+      required:
+      - via_resource_type
+      - via_resource_id
+      - via_resource_name
+      - grantee_type
+      - grantee_id
+      - level
+      - dataflow_capped
+      title: AccessSource
+      description: One contributing grant path for a user's effective access on a resource.

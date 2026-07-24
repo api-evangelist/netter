@@ -1,0 +1,292 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions apps-query API
+  version: 0.1.0
+tags:
+- name: apps-query
+paths:
+  /api/v1/apps/{app_id}/query:
+    post:
+      tags:
+      - apps-query
+      summary: Run App Query
+      description: Run a guarded SELECT against the app's bound ontology entities.
+      operationId: run_app_query_api_v1_apps__app_id__query_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: App Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppQueryRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/apps/{app_id}/query/batch:
+    post:
+      tags:
+      - apps-query
+      summary: Run App Query Batch
+      description: 'Run several guarded SELECTs against the app''s bound entities in one
+
+        request, sharing a single DuckDB connection + one materialized merge.
+
+
+        App-level failures (missing / not ready) return 404 / 409. Per-query
+
+        failures (bad SQL, DuckDB errors) are isolated into each result''s
+
+        ``error`` field with HTTP 200 — one broken widget never blanks the page.'
+      operationId: run_app_query_batch_api_v1_apps__app_id__query_batch_post
+      parameters:
+      - name: app_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: App Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppQueryBatchRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppQueryBatchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AppQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: AppQueryResponse
+    AppQueryBatchResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AppQueryBatchItemResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: AppQueryBatchResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AppQueryBatchRequest:
+      properties:
+        queries:
+          items:
+            $ref: '#/components/schemas/AppQueryBatchItem'
+          type: array
+          maxItems: 50
+          minItems: 1
+          title: Queries
+      additionalProperties: false
+      type: object
+      required:
+      - queries
+      title: AppQueryBatchRequest
+      description: 'Body for POST /api/v1/apps/{app_id}/query/batch.
+
+
+        Runs every query against the app''s bound entities on a SINGLE shared
+
+        DuckDB connection: the source⊕overlay merge is materialized once and
+
+        reused across all queries, instead of N parallel single-query requests
+
+        each re-materializing the same entities on their own pooled connection.
+
+        Per-query errors are isolated — a failing query returns its ``error``
+
+        field without aborting the rest of the batch.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppQueryBatchItemResult:
+      properties:
+        id:
+          type: string
+          title: Id
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - id
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: AppQueryBatchItemResult
+      description: 'Result for one batch query. Exactly one of (data, ``error``) is
+
+        meaningful: on failure ``columns``/``rows`` are empty and ``error`` holds
+
+        the message.'
+    AppQueryBatchItem:
+      properties:
+        id:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Id
+        sql:
+          type: string
+          maxLength: 50000
+          minLength: 1
+          title: Sql
+        limit:
+          anyOf:
+          - type: integer
+            maximum: 5000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Limit
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - sql
+      title: AppQueryBatchItem
+      description: 'One query in a batch.
+
+
+        ``id`` is a caller-supplied correlation key (e.g. the widget id) echoed
+
+        back on the matching result so the client maps results without relying on
+
+        order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
+    AppQueryRequest:
+      properties:
+        sql:
+          type: string
+          maxLength: 50000
+          minLength: 1
+          title: Sql
+        limit:
+          anyOf:
+          - type: integer
+            maximum: 5000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Limit
+      additionalProperties: false
+      type: object
+      required:
+      - sql
+      title: AppQueryRequest
+      description: 'Body for POST /api/v1/apps/{app_id}/query.
+
+
+        Single mode: caller passes optional ``limit`` (default 1000, max 5000).
+
+        Pagination is NOT supported at this endpoint — write ``LIMIT N OFFSET M``
+
+        directly in your SQL if you need it. Earlier ``page`` / ``page_size``
+
+        params were removed because the engine never threaded ``page`` into a
+
+        real OFFSET (silently returned the same first ``page_size`` rows on
+
+        every page) — see PR #375 review.'

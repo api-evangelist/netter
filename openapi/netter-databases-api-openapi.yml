@@ -1,0 +1,606 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions databases API
+  version: 0.1.0
+tags:
+- name: databases
+paths:
+  /api/v1/databases/:
+    post:
+      tags:
+      - databases
+      summary: Create Database
+      description: Create a new database record (metadata only, no Parquet yet).
+      operationId: create_database_api_v1_databases__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - databases
+      summary: List Databases
+      description: List databases, optionally filtered by project.
+      operationId: list_databases_api_v1_databases__get
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabaseRead'
+                title: Response List Databases Api V1 Databases  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/databases/{database_id}:
+    get:
+      tags:
+      - databases
+      summary: Get Database
+      description: Get a single database by ID.
+      operationId: get_database_api_v1_databases__database_id__get
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - databases
+      summary: Update Database
+      description: Update a database's name, description, schema, or sharing.
+      operationId: update_database_api_v1_databases__database_id__patch
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - databases
+      summary: Delete Database
+      description: Hard-delete a database and its Parquet file.
+      operationId: delete_database_api_v1_databases__database_id__delete
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/databases/{database_id}/preview:
+    get:
+      tags:
+      - databases
+      summary: Preview Database
+      description: Preview first N rows of a database.
+      operationId: preview_database_api_v1_databases__database_id__preview_get
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 1000
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/databases/{database_id}/query:
+    get:
+      tags:
+      - databases
+      summary: Query Database
+      description: Run a DuckDB SQL query against the database's Parquet data.
+      operationId: query_database_api_v1_databases__database_id__query_get
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      - name: sql
+        in: query
+        required: true
+        schema:
+          type: string
+          description: SQL query (table is named 'data')
+          title: Sql
+        description: SQL query (table is named 'data')
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 10000
+          default: 1000
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/databases/{database_id}/nl_query:
+    post:
+      tags:
+      - databases
+      summary: Nl Query Database
+      description: Translate a natural-language question into DuckDB SQL and execute it.
+      operationId: nl_query_database_api_v1_databases__database_id__nl_query_post
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 10000
+          default: 1000
+          title: Limit
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NLQueryRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NLQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/databases/{database_id}/refresh:
+    post:
+      tags:
+      - databases
+      summary: Refresh Database
+      description: "Refresh this Database. Cascade to children fires automatically.\n\n``force_full=true`` requests a full rebuild (ignore incremental\nwatermarks). Honored for project-owned datasets, where it is persisted\non the dispatched Run; integration-owned (crawler) refreshes always\nre-poll the source and ignore the flag.\n\n- Integration-owned (data lake table): signal the crawler workflow to poll\n  that integration. ``_update_database_stats`` then fires\n  ``trigger_dependent_steps`` for the children once the poll completes.\n- Project-owned: dispatch a Run rooted at the producing data_sink, which\n  walks the project's own ancestor closure (parents are NOT re-run —\n  the data_read step uses upstream data as it stands today). The run's\n  terminal phase fires ``trigger_dependent_steps`` for the children.\n- File-backed / unbacked: cannot be refreshed (400)."
+      operationId: refresh_database_api_v1_databases__database_id__refresh_post
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      - name: force_full
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Force Full
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Refresh Database Api V1 Databases  Database Id  Refresh Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    NLQueryRequest:
+      properties:
+        question:
+          type: string
+          title: Question
+      type: object
+      required:
+      - question
+      title: NLQueryRequest
+    DatabaseUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        schema_info:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Schema Info
+        is_shared:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Shared
+      type: object
+      title: DatabaseUpdate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DatabaseCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+          default: ''
+        schema_info:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Schema Info
+          default: []
+      type: object
+      required:
+      - project_id
+      - name
+      title: DatabaseCreate
+    NLQueryResponse:
+      properties:
+        title:
+          type: string
+          title: Title
+        sql:
+          type: string
+          title: Sql
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - title
+      - sql
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: NLQueryResponse
+      description: 'NL → SQL response. ``sql`` is the generated query so the SQL editor
+
+        can show it back to the user; rows/columns are the executed result.'
+    DatabaseRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Integration Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        table_name:
+          type: string
+          title: Table Name
+        storage_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Storage Path
+        schema_info:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Schema Info
+        key_columns:
+          items:
+            type: string
+          type: array
+          title: Key Columns
+          default: []
+        source_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Step Id
+        source_user_file_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source User File Id
+        source_sheet_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Sheet Name
+        is_shared:
+          type: boolean
+          title: Is Shared
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        refresh_status:
+          type: string
+          title: Refresh Status
+        refresh_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Error
+        last_refreshed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Refreshed At
+        name_is_user_overridden:
+          type: boolean
+          title: Name Is User Overridden
+          default: false
+        row_count:
+          type: integer
+          title: Row Count
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        doc_status:
+          type: string
+          title: Doc Status
+          default: idle
+        doc_status_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Doc Status Updated At
+        doc_last_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doc Last Error
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - description
+      - table_name
+      - storage_path
+      - schema_info
+      - is_shared
+      - is_suppressed
+      - refresh_status
+      - last_refreshed_at
+      - row_count
+      - size_bytes
+      - created_at
+      - updated_at
+      title: DatabaseRead
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse

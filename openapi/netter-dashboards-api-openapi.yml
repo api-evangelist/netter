@@ -1,0 +1,527 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions dashboards API
+  version: 0.1.0
+tags:
+- name: dashboards
+paths:
+  /api/v1/dashboards/:
+    post:
+      tags:
+      - dashboards
+      summary: Create Dashboard
+      description: Create a new dashboard (EDITOR on the project; creator gets ADMIN).
+      operationId: create_dashboard_api_v1_dashboards__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - dashboards
+      summary: List Dashboards
+      description: List dashboards, optionally filtered by project (respects permissions).
+      operationId: list_dashboards_api_v1_dashboards__get
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+      - name: include_suppressed
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Suppressed
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardRead'
+                title: Response List Dashboards Api V1 Dashboards  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}:
+    get:
+      tags:
+      - dashboards
+      summary: Get Dashboard
+      description: Get a single dashboard by ID.
+      operationId: get_dashboard_api_v1_dashboards__dashboard_id__get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - dashboards
+      summary: Update Dashboard
+      description: Update a dashboard's name or description.
+      operationId: update_dashboard_api_v1_dashboards__dashboard_id__patch
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - dashboards
+      summary: Delete Dashboard
+      description: Hard-delete a dashboard. FK CASCADE deletes associated chats.
+      operationId: delete_dashboard_api_v1_dashboards__dashboard_id__delete
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/chat:
+    get:
+      tags:
+      - dashboards
+      summary: Get Or Create Dashboard Chat
+      description: Return the existing dashboard chat or create one.
+      operationId: get_or_create_dashboard_chat_api_v1_dashboards__dashboard_id__chat_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/suppress:
+    post:
+      tags:
+      - dashboards
+      summary: Suppress Dashboard
+      description: Soft-delete a dashboard and cascade suppress its chats.
+      operationId: suppress_dashboard_api_v1_dashboards__dashboard_id__suppress_post
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/dependencies:
+    get:
+      tags:
+      - dashboards
+      summary: Get Dashboard Dependencies
+      description: Legacy endpoint — always returns empty list (pipeline model retired).
+      operationId: get_dashboard_dependencies_api_v1_dashboards__dashboard_id__dependencies_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                title: Response Get Dashboard Dependencies Api V1 Dashboards  Dashboard Id  Dependencies Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/bundle.js:
+    get:
+      tags:
+      - dashboards
+      summary: Get Dashboard Bundle
+      description: Serve the dashboard's JS bundle (proxied from S3).
+      operationId: get_dashboard_bundle_api_v1_dashboards__dashboard_id__bundle_js_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/regenerate:
+    post:
+      tags:
+      - dashboards
+      summary: Regenerate Dashboard
+      description: Regenerate a dashboard independently (without running finalize_steps).
+      operationId: regenerate_dashboard_api_v1_dashboards__dashboard_id__regenerate_post
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Regenerate Dashboard Api V1 Dashboards  Dashboard Id  Regenerate Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DashboardRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        status:
+          type: string
+          title: Status
+        current_version_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Current Version Id
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - project_id
+      - user_id
+      - name
+      - description
+      - status
+      - bundle_url
+      - bundle_css
+      - bundle_imports
+      - error_message
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: DashboardRead
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DashboardCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        name:
+          type: string
+          title: Name
+          default: New Dashboard
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      required:
+      - project_id
+      title: DashboardCreate
+    DashboardUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      title: DashboardUpdate
+    ChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead

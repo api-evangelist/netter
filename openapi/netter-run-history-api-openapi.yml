@@ -1,0 +1,613 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions run-history API
+  version: 0.1.0
+tags:
+- name: run-history
+paths:
+  /api/v1/projects/{project_id}/runs:
+    get:
+      tags:
+      - run-history
+      summary: List Project Runs
+      description: Paginated run timeline for the project. Newest first.
+      operationId: list_project_runs_api_v1_projects__project_id__runs_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          default: 50
+          title: Limit
+      - name: before
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          description: Return runs started before this timestamp
+          title: Before
+        description: Return runs started before this timestamp
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/runs/{run_id}:
+    get:
+      tags:
+      - run-history
+      summary: Get Run
+      description: Run detail with StepRun rollup.
+      operationId: get_run_api_v1_runs__run_id__get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__steps__schemas__RunRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/cascade_events:
+    get:
+      tags:
+      - run-history
+      summary: List Cascade Events
+      description: Cascade-decision log for the project's run timeline.
+      operationId: list_cascade_events_api_v1_projects__project_id__cascade_events_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: since
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Since
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          default: 100
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CascadeEventListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/runs/{run_id}/steps/{step_id}/rows:
+    get:
+      tags:
+      - run-history
+      summary: Get Step Run Rows
+      description: 'Head-sample of rows in this StepRun''s step output.
+
+
+        Every step always runs full (incremental-rethink Task 10) — there is
+
+        no per-run watermark window to slice by any more. This endpoint used
+
+        to slice a ``(prior_watermark, this_watermark]`` window for
+
+        incremental StepRuns; that branch was already dead in practice
+
+        (nothing has written ``StepRun.output_watermark``/``execution_mode_used``
+
+        since Task 9) and the columns themselves are dropped in Task 13.
+
+        Always returns a head-sample of the step''s cumulative output parquet
+
+        plus its total row count.'
+      operationId: get_step_run_rows_api_v1_runs__run_id__steps__step_id__rows_get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Run Id
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepRunRowsResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RunListResponse:
+      properties:
+        runs:
+          items:
+            $ref: '#/components/schemas/RunTimelineEntry'
+          type: array
+          title: Runs
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+      type: object
+      required:
+      - runs
+      title: RunListResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CascadeEventListResponse:
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/CascadeEventRead'
+          type: array
+          title: Events
+      type: object
+      required:
+      - events
+      title: CascadeEventListResponse
+    app__steps__schemas__RunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+        trigger_source:
+          type: string
+          title: Trigger Source
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        temporal_workflow_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temporal Workflow Id
+        force_full:
+          type: boolean
+          title: Force Full
+          default: false
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        step_runs:
+          items:
+            $ref: '#/components/schemas/StepRunRead'
+          type: array
+          title: Step Runs
+          default: []
+      type: object
+      required:
+      - id
+      - project_id
+      - company_id
+      - user_id
+      - root_step_id
+      - status
+      - error
+      - error_summary
+      - trigger_source
+      - temporal_workflow_id
+      - started_at
+      - finished_at
+      title: RunRead
+      description: Run response.
+    StepRunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        logs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logs
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Processed
+        output_row_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Row Count
+        rows_new:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows New
+        rows_changed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Changed
+        rows_removed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Removed
+        ai_rows_cached:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Cached
+        ai_rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Processed
+      type: object
+      required:
+      - id
+      - run_id
+      - step_id
+      - status
+      - error
+      - logs
+      - started_at
+      - finished_at
+      title: StepRunRead
+      description: StepRun response.
+    StepRunRowsResponse:
+      properties:
+        step_run_id:
+          type: string
+          format: uuid
+          title: Step Run Id
+        rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Processed
+        total_rows:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Rows
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        truncated:
+          type: boolean
+          title: Truncated
+        duration_ms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration Ms
+        logs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logs
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - step_run_id
+      - rows_processed
+      - rows
+      - truncated
+      title: StepRunRowsResponse
+      description: 'Head-sample of rows in a single StepRun''s step output.
+
+
+        Incremental-rethink Task 13 dropped the watermark-window slicing this
+
+        used to do (``execution_mode_used`` / ``output_watermark`` no longer
+
+        exist — every step always runs full, Task 10). This is now a plain
+
+        head-sample of the step''s cumulative output parquet.'
+    CascadeEventRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        source_database_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Database Id
+        target_database_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Database Id
+        target_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Step Id
+        decision:
+          type: string
+          title: Decision
+        detail:
+          additionalProperties: true
+          type: object
+          title: Detail
+          default: {}
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+      type: object
+      required:
+      - id
+      - project_id
+      - source_run_id
+      - source_database_id
+      - target_database_id
+      - target_step_id
+      - decision
+      - occurred_at
+      title: CascadeEventRead
+    RunTimelineEntry:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        status:
+          type: string
+          title: Status
+        trigger_source:
+          type: string
+          title: Trigger Source
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        force_full:
+          type: boolean
+          title: Force Full
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+        total_rows_processed:
+          type: integer
+          title: Total Rows Processed
+          default: 0
+        step_count:
+          type: integer
+          title: Step Count
+          default: 0
+        incremental_count:
+          type: integer
+          title: Incremental Count
+          default: 0
+        full_count:
+          type: integer
+          title: Full Count
+          default: 0
+      type: object
+      required:
+      - id
+      - status
+      - trigger_source
+      - force_full
+      - started_at
+      - finished_at
+      title: RunTimelineEntry
+      description: One Run as seen by the project timeline view.

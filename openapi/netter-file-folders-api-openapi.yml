@@ -1,0 +1,876 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions file-folders API
+  version: 0.1.0
+tags:
+- name: file-folders
+paths:
+  /api/v1/file-folders:
+    get:
+      tags:
+      - file-folders
+      summary: List File Folders
+      description: 'List FileFolders. Default = direct children of ``parent_folder_id``.
+
+
+        The flat-list mode is preserved for clients that haven''t been migrated to
+
+        nested navigation yet (the current frontend on ``main`` consumes a flat
+
+        list); they pass ``flat=true`` and get every folder back.'
+      operationId: list_file_folders_api_v1_file_folders_get
+      parameters:
+      - name: parent_folder_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: If provided, return only direct children of this folder. Use the special value 'root' (encoded as missing) to list root folders.
+          title: Parent Folder Id
+        description: If provided, return only direct children of this folder. Use the special value 'root' (encoded as missing) to list root folders.
+      - name: flat
+        in: query
+        required: false
+        schema:
+          type: boolean
+          description: If true, return every folder in the company (legacy flat view). When false (default) the response is scoped to direct children of ``parent_folder_id`` (or the root level if omitted).
+          default: false
+          title: Flat
+        description: If true, return every folder in the company (legacy flat view). When false (default) the response is scoped to direct children of ``parent_folder_id`` (or the root level if omitted).
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileFolderRead'
+                title: Response List File Folders Api V1 File Folders Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - file-folders
+      summary: Create File Folder Endpoint
+      description: 'Create a new FileFolder, optionally nested under ``parent_folder_id``.
+
+
+        Any company member may create a root folder (the creator is auto-granted
+
+        ADMIN on it inside the operation). Creating a subfolder mutates the
+
+        parent''s subtree, so it requires EDITOR on the parent.'
+      operationId: create_file_folder_endpoint_api_v1_file_folders_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileFolderCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileFolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}:
+    get:
+      tags:
+      - file-folders
+      summary: Get File Folder
+      description: Get a single folder's metadata (used by the explorer header / breadcrumbs).
+      operationId: get_file_folder_api_v1_file_folders__folder_id__get
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileFolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - file-folders
+      summary: Delete File Folder Endpoint
+      description: Cascade-delete a folder. Non-empty/merge folders require type-to-confirm.
+      operationId: delete_file_folder_endpoint_api_v1_file_folders__folder_id__delete
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileFolderDelete'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - file-folders
+      summary: Update File Folder
+      description: 'Rename and/or toggle merge and/or update write-semantics (incl. the
+
+        full_delivery batch fields) on a FileFolder.
+
+
+        Ordering: deterministic pre-checks FIRST, then write-semantics, then
+
+        rename, then merge_enabled. Each of the three blocks commits its own
+
+        transaction internally (full cross-block atomicity is out of scope — see
+
+        the "Atomicity contract" comment below), so every failure mode that''s
+
+        deterministic from the request body + the folder''s state at the start of
+
+        the request (not a race) is checked upfront, before any block runs: a
+
+        request like ``{merge_enabled: true, write_semantics: "replace_overlap",
+
+        coverage_columns: ["bad_col"]}`` on a folder with existing subfolders
+
+        fails on the pre-check with no side effect at all, instead of committing
+
+        the semantics change and then 409-ing on ``merge_enabled``. Similarly a
+
+        rename that collides with a sibling name is caught before the semantics
+
+        block runs, not after.
+
+        Note the collection-schema subset check inside the semantics block still
+
+        uses the CURRENT ``merge_database_id``, which is ``None`` when
+
+        ``merge_enabled`` is being turned on in this same request (the check is
+
+        then skipped since there''s no collection schema yet); a bad coverage
+
+        column in that combination surfaces later as a per-file ``merge_error``
+
+        on the next merge rather than a 400 here.'
+      operationId: update_file_folder_api_v1_file_folders__folder_id__patch
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileFolderUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileFolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/breadcrumbs:
+    get:
+      tags:
+      - file-folders
+      summary: Get Folder Breadcrumbs
+      description: 'Return the breadcrumb path from root → folder (inclusive).
+
+
+        Order: root first, target last — matches the visual order in the UI so the
+
+        frontend can render the chain unmodified.'
+      operationId: get_folder_breadcrumbs_api_v1_file_folders__folder_id__breadcrumbs_get
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FileFolderBreadcrumb'
+                title: Response Get Folder Breadcrumbs Api V1 File Folders  Folder Id  Breadcrumbs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/members:
+    get:
+      tags:
+      - file-folders
+      summary: List Folder Members
+      description: 'List the contributing files (with per-file ``merge_error``) of a folder''s
+
+        collection dataset. Empty list if the folder isn''t merge-enabled.'
+      operationId: list_folder_members_api_v1_file_folders__folder_id__members_get
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatasetMemberRead'
+                title: Response List Folder Members Api V1 File Folders  Folder Id  Members Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/batches:
+    get:
+      tags:
+      - file-folders
+      summary: List Folder Batches
+      description: 'List batch groups (by ``batch_key``) for a folder''s ``full_delivery``
+
+        config, with each group''s read-time computed lifecycle status. Empty list
+
+        if the folder isn''t merge-enabled or has no batch members.'
+      operationId: list_folder_batches_api_v1_file_folders__folder_id__batches_get
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BatchSummary'
+                title: Response List Folder Batches Api V1 File Folders  Folder Id  Batches Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/batches/{batch_key}:force-merge:
+    post:
+      tags:
+      - file-folders
+      summary: Force Merge Batch
+      description: 'Escape hatch for a stuck batch (e.g. timed out at 9/10 files): seal
+
+        whatever live members currently exist for ``batch_key``, ignoring the
+
+        folder''s configured ``batch_size``.
+
+
+        Reuses the exact shared seal path (``services.batch_seal.seal_batch``)
+
+        and advisory lock as the automatic Nth-file seal, so force-merging is
+
+        indistinguishable from a "natural" seal to every downstream reader.'
+      operationId: force_merge_batch_api_v1_file_folders__folder_id__batches__batch_key__force_merge_post
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      - name: batch_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Batch Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Force Merge Batch Api V1 File Folders  Folder Id  Batches  Batch Key  Force Merge Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/batches/{batch_key}:discard:
+    post:
+      tags:
+      - file-folders
+      summary: Discard Batch Endpoint
+      description: 'Delete every member row of ``batch_key`` (collection parquet untouched).
+
+
+        Takes the same transaction-scoped advisory lock as ``:force-merge`` and the
+
+        automatic seal, keyed on the collection id, BEFORE deleting anything — a
+
+        concurrent seal that already loaded these members (pre-lock) would
+
+        otherwise re-upload them into the collection right after we discard them,
+
+        orphaning the write. If the discarded batch is the currently-sealed one,
+
+        the folder''s ``sealed_batch_key`` done-marker is cleared in the same
+
+        transaction so a later delivery resolving to this key isn''t silently
+
+        skipped as "already sealed".'
+      operationId: discard_batch_endpoint_api_v1_file_folders__folder_id__batches__batch_key__discard_post
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      - name: batch_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Batch Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Discard Batch Endpoint Api V1 File Folders  Folder Id  Batches  Batch Key  Discard Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/delete-preview:
+    get:
+      tags:
+      - file-folders
+      summary: Preview Delete Folder
+      description: Cascade-delete preview. Drives the type-to-confirm dialog on the UI.
+      operationId: preview_delete_folder_api_v1_file_folders__folder_id__delete_preview_get
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileFolderDeletePreview'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/group-key:test:
+    post:
+      tags:
+      - file-folders
+      summary: Test Group Key
+      description: 'Dry-run a candidate ``batch_key_pattern`` regex against the folder''s
+
+        already-committed filenames, without persisting anything. Lets the admin
+
+        preview capture groups while still authoring the ``full_delivery`` config
+
+        (before saving it via the folder PATCH ``batch_key_pattern`` field).
+
+        Read-only — VIEWER, like the other GET inspection routes on this resource.'
+      operationId: test_group_key_api_v1_file_folders__folder_id__group_key_test_post
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupKeyTestRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Test Group Key Api V1 File Folders  Folder Id  Group Key Test Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/file-folders/{folder_id}/move:
+    post:
+      tags:
+      - file-folders
+      summary: Move File Folder Endpoint
+      description: 'Re-parent a folder. ``target_parent_id=None`` moves to the root.
+
+
+        Auto-renames on sibling collision (``foo → foo (1)``); raises 409 on
+
+        cycle / depth-cap / merge-leaf invariant violations.'
+      operationId: move_file_folder_endpoint_api_v1_file_folders__folder_id__move_post
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FileFolderMove'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileFolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    DatasetMemberRead:
+      properties:
+        source_filename:
+          type: string
+          title: Source Filename
+        user_file_id:
+          type: string
+          title: User File Id
+        row_count:
+          type: integer
+          title: Row Count
+        merge_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Error
+        merge_warning:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Warning
+        superseded_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Superseded At
+        last_refreshed_at:
+          type: string
+          title: Last Refreshed At
+        batch_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Batch Key
+        created_at:
+          type: string
+          title: Created At
+          default: ''
+      type: object
+      required:
+      - source_filename
+      - user_file_id
+      - row_count
+      - last_refreshed_at
+      title: DatasetMemberRead
+      description: One contributing file in a merge-enabled folder's collection dataset.
+    BatchSummary:
+      properties:
+        batch_key:
+          type: string
+          title: Batch Key
+        count:
+          type: integer
+          title: Count
+        size:
+          type: integer
+          title: Size
+        status:
+          type: string
+          title: Status
+        oldest_created_at:
+          type: string
+          title: Oldest Created At
+      type: object
+      required:
+      - batch_key
+      - count
+      - size
+      - status
+      - oldest_created_at
+      title: BatchSummary
+      description: 'One batch group (by ``batch_key``) in a folder''s ingestion pipeline,
+
+        with its read-time computed lifecycle status.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FileFolderMove:
+      properties:
+        target_parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Parent Id
+      type: object
+      title: FileFolderMove
+      description: POST /file-folders/{id}/move payload.
+    FileFolderUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        merge_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Merge Enabled
+        write_semantics:
+          anyOf:
+          - type: string
+            enum:
+            - append
+            - replace_overlap
+            - replace_all
+            - full_delivery
+          - type: 'null'
+          title: Write Semantics
+        coverage_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+            minItems: 1
+          - type: 'null'
+          title: Coverage Columns
+        coverage_granularity:
+          anyOf:
+          - type: string
+            enum:
+            - exact
+            - day
+            - month
+            - quarter
+            - year
+          - type: 'null'
+          title: Coverage Granularity
+        batch_key_pattern:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Batch Key Pattern
+        batch_size:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Batch Size
+        batch_timeout_hours:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Batch Timeout Hours
+      type: object
+      title: FileFolderUpdate
+      description: 'PATCH payload — every field is optional so the same endpoint covers
+
+        rename and merge toggle (mutually exclusive at most use sites; a single
+
+        request that sets both is honoured in declaration order: rename first,
+
+        then merge toggle, so a rename of a soon-to-be-merge folder picks up the
+
+        new collection name without an extra round-trip).'
+    FileFolderBreadcrumb:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: FileFolderBreadcrumb
+      description: One node on the breadcrumb path returned by the explorer endpoint.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FileFolderCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
+      type: object
+      required:
+      - name
+      title: FileFolderCreate
+    FileFolderRead:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Folder Id
+        merge_enabled:
+          type: boolean
+          title: Merge Enabled
+        schema_mode:
+          type: string
+          title: Schema Mode
+        merge_database_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Database Id
+        write_semantics:
+          type: string
+          title: Write Semantics
+          default: append
+        coverage_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Coverage Columns
+        coverage_granularity:
+          type: string
+          title: Coverage Granularity
+          default: exact
+        batch_key_pattern:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Batch Key Pattern
+        batch_size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Batch Size
+        batch_timeout_hours:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Batch Timeout Hours
+        sealed_batch_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sealed Batch Key
+        member_count:
+          type: integer
+          title: Member Count
+          default: 0
+        has_children:
+          type: boolean
+          title: Has Children
+          default: false
+      type: object
+      required:
+      - id
+      - name
+      - merge_enabled
+      - schema_mode
+      - merge_database_id
+      title: FileFolderRead
+    GroupKeyTestRequest:
+      properties:
+        pattern:
+          type: string
+          title: Pattern
+      type: object
+      required:
+      - pattern
+      title: GroupKeyTestRequest
+      description: 'POST /file-folders/{id}/group-key:test payload — a candidate
+
+        ``batch_key_pattern`` regex to dry-run (not yet saved).'
+    FileFolderDeletePreview:
+      properties:
+        folder_count:
+          type: integer
+          title: Folder Count
+        file_count:
+          type: integer
+          title: File Count
+        has_merge:
+          type: boolean
+          title: Has Merge
+      type: object
+      required:
+      - folder_count
+      - file_count
+      - has_merge
+      title: FileFolderDeletePreview
+      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.
+    FileFolderDelete:
+      properties:
+        confirm_with_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Confirm With Name
+      type: object
+      title: FileFolderDelete
+      description: 'DELETE /file-folders/{id} payload — the type-to-confirm guard.
+
+
+        The frontend renders ``"Type the folder name to confirm"`` and only sends
+
+        ``confirm_with_name`` once the typed value matches; the backend re-checks
+
+        so the gate can''t be bypassed by a hand-rolled client.'

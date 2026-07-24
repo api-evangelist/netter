@@ -1,0 +1,1146 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions projects API
+  version: 0.1.0
+tags:
+- name: projects
+paths:
+  /api/v1/projects/:
+    post:
+      tags:
+      - projects
+      summary: Create Project
+      description: Create a new project. Company owners and admins can create projects.
+      operationId: create_project_api_v1_projects__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - projects
+      summary: List Projects
+      description: List all projects for the current company (filtered by permissions).
+      operationId: list_projects_api_v1_projects__get
+      parameters:
+      - name: include_suppressed
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Suppressed
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProjectRead'
+                title: Response List Projects Api V1 Projects  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}:
+    get:
+      tags:
+      - projects
+      summary: Get Project
+      description: Get a single project by ID.
+      operationId: get_project_api_v1_projects__project_id__get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - projects
+      summary: Update Project
+      description: Update a project's name or description.
+      operationId: update_project_api_v1_projects__project_id__patch
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProjectUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Delete Project
+      description: Hard-delete a project. FK CASCADE deletes all children.
+      operationId: delete_project_api_v1_projects__project_id__delete
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/suppress:
+    post:
+      tags:
+      - projects
+      summary: Suppress Project
+      description: Soft-delete a project and cascade to all its children.
+      operationId: suppress_project_api_v1_projects__project_id__suppress_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/unsuppress:
+    post:
+      tags:
+      - projects
+      summary: Unsuppress Project
+      description: Restore a suppressed project and cascade-restore all its children.
+      operationId: unsuppress_project_api_v1_projects__project_id__unsuppress_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/suppression-preview:
+    get:
+      tags:
+      - projects
+      summary: Get Suppression Preview
+      description: Return the cross-project consumers that would break if this project is suppressed.
+      operationId: get_suppression_preview_api_v1_projects__project_id__suppression_preview_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuppressionPreview'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/favorite:
+    put:
+      tags:
+      - projects
+      summary: Favorite Project
+      description: 'Mark this project as a favorite for the calling user only.
+
+
+        VIEWER permission is sufficient — favorites are per-user, not shared.'
+      operationId: favorite_project_api_v1_projects__project_id__favorite_put
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - projects
+      summary: Unfavorite Project
+      description: Remove the calling user's favorite marker on this project.
+      operationId: unfavorite_project_api_v1_projects__project_id__favorite_delete
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/dashboards:
+    get:
+      tags:
+      - projects
+      summary: List Project Dashboards
+      description: List all dashboards in a project.
+      operationId: list_project_dashboards_api_v1_projects__project_id__dashboards_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: include_suppressed
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Suppressed
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardRead'
+                title: Response List Project Dashboards Api V1 Projects  Project Id  Dashboards Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/databases:
+    get:
+      tags:
+      - projects
+      summary: List Project Databases
+      description: List all databases available to a project (owned + shared in company).
+      operationId: list_project_databases_api_v1_projects__project_id__databases_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabaseRead'
+                title: Response List Project Databases Api V1 Projects  Project Id  Databases Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/chat:
+    get:
+      tags:
+      - projects
+      summary: Get Or Create Project Chat
+      description: 'Return the existing project chat or create one.
+
+
+        Each project has at most one project-level chat (chat_type=''project'').'
+      operationId: get_or_create_project_chat_api_v1_projects__project_id__chat_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Or Create Project Chat Api V1 Projects  Project Id  Chat Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/run-all:
+    post:
+      tags:
+      - projects
+      summary: Run All Steps
+      description: Run all active steps in a project.
+      operationId: run_all_steps_api_v1_projects__project_id__run_all_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Run All Steps Api V1 Projects  Project Id  Run All Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/lineage:
+    get:
+      tags:
+      - projects
+      summary: Get Project Lineage
+      description: Return a unified lineage DAG for the project.
+      operationId: get_project_lineage_api_v1_projects__project_id__lineage_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProjectLineageResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    LineageEdge:
+      properties:
+        source:
+          type: string
+          title: Source
+        target:
+          type: string
+          title: Target
+        relation:
+          type: string
+          title: Relation
+      type: object
+      required:
+      - source
+      - target
+      - relation
+      title: LineageEdge
+      description: An edge in the lineage DAG.
+    LineageStepNode:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        step_type:
+          type: string
+          title: Step Type
+        code_type:
+          type: string
+          title: Code Type
+          default: python
+        provider_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Slug
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        order:
+          type: integer
+          title: Order
+        status:
+          type: string
+          title: Status
+          default: draft
+        is_virtual:
+          type: boolean
+          title: Is Virtual
+          default: false
+        parent_step_ids:
+          items:
+            type: string
+          type: array
+          title: Parent Step Ids
+          default: []
+        last_run_status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Last Run Status
+        last_run_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Run At
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+        entity_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Entity Id
+        entity_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entity Name
+        resource_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Resource Id
+        table_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table Name
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+        schema_info:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Schema Info
+          default: []
+        row_count:
+          type: integer
+          title: Row Count
+          default: 0
+        last_refreshed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Refreshed At
+      type: object
+      required:
+      - id
+      - slug
+      - title
+      - description
+      - step_type
+      - order
+      title: LineageStepNode
+      description: A single step in the project DAG (includes virtual steps).
+    ProjectCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      required:
+      - name
+      title: ProjectCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DashboardRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        status:
+          type: string
+          title: Status
+        current_version_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Current Version Id
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - project_id
+      - user_id
+      - name
+      - description
+      - status
+      - bundle_url
+      - bundle_css
+      - bundle_imports
+      - error_message
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: DashboardRead
+    LineageExternalNode:
+      properties:
+        id:
+          type: string
+          title: Id
+        app_key:
+          type: string
+          title: App Key
+        display_name:
+          type: string
+          title: Display Name
+        node_type:
+          type: string
+          title: Node Type
+        description:
+          type: string
+          title: Description
+          default: ''
+        category:
+          type: string
+          title: Category
+          default: ''
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+      type: object
+      required:
+      - id
+      - app_key
+      - display_name
+      - node_type
+      title: LineageExternalNode
+      description: An external system (source or sink).
+    ConsumerRef:
+      properties:
+        type:
+          type: string
+          title: Type
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - type
+      - id
+      - name
+      - project_id
+      - project_name
+      title: ConsumerRef
+    ProjectRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        is_favorite:
+          type: boolean
+          title: Is Favorite
+          default: false
+        codegen_in_progress:
+          type: boolean
+          title: Codegen In Progress
+          default: false
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        doc_status:
+          type: string
+          title: Doc Status
+          default: idle
+        doc_status_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Doc Status Updated At
+        doc_last_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doc Last Error
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - description
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ProjectRead
+    app__projects__schemas__EntityRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        order:
+          type: integer
+          title: Order
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - id
+      - name
+      - order
+      - status
+      title: EntityRead
+      description: Entity response for lineage view.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DatabaseWithConsumers:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        table_name:
+          type: string
+          title: Table Name
+        consumers:
+          items:
+            $ref: '#/components/schemas/ConsumerRef'
+          type: array
+          title: Consumers
+      type: object
+      required:
+      - id
+      - name
+      - table_name
+      - consumers
+      title: DatabaseWithConsumers
+    LineageTriggerNode:
+      properties:
+        id:
+          type: string
+          title: Id
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        trigger_type:
+          type: string
+          title: Trigger Type
+        label:
+          type: string
+          title: Label
+        cron:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cron
+      type: object
+      required:
+      - id
+      - step_id
+      - trigger_type
+      - label
+      title: LineageTriggerNode
+      description: A step trigger (schedule or manual).
+    SuppressionPreview:
+      properties:
+        databases:
+          items:
+            $ref: '#/components/schemas/DatabaseWithConsumers'
+          type: array
+          title: Databases
+        owned_database_count:
+          type: integer
+          title: Owned Database Count
+      type: object
+      required:
+      - databases
+      - owned_database_count
+      title: SuppressionPreview
+    ProjectLineageResponse:
+      properties:
+        steps:
+          items:
+            $ref: '#/components/schemas/LineageStepNode'
+          type: array
+          title: Steps
+        entities:
+          items:
+            $ref: '#/components/schemas/app__projects__schemas__EntityRead'
+          type: array
+          title: Entities
+          default: []
+        externals:
+          items:
+            $ref: '#/components/schemas/LineageExternalNode'
+          type: array
+          title: Externals
+        triggers:
+          items:
+            $ref: '#/components/schemas/LineageTriggerNode'
+          type: array
+          title: Triggers
+          default: []
+        edges:
+          items:
+            $ref: '#/components/schemas/LineageEdge'
+          type: array
+          title: Edges
+      type: object
+      required:
+      - steps
+      - externals
+      - edges
+      title: ProjectLineageResponse
+      description: Full project lineage DAG for the Foundry-style view.
+    ProjectUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
+      type: object
+      title: ProjectUpdate
+    DatabaseRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Integration Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        table_name:
+          type: string
+          title: Table Name
+        storage_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Storage Path
+        schema_info:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Schema Info
+        key_columns:
+          items:
+            type: string
+          type: array
+          title: Key Columns
+          default: []
+        source_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Step Id
+        source_user_file_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source User File Id
+        source_sheet_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Sheet Name
+        is_shared:
+          type: boolean
+          title: Is Shared
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        refresh_status:
+          type: string
+          title: Refresh Status
+        refresh_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Error
+        last_refreshed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Refreshed At
+        name_is_user_overridden:
+          type: boolean
+          title: Name Is User Overridden
+          default: false
+        row_count:
+          type: integer
+          title: Row Count
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        doc_status:
+          type: string
+          title: Doc Status
+          default: idle
+        doc_status_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Doc Status Updated At
+        doc_last_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doc Last Error
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - description
+      - table_name
+      - storage_path
+      - schema_info
+      - is_shared
+      - is_suppressed
+      - refresh_status
+      - last_refreshed_at
+      - row_count
+      - size_bytes
+      - created_at
+      - updated_at
+      title: DatabaseRead

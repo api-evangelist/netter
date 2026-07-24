@@ -1,0 +1,926 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions ontology-entities API
+  version: 0.1.0
+tags:
+- name: ontology-entities
+paths:
+  /api/v1/ontology/entities:
+    get:
+      tags:
+      - ontology-entities
+      summary: List Entities
+      description: List all entities the caller can see (VIEWER+). Owners see everything.
+      operationId: list_entities_api_v1_ontology_entities_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/app__ontology__schemas__EntityRead'
+                type: array
+                title: Response List Entities Api V1 Ontology Entities Get
+    post:
+      tags:
+      - ontology-entities
+      summary: Create Managed Entity
+      description: Create an entity with no source dataset (entity from nothing).
+      operationId: create_managed_entity_api_v1_ontology_entities_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateManagedEntityBody'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__ontology__schemas__EntityRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entity-graph:
+    get:
+      tags:
+      - ontology-entities
+      summary: Get Entity Graph
+      description: 'Company entity graph (nodes = entities, edges = relationships).
+
+
+        Path is ``/entity-graph`` rather than ``/entities/graph`` so it does not
+
+        collide with ``GET /entities/{entity_id}`` (which would parse ``graph`` as a
+
+        UUID). Permission-filtered to VIEWER+ accessible entities.'
+      operationId: get_entity_graph_api_v1_ontology_entity_graph_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityGraphRead'
+  /api/v1/ontology/entities/{entity_id}:
+    get:
+      tags:
+      - ontology-entities
+      summary: Get Entity
+      description: Get entity detail with properties, relationships, and fed-by projects.
+      operationId: get_entity_api_v1_ontology_entities__entity_id__get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__ontology__schemas__EntityRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - ontology-entities
+      summary: Update Entity
+      description: Update entity display_name or description.
+      operationId: update_entity_api_v1_ontology_entities__entity_id__patch
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__ontology__schemas__EntityRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - ontology-entities
+      summary: Archive Entity
+      description: Archive an entity (soft-delete).
+      operationId: archive_entity_api_v1_ontology_entities__entity_id__delete
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{entity_id}/properties:
+    get:
+      tags:
+      - ontology-entities
+      summary: List Properties
+      description: List properties for an entity.
+      operationId: list_properties_api_v1_ontology_entities__entity_id__properties_get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityPropertyRead'
+                title: Response List Properties Api V1 Ontology Entities  Entity Id  Properties Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - ontology-entities
+      summary: Update Properties
+      description: Bulk update property display names, descriptions, and order.
+      operationId: update_properties_api_v1_ontology_entities__entity_id__properties_patch
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropertyBulkUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityPropertyRead'
+                title: Response Update Properties Api V1 Ontology Entities  Entity Id  Properties Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - ontology-entities
+      summary: Create Managed Property
+      description: Add a managed (admin-defined) property to an entity.
+      operationId: create_managed_property_api_v1_ontology_entities__entity_id__properties_post
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ManagedPropertyCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityPropertyRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{entity_id}/properties/{property_id}:
+    delete:
+      tags:
+      - ontology-entities
+      summary: Delete Managed Property
+      description: Remove a managed property from an entity (source-origin properties are rejected).
+      operationId: delete_managed_property_api_v1_ontology_entities__entity_id__properties__property_id__delete
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: property_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Property Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{entity_id}/properties/preview-rules:
+    post:
+      tags:
+      - ontology-entities
+      summary: Preview Field Rules
+      description: Count existing rows that would violate the candidate field rules (no data is changed).
+      operationId: preview_field_rules_api_v1_ontology_entities__entity_id__properties_preview_rules_post
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RulesPreviewRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RulesPreviewResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    EntityPropertyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        column_name:
+          type: string
+          title: Column Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        data_type:
+          type: string
+          title: Data Type
+        is_primary_key:
+          type: boolean
+          title: Is Primary Key
+        order:
+          type: integer
+          title: Order
+        rules:
+          $ref: '#/components/schemas/FieldRules'
+        origin:
+          type: string
+          title: Origin
+          default: source
+        managed_default:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Managed Default
+        file_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: File Folder Id
+      type: object
+      required:
+      - id
+      - column_name
+      - display_name
+      - description
+      - data_type
+      - is_primary_key
+      - order
+      title: EntityPropertyRead
+      description: Property in entity listings.
+    FieldFormat:
+      properties:
+        min:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min
+        max:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max
+        regex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Regex
+        max_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Length
+        date_min:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Min
+        date_max:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Max
+        allowed_mime:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Mime
+        max_size_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Size Bytes
+      type: object
+      title: FieldFormat
+      description: Type-specific value constraints. All optional; only set what applies.
+    app__ontology__schemas__EntityRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        database_id:
+          type: string
+          format: uuid
+          title: Database Id
+        key_column:
+          type: string
+          title: Key Column
+        record_count:
+          type: integer
+          title: Record Count
+        status:
+          type: string
+          title: Status
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        properties:
+          items:
+            $ref: '#/components/schemas/EntityPropertyRead'
+          type: array
+          title: Properties
+          default: []
+        relationships:
+          items:
+            $ref: '#/components/schemas/EntityRelationshipBrief'
+          type: array
+          title: Relationships
+          default: []
+        fed_by:
+          items:
+            $ref: '#/components/schemas/FedByProject'
+          type: array
+          title: Fed By
+          default: []
+        is_editable:
+          type: boolean
+          title: Is Editable
+          default: false
+        is_file_backed:
+          type: boolean
+          title: Is File Backed
+          default: false
+        last_synced_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Synced At
+        source_row_count:
+          type: integer
+          title: Source Row Count
+          default: 0
+        icon:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Icon
+      type: object
+      required:
+      - id
+      - company_id
+      - name
+      - display_name
+      - description
+      - database_id
+      - key_column
+      - record_count
+      - status
+      - created_at
+      - updated_at
+      title: EntityRead
+      description: Full entity for GET endpoints.
+    EntityRelationshipBrief:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        target_entity_id:
+          type: string
+          format: uuid
+          title: Target Entity Id
+        target_entity_name:
+          type: string
+          title: Target Entity Name
+        target_entity_display_name:
+          type: string
+          title: Target Entity Display Name
+        relationship_type:
+          type: string
+          title: Relationship Type
+        cardinality:
+          type: string
+          title: Cardinality
+      type: object
+      required:
+      - id
+      - name
+      - target_entity_id
+      - target_entity_name
+      - target_entity_display_name
+      - relationship_type
+      - cardinality
+      title: EntityRelationshipBrief
+      description: Relationship summary in entity detail.
+    FieldRules:
+      properties:
+        allowed_values:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Values
+        required:
+          type: boolean
+          title: Required
+          default: false
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/FieldFormat'
+          - type: 'null'
+      type: object
+      title: FieldRules
+      description: Declared value rules for one entity field. Empty instance = no rules.
+    EntityGraphRead:
+      properties:
+        nodes:
+          items:
+            $ref: '#/components/schemas/EntityGraphNode'
+          type: array
+          title: Nodes
+        edges:
+          items:
+            $ref: '#/components/schemas/EntityGraphEdge'
+          type: array
+          title: Edges
+      type: object
+      required:
+      - nodes
+      - edges
+      title: EntityGraphRead
+      description: 'Company entity graph: entities as nodes, relationships as directed edges.'
+    CreateManagedEntityBody:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+          default: ''
+        description:
+          type: string
+          title: Description
+          default: ''
+        key_column:
+          type: string
+          minLength: 1
+          title: Key Column
+        fields:
+          items:
+            $ref: '#/components/schemas/ManagedFieldBody'
+          type: array
+          minItems: 1
+          title: Fields
+      type: object
+      required:
+      - name
+      - key_column
+      - fields
+      title: CreateManagedEntityBody
+      description: Input for POST /ontology/entities (entity from nothing).
+    ManagedFieldBody:
+      properties:
+        column_name:
+          type: string
+          minLength: 1
+          title: Column Name
+        display_name:
+          type: string
+          title: Display Name
+          default: ''
+        data_type:
+          type: string
+          title: Data Type
+          default: String
+        managed_default:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Managed Default
+        rules:
+          $ref: '#/components/schemas/FieldRules'
+      type: object
+      required:
+      - column_name
+      title: ManagedFieldBody
+      description: One field definition in a CreateManagedEntityBody request.
+    RulesPreviewItem:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        rules:
+          $ref: '#/components/schemas/FieldRules'
+      type: object
+      required:
+      - column_name
+      - rules
+      title: RulesPreviewItem
+    ManagedPropertyCreate:
+      properties:
+        column_name:
+          type: string
+          minLength: 1
+          title: Column Name
+        display_name:
+          type: string
+          title: Display Name
+          default: ''
+        data_type:
+          type: string
+          title: Data Type
+          default: String
+        managed_default:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Managed Default
+        rules:
+          $ref: '#/components/schemas/FieldRules'
+        file_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: File Folder Id
+      type: object
+      required:
+      - column_name
+      title: ManagedPropertyCreate
+      description: Input for POST /ontology/entities/{id}/properties (managed fields only).
+    RulesPreviewRequest:
+      properties:
+        properties:
+          items:
+            $ref: '#/components/schemas/RulesPreviewItem'
+          type: array
+          title: Properties
+      type: object
+      required:
+      - properties
+      title: RulesPreviewRequest
+    PropertyBulkUpdate:
+      properties:
+        properties:
+          items:
+            $ref: '#/components/schemas/PropertyUpdate'
+          type: array
+          title: Properties
+      type: object
+      required:
+      - properties
+      title: PropertyBulkUpdate
+      description: Input for PATCH /ontology/entities/{id}/properties.
+    RulesPreviewResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/RulesPreviewResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: RulesPreviewResponse
+    FedByProject:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - project_id
+      - project_name
+      title: FedByProject
+      description: Which project feeds this entity.
+    EntityUpdate:
+      properties:
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        icon:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Icon
+      type: object
+      title: EntityUpdate
+      description: Input for PATCH /ontology/entities/{id}.
+    EntityGraphNode:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        status:
+          type: string
+          title: Status
+        record_count:
+          type: integer
+          title: Record Count
+        key_column:
+          type: string
+          title: Key Column
+        database_id:
+          type: string
+          format: uuid
+          title: Database Id
+        property_count:
+          type: integer
+          title: Property Count
+        icon:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Icon
+      type: object
+      required:
+      - id
+      - name
+      - display_name
+      - status
+      - record_count
+      - key_column
+      - database_id
+      - property_count
+      title: EntityGraphNode
+      description: A single entity node in the entity graph.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RulesPreviewResult:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        violating_count:
+          type: integer
+          title: Violating Count
+        total_count:
+          type: integer
+          title: Total Count
+      type: object
+      required:
+      - column_name
+      - violating_count
+      - total_count
+      title: RulesPreviewResult
+    PropertyUpdate:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        order:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Order
+        rules:
+          anyOf:
+          - $ref: '#/components/schemas/FieldRules'
+          - type: 'null'
+        file_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: File Folder Id
+      type: object
+      required:
+      - id
+      title: PropertyUpdate
+      description: Single property update in a bulk patch.
+    EntityGraphEdge:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        source_entity_id:
+          type: string
+          format: uuid
+          title: Source Entity Id
+        target_entity_id:
+          type: string
+          format: uuid
+          title: Target Entity Id
+        name:
+          type: string
+          title: Name
+        relationship_type:
+          type: string
+          title: Relationship Type
+        cardinality:
+          type: string
+          title: Cardinality
+      type: object
+      required:
+      - id
+      - source_entity_id
+      - target_entity_id
+      - name
+      - relationship_type
+      - cardinality
+      title: EntityGraphEdge
+      description: A directed, typed relationship edge between two entity nodes.

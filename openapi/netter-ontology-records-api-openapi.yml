@@ -1,0 +1,316 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions ontology-records API
+  version: 0.1.0
+tags:
+- name: ontology-records
+paths:
+  /api/v1/ontology/entities/{entity_id}/records:
+    get:
+      tags:
+      - ontology-records
+      summary: List Records
+      operationId: list_records_api_v1_ontology_entities__entity_id__records_get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      - name: filters
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          description: JSON object of column->substring, e.g. {"name":"Je"}. Malformed JSON is ignored.
+          title: Filters
+        description: JSON object of column->substring, e.g. {"name":"Je"}. Malformed JSON is ignored.
+      - name: sort_by
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sort By
+      - name: sort_dir
+        in: query
+        required: false
+        schema:
+          type: string
+          default: asc
+          title: Sort Dir
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Records Api V1 Ontology Entities  Entity Id  Records Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{from_entity_id}/unmatched/{to_entity_id}:
+    get:
+      tags:
+      - ontology-records
+      summary: List Unmatched Records
+      operationId: list_unmatched_records_api_v1_ontology_entities__from_entity_id__unmatched__to_entity_id__get
+      parameters:
+      - name: from_entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: From Entity Id
+      - name: to_entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: To Entity Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      - name: filter_via
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          description: Filter from_entity to only keys reachable from this entity
+          title: Filter Via
+        description: Filter from_entity to only keys reachable from this entity
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Unmatched Records Api V1 Ontology Entities  From Entity Id  Unmatched  To Entity Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{from_entity_id}/matched/{to_entity_id}:
+    get:
+      tags:
+      - ontology-records
+      summary: List Matched Records
+      operationId: list_matched_records_api_v1_ontology_entities__from_entity_id__matched__to_entity_id__get
+      parameters:
+      - name: from_entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: From Entity Id
+      - name: to_entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: To Entity Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Matched Records Api V1 Ontology Entities  From Entity Id  Matched  To Entity Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{entity_id}/records/{record_key}/related:
+    get:
+      tags:
+      - ontology-records
+      summary: Get Record Related
+      operationId: get_record_related_api_v1_ontology_entities__entity_id__records__record_key__related_get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: record_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Record Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordRelatedResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    RecordRelatedResponse:
+      properties:
+        entity_name:
+          type: string
+          title: Entity Name
+        entity_display_name:
+          type: string
+          title: Entity Display Name
+        record:
+          additionalProperties: true
+          type: object
+          title: Record
+        related:
+          items:
+            $ref: '#/components/schemas/RelatedRecordSet'
+          type: array
+          title: Related
+      type: object
+      required:
+      - entity_name
+      - entity_display_name
+      - record
+      - related
+      title: RecordRelatedResponse
+      description: Response for GET /ontology/entities/{id}/records/{key}/related.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RelatedRecordSet:
+      properties:
+        entity_name:
+          type: string
+          title: Entity Name
+        entity_display_name:
+          type: string
+          title: Entity Display Name
+        relationship:
+          type: string
+          title: Relationship
+        records:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Records
+        count:
+          type: integer
+          title: Count
+      type: object
+      required:
+      - entity_name
+      - entity_display_name
+      - relationship
+      - records
+      - count
+      title: RelatedRecordSet
+      description: Related records for one entity.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

@@ -1,0 +1,321 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions row-policies API
+  version: 0.1.0
+tags:
+- name: row-policies
+paths:
+  /api/v1/row-policies/{resource_type}/{resource_id}:
+    get:
+      tags:
+      - row-policies
+      summary: List Row Access Policies
+      description: List all RLS rules for a resource. Requires ADMIN on the resource.
+      operationId: list_row_access_policies_api_v1_row_policies__resource_type___resource_id__get
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Type
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RowAccessPolicyRead'
+                title: Response List Row Access Policies Api V1 Row Policies  Resource Type   Resource Id  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - row-policies
+      summary: Create Row Access Policy
+      description: Create an RLS rule for a resource. Requires ADMIN on the resource.
+      operationId: create_row_access_policy_api_v1_row_policies__resource_type___resource_id__post
+      parameters:
+      - name: resource_type
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Resource Type
+      - name: resource_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Resource Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RowAccessPolicyCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RowAccessPolicyRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/row-policies/policy/{policy_id}:
+    patch:
+      tags:
+      - row-policies
+      summary: Update Row Access Policy
+      description: Update an RLS rule's operator, values, or attribute_key. Requires ADMIN on the resource.
+      operationId: update_row_access_policy_api_v1_row_policies_policy__policy_id__patch
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Policy Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RowAccessPolicyUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RowAccessPolicyRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - row-policies
+      summary: Delete Row Access Policy
+      description: Delete an RLS rule. Requires ADMIN on the resource.
+      operationId: delete_row_access_policy_api_v1_row_policies_policy__policy_id__delete
+      parameters:
+      - name: policy_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Policy Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    RowAccessPolicyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        resource_type:
+          type: string
+          title: Resource Type
+        resource_id:
+          type: string
+          format: uuid
+          title: Resource Id
+        column_name:
+          type: string
+          title: Column Name
+        operator:
+          $ref: '#/components/schemas/RlsOperator'
+        value_source:
+          $ref: '#/components/schemas/RlsValueSource'
+        values:
+          items:
+            type: string
+          type: array
+          title: Values
+        attribute_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Attribute Key
+        audience_type:
+          $ref: '#/components/schemas/RlsAudienceType'
+        audience_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Audience Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - resource_type
+      - resource_id
+      - column_name
+      - operator
+      - value_source
+      - values
+      - attribute_key
+      - audience_type
+      - audience_id
+      - created_at
+      - updated_at
+      title: RowAccessPolicyRead
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RowAccessPolicyUpdate:
+      properties:
+        operator:
+          anyOf:
+          - $ref: '#/components/schemas/RlsOperator'
+          - type: 'null'
+        values:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Values
+        attribute_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Attribute Key
+      type: object
+      title: RowAccessPolicyUpdate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RlsOperator:
+      type: string
+      enum:
+      - in
+      - not_in
+      - eq
+      - neq
+      - gte
+      - lte
+      - gt
+      - lt
+      title: RlsOperator
+      description: Supported comparison operators for row-level security rules.
+    RlsAudienceType:
+      type: string
+      enum:
+      - everyone
+      - group
+      - user
+      title: RlsAudienceType
+      description: Values for the ``audience_type`` column (stored as plain VARCHAR).
+    RowAccessPolicyCreate:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        operator:
+          $ref: '#/components/schemas/RlsOperator'
+          default: in
+        value_source:
+          $ref: '#/components/schemas/RlsValueSource'
+          default: literal
+        values:
+          items:
+            type: string
+          type: array
+          title: Values
+          default: []
+        attribute_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Attribute Key
+        audience_type:
+          $ref: '#/components/schemas/RlsAudienceType'
+          default: everyone
+        audience_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Audience Id
+      type: object
+      required:
+      - column_name
+      title: RowAccessPolicyCreate
+    RlsValueSource:
+      type: string
+      enum:
+      - literal
+      - user_attribute
+      title: RlsValueSource
+      description: Values for the ``value_source`` column (stored as plain VARCHAR).

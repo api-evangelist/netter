@@ -1,0 +1,388 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions lego-architect API
+  version: 0.1.0
+tags:
+- name: lego-architect
+paths:
+  /api/v1/lego-architect/projects/{project_id}/chat:
+    get:
+      tags:
+      - lego-architect
+      summary: Get Or Create Chat
+      description: Get or create the lego-architect chat for this project.
+      operationId: get_or_create_chat_api_v1_lego_architect_projects__project_id__chat_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Or Create Chat Api V1 Lego Architect Projects  Project Id  Chat Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/lego-architect/{chat_id}/message:
+    post:
+      tags:
+      - lego-architect
+      summary: Send Message
+      description: Dispatch a new lego-architect turn for this chat.
+      operationId: send_message_api_v1_lego_architect__chat_id__message_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LegoMessageRequest'
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegoTurnResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/lego-architect/projects/{project_id}/steps:
+    post:
+      tags:
+      - lego-architect
+      summary: Add Step
+      operationId: add_step_api_v1_lego_architect_projects__project_id__steps_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddStepRequest'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Add Step Api V1 Lego Architect Projects  Project Id  Steps Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/lego-architect/projects/{project_id}/steps/{slug}:
+    patch:
+      tags:
+      - lego-architect
+      summary: Update Step
+      operationId: update_step_api_v1_lego_architect_projects__project_id__steps__slug__patch
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateStepRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Step Api V1 Lego Architect Projects  Project Id  Steps  Slug  Patch
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - lego-architect
+      summary: Remove Step
+      operationId: remove_step_api_v1_lego_architect_projects__project_id__steps__slug__delete
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Remove Step Api V1 Lego Architect Projects  Project Id  Steps  Slug  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/lego-architect/projects/{project_id}/edges:
+    post:
+      tags:
+      - lego-architect
+      summary: Link Step
+      operationId: link_step_api_v1_lego_architect_projects__project_id__edges_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EdgeRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Link Step Api V1 Lego Architect Projects  Project Id  Edges Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - lego-architect
+      summary: Unlink Step
+      description: Remove a parent → child edge. Takes `parent_slug` + `child_slug` as query params.
+      operationId: unlink_step_api_v1_lego_architect_projects__project_id__edges_delete
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: parent_slug
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Parent Slug
+      - name: child_slug
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Child Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Unlink Step Api V1 Lego Architect Projects  Project Id  Edges Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    EdgeRequest:
+      properties:
+        parent_slug:
+          type: string
+          title: Parent Slug
+        child_slug:
+          type: string
+          title: Child Slug
+      type: object
+      required:
+      - parent_slug
+      - child_slug
+      title: EdgeRequest
+    LegoTurnResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: LegoTurnResponse
+    LegoMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Content
+        referenced_database_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Referenced Database Ids
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Attachments
+      type: object
+      required:
+      - content
+      title: LegoMessageRequest
+    AddStepRequest:
+      properties:
+        step_type:
+          type: string
+          title: Step Type
+          description: source | data_read | process | data_sink | database | dashboard
+        operator:
+          type: string
+          title: Operator
+          description: Operator registry name (e.g. 'filter', 'api_source')
+        slug:
+          type: string
+          maxLength: 80
+          minLength: 1
+          title: Slug
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+        parent_slugs:
+          items:
+            type: string
+          type: array
+          title: Parent Slugs
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+      type: object
+      required:
+      - step_type
+      - operator
+      - slug
+      title: AddStepRequest
+    UpdateStepRequest:
+      properties:
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+      type: object
+      required:
+      - config
+      title: UpdateStepRequest

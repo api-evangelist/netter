@@ -1,0 +1,1313 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions integrations API
+  version: 0.1.0
+tags:
+- name: integrations
+paths:
+  /api/v1/integrations/providers:
+    get:
+      tags:
+      - integrations
+      summary: List Providers
+      description: List available providers. Optionally filter by provider_type.
+      operationId: list_providers_api_v1_integrations_providers_get
+      parameters:
+      - name: provider_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Type
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProviderRead'
+                title: Response List Providers Api V1 Integrations Providers Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/:
+    get:
+      tags:
+      - integrations
+      summary: List Integrations
+      description: List integrations the caller can see (owners see all).
+      operationId: list_integrations_api_v1_integrations__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/IntegrationRead'
+                type: array
+                title: Response List Integrations Api V1 Integrations  Get
+    post:
+      tags:
+      - integrations
+      summary: Create Integration
+      description: 'Register or update an integration for the company (upsert by provider).
+
+
+        Handles three paths:
+
+        - Nango OAuth: ``nango_connection_id`` provided → mark connected.
+
+        - Custom credentials: ``credentials`` dict provided → validate, test, encrypt.
+
+        - Neither: mark disconnected.
+
+
+        Per-resource permissions: any company member may CREATE a new
+
+        integration (they''re auto-granted ADMIN on it); updating an existing
+
+        (company, provider) row in place requires EDITOR on that integration.'
+      operationId: create_integration_api_v1_integrations__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IntegrationCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/session-token:
+    get:
+      tags:
+      - integrations
+      summary: Get Nango Session Token
+      description: 'Fetch a short-lived session token from Nango for the Connect UI.
+
+
+        Pass ?allowed_integrations=supabase to scope the session to a single provider.
+
+        Returns the full Nango session dict (includes ``token`` + any extra fields).
+
+
+        Note: the legacy endpoint calls Nango directly without provider validation,
+
+        so we mirror that by going via the adapter rather than the MintNangoSessionToken
+
+        operation (which requires a validated provider slug).
+
+
+        Per-resource permissions: any company member may start a connect flow —
+
+        this runs BEFORE any integration row exists, so there is no resource to
+
+        gate on. The creator is auto-granted ADMIN when the row is created.'
+      operationId: get_nango_session_token_api_v1_integrations_session_token_get
+      parameters:
+      - name: allowed_integrations
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Allowed Integrations
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Nango Session Token Api V1 Integrations Session Token Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}:
+    patch:
+      tags:
+      - integrations
+      summary: Update Integration
+      description: Update an integration's status or connection details.
+      operationId: update_integration_api_v1_integrations__integration_id__patch
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: nango_connection_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Connection Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntegrationRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - integrations
+      summary: Delete Integration
+      description: Remove an integration and its Nango connection.
+      operationId: delete_integration_api_v1_integrations__integration_id__delete
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/providers/{slug}/crawler-schema:
+    get:
+      tags:
+      - integrations
+      summary: Get Crawler Schema
+      description: 'Return the wizard schema for a provider''s crawler (public read).
+
+
+        No resource permission gate — the wizard fetches this before any
+
+        integration row exists (post-OAuth, pre-wizard-completion).'
+      operationId: get_crawler_schema_api_v1_integrations_providers__slug__crawler_schema_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlerSchemaRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/providers/{slug}/actions:
+    get:
+      tags:
+      - integrations
+      summary: List Provider Actions
+      description: Typed actions available for a provider's provider_action workflow node.
+      operationId: list_provider_actions_api_v1_integrations_providers__slug__actions_get
+      parameters:
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProviderActionRead'
+                title: Response List Provider Actions Api V1 Integrations Providers  Slug  Actions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/scope-options:
+    get:
+      tags:
+      - integrations
+      summary: Get Scope Options
+      description: 'Live scope discovery for a specific table.
+
+
+        Fetches scope items via the table''s ``list_scope_items`` callable.
+
+        Results are cached in-process for 60 seconds.'
+      operationId: get_scope_options_api_v1_integrations__integration_id__scope_options_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: table
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Table
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CrawlerScopeOption'
+                title: Response Get Scope Options Api V1 Integrations  Integration Id  Scope Options Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/snowflake/databases:
+    get:
+      tags:
+      - integrations
+      summary: Get Snowflake Databases
+      description: '``SHOW DATABASES`` against the customer''s Snowflake account.'
+      operationId: get_snowflake_databases_api_v1_integrations__integration_id__snowflake_databases_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SnowflakeDiscoveryItem'
+                title: Response Get Snowflake Databases Api V1 Integrations  Integration Id  Snowflake Databases Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/snowflake/schemas:
+    get:
+      tags:
+      - integrations
+      summary: Get Snowflake Schemas
+      description: '``SHOW SCHEMAS IN DATABASE <database>``. ``INFORMATION_SCHEMA``
+
+        is filtered out by the underlying discovery function.'
+      operationId: get_snowflake_schemas_api_v1_integrations__integration_id__snowflake_schemas_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: database
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Database
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SnowflakeDiscoveryItem'
+                title: Response Get Snowflake Schemas Api V1 Integrations  Integration Id  Snowflake Schemas Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/snowflake/tables:
+    get:
+      tags:
+      - integrations
+      summary: Get Snowflake Tables
+      description: '``SHOW TABLES IN SCHEMA <database>.<schema>``.'
+      operationId: get_snowflake_tables_api_v1_integrations__integration_id__snowflake_tables_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: database
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Database
+      - name: schema
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Schema
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SnowflakeDiscoveryItem'
+                title: Response Get Snowflake Tables Api V1 Integrations  Integration Id  Snowflake Tables Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/snowflake/describe:
+    get:
+      tags:
+      - integrations
+      summary: Describe Snowflake Table
+      description: '``DESCRIBE TABLE <database>.<schema>.<table>`` mapped to
+
+        Polars-style types — used to populate ``columns`` in the wizard
+
+        payload that gets PATCHed to ``crawler_table_configs``.'
+      operationId: describe_snowflake_table_api_v1_integrations__integration_id__snowflake_describe_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: database
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Database
+      - name: schema
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Schema
+      - name: table
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Table
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SnowflakeColumnSchema'
+                title: Response Describe Snowflake Table Api V1 Integrations  Integration Id  Snowflake Describe Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/databricks/warehouses:
+    get:
+      tags:
+      - integrations
+      summary: Get Databricks Warehouses
+      description: '``GET /api/2.0/sql/warehouses`` against the customer''s workspace.'
+      operationId: get_databricks_warehouses_api_v1_integrations__integration_id__databricks_warehouses_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabricksWarehouseItem'
+                title: Response Get Databricks Warehouses Api V1 Integrations  Integration Id  Databricks Warehouses Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/databricks/catalogs:
+    get:
+      tags:
+      - integrations
+      summary: Get Databricks Catalogs
+      description: '``GET /api/2.1/unity-catalog/catalogs`` — list customer catalogs
+
+        (filtered to drop the ``system`` catalog).'
+      operationId: get_databricks_catalogs_api_v1_integrations__integration_id__databricks_catalogs_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabricksDiscoveryItem'
+                title: Response Get Databricks Catalogs Api V1 Integrations  Integration Id  Databricks Catalogs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/databricks/schemas:
+    get:
+      tags:
+      - integrations
+      summary: Get Databricks Schemas
+      description: '``GET /api/2.1/unity-catalog/schemas?catalog_name=<catalog>``.
+
+        ``information_schema`` is filtered out by the underlying discovery
+
+        function.'
+      operationId: get_databricks_schemas_api_v1_integrations__integration_id__databricks_schemas_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: catalog
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Catalog
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabricksDiscoveryItem'
+                title: Response Get Databricks Schemas Api V1 Integrations  Integration Id  Databricks Schemas Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/databricks/tables:
+    get:
+      tags:
+      - integrations
+      summary: Get Databricks Tables
+      description: '``GET /api/2.1/unity-catalog/tables?catalog_name=<>&schema_name=<>``.'
+      operationId: get_databricks_tables_api_v1_integrations__integration_id__databricks_tables_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: catalog
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Catalog
+      - name: schema
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Schema
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabricksDiscoveryItem'
+                title: Response Get Databricks Tables Api V1 Integrations  Integration Id  Databricks Tables Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/databricks/describe:
+    get:
+      tags:
+      - integrations
+      summary: Describe Databricks Table
+      description: '``GET /api/2.1/unity-catalog/tables/{catalog.schema.table}`` mapped to
+
+        Polars-style types — used to populate ``columns`` in the wizard
+
+        payload that gets PATCHed to ``crawler_table_configs``.'
+      operationId: describe_databricks_table_api_v1_integrations__integration_id__databricks_describe_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      - name: catalog
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Catalog
+      - name: schema
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Schema
+      - name: table
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Table
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabricksColumnSchema'
+                title: Response Describe Databricks Table Api V1 Integrations  Integration Id  Databricks Describe Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/crawler-config:
+    get:
+      tags:
+      - integrations
+      summary: Get Crawler Config
+      description: Return the effective crawler config for an integration (for the edit modal).
+      operationId: get_crawler_config_api_v1_integrations__integration_id__crawler_config_get
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlerConfigRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - integrations
+      summary: Patch Crawler Config
+      description: Apply a crawler config patch and signal the running workflow.
+      operationId: patch_crawler_config_api_v1_integrations__integration_id__crawler_config_patch
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrawlerConfigPatchBody'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrawlerConfigPatchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/{integration_id}/refresh-crawl:
+    post:
+      tags:
+      - integrations
+      summary: Refresh Integration Crawl
+      description: 'Wake the crawler workflow''s polling loop immediately ("Refresh now").
+
+
+        No-op for providers without a registered crawler module. Falls back
+
+        to ``start_crawler`` if no workflow is currently running.'
+      operationId: refresh_integration_crawl_api_v1_integrations__integration_id__refresh_crawl_post
+      parameters:
+      - name: integration_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Integration Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Refresh Integration Crawl Api V1 Integrations  Integration Id  Refresh Crawl Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/integrations/webhook:
+    post:
+      tags:
+      - integrations
+      summary: Nango Webhook
+      description: 'Handle webhooks from Nango (connection.created / connection.updated).
+
+
+        Verifies the HMAC-SHA256 signature using NANGO_SECRET_KEY before processing.'
+      operationId: nango_webhook_api_v1_integrations_webhook_post
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                additionalProperties: true
+                type: object
+                title: Response Nango Webhook Api V1 Integrations Webhook Post
+components:
+  schemas:
+    DatabricksWarehouseItem:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: DatabricksWarehouseItem
+      description: 'One SQL warehouse from ``GET /api/2.0/sql/warehouses``.
+
+
+        ``id`` is the value the wizard writes to
+
+        ``DatabricksTableConfig.warehouse_id``. ``hint`` carries state +
+
+        cluster size so the user can pick the right warehouse without
+
+        leaving the wizard.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ProviderActionRead:
+      properties:
+        key:
+          type: string
+          title: Key
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        params_json_schema:
+          additionalProperties: true
+          type: object
+          title: Params Json Schema
+      type: object
+      required:
+      - key
+      - display_name
+      - description
+      - params_json_schema
+      title: ProviderActionRead
+    CrawlerSchemaRead:
+      properties:
+        tables:
+          items:
+            $ref: '#/components/schemas/CrawlerTableSchema'
+          type: array
+          title: Tables
+        poll_interval_options_seconds:
+          items:
+            type: integer
+          type: array
+          title: Poll Interval Options Seconds
+        min_poll_interval_seconds:
+          type: integer
+          title: Min Poll Interval Seconds
+        default_poll_interval_seconds:
+          type: integer
+          title: Default Poll Interval Seconds
+        max_backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Backfill Window Days
+        default_backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Default Backfill Window Days
+      type: object
+      required:
+      - tables
+      - poll_interval_options_seconds
+      - min_poll_interval_seconds
+      - default_poll_interval_seconds
+      - max_backfill_window_days
+      - default_backfill_window_days
+      title: CrawlerSchemaRead
+    CrawlerConfigPatchBody:
+      properties:
+        poll_interval_seconds:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Poll Interval Seconds
+        backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Backfill Window Days
+        selected_tables:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Selected Tables
+        scope_filters:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Scope Filters
+        crawler_table_configs:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Crawler Table Configs
+        purge_removed:
+          type: boolean
+          title: Purge Removed
+          default: false
+      type: object
+      title: CrawlerConfigPatchBody
+    DatabricksColumnSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        polars_type:
+          type: string
+          title: Polars Type
+      type: object
+      required:
+      - name
+      - polars_type
+      title: DatabricksColumnSchema
+      description: 'One column from Unity Catalog mapped to a Polars-style type.
+
+
+        The wizard echoes this list back in the ``crawler_table_configs``
+
+        PATCH so the lifecycle layer can populate ``Database.schema_info``
+
+        without a fresh round-trip.'
+    CrawlerConfigPatchResponse:
+      properties:
+        config:
+          $ref: '#/components/schemas/CrawlerConfigRead'
+        pending_actions:
+          items:
+            type: string
+          type: array
+          title: Pending Actions
+        warnings:
+          items:
+            type: string
+          type: array
+          title: Warnings
+      type: object
+      required:
+      - config
+      - pending_actions
+      - warnings
+      title: CrawlerConfigPatchResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    IntegrationCreate:
+      properties:
+        provider_id:
+          type: string
+          format: uuid
+          title: Provider Id
+        nango_connection_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Connection Id
+        credentials:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Credentials
+      type: object
+      required:
+      - provider_id
+      title: IntegrationCreate
+    CrawlerScopeOption:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: CrawlerScopeOption
+    SnowflakeDiscoveryItem:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: SnowflakeDiscoveryItem
+      description: 'Item returned by SHOW DATABASES / SHOW SCHEMAS / SHOW TABLES.
+
+
+        ``id`` is the namespaced selector the wizard later passes back —
+
+        e.g. ``"ANALYTICS"`` for a database, ``"ANALYTICS.PUBLIC"`` for a
+
+        schema, ``"ANALYTICS.PUBLIC.ORDERS"`` for a table. ``hint`` holds
+
+        optional metadata (row count, comment) for UI tooltips.'
+    CrawlerTableSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        scope_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Scope Schema
+        scope_key_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope Key Label
+        supports_purge:
+          type: boolean
+          title: Supports Purge
+          default: false
+      type: object
+      required:
+      - name
+      - description
+      title: CrawlerTableSchema
+    ProviderRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        icon:
+          type: string
+          title: Icon
+        description:
+          type: string
+          title: Description
+        category:
+          type: string
+          title: Category
+        provider_type:
+          type: string
+          title: Provider Type
+          default: integration
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+        nango_provider_config_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Provider Config Key
+        nango_webhook_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Webhook Url
+        credential_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Credential Schema
+      type: object
+      required:
+      - id
+      - name
+      - display_name
+      - icon
+      - description
+      - category
+      title: ProviderRead
+    CrawlerConfigRead:
+      properties:
+        poll_interval_seconds:
+          type: integer
+          title: Poll Interval Seconds
+        poll_interval_source:
+          type: string
+          title: Poll Interval Source
+        backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Backfill Window Days
+        backfill_window_days_source:
+          type: string
+          title: Backfill Window Days Source
+        selected_tables:
+          items:
+            type: string
+          type: array
+          title: Selected Tables
+        scope_filters:
+          additionalProperties:
+            additionalProperties: true
+            type: object
+          type: object
+          title: Scope Filters
+        crawler_table_configs:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Crawler Table Configs
+        config_revision:
+          type: integer
+          title: Config Revision
+        crawler_config_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Crawler Config Updated At
+      type: object
+      required:
+      - poll_interval_seconds
+      - poll_interval_source
+      - backfill_window_days
+      - backfill_window_days_source
+      - selected_tables
+      - scope_filters
+      - config_revision
+      - crawler_config_updated_at
+      title: CrawlerConfigRead
+    DatabricksDiscoveryItem:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: DatabricksDiscoveryItem
+      description: 'Item returned by Unity Catalog discovery (catalogs / schemas / tables).
+
+
+        ``id`` is the namespaced selector the wizard later passes back —
+
+        e.g. ``"analytics"`` for a catalog, ``"analytics.sales"`` for a
+
+        schema, ``"analytics.sales.orders"`` for a table. ``hint`` holds
+
+        optional metadata (table type, comment) for UI tooltips.'
+    IntegrationRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        provider_id:
+          type: string
+          format: uuid
+          title: Provider Id
+        nango_connection_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Connection Id
+        status:
+          type: string
+          title: Status
+        has_credentials:
+          type: boolean
+          title: Has Credentials
+          default: false
+        connected_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Connected At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - provider_id
+      - nango_connection_id
+      - status
+      - connected_at
+      - created_at
+      title: IntegrationRead
+    SnowflakeColumnSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        polars_type:
+          type: string
+          title: Polars Type
+      type: object
+      required:
+      - name
+      - polars_type
+      title: SnowflakeColumnSchema
+      description: 'One column from ``DESCRIBE TABLE`` mapped to a Polars-style type.
+
+
+        The wizard echoes this list back in the ``crawler_table_configs``
+
+        PATCH so the lifecycle layer can populate ``Database.schema_info``
+
+        without a fresh round-trip.'

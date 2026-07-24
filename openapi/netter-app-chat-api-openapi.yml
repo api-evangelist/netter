@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions app-chat API
+  version: 0.1.0
+tags:
+- name: app-chat
+paths:
+  /api/v1/app-chat/{chat_id}/message:
+    post:
+      tags:
+      - app-chat
+      summary: Send App Chat Message
+      description: Send a message to an app-specific chat for targeted edits.
+      operationId: send_app_chat_message_api_v1_app_chat__chat_id__message_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AppChatRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Send App Chat Message Api V1 App Chat  Chat Id  Message Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AppChatRequest:
+      properties:
+        content:
+          type: string
+          title: Content
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Attachments
+          default: []
+      type: object
+      required:
+      - content
+      title: AppChatRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

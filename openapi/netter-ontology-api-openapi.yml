@@ -1,0 +1,646 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions ontology API
+  version: 0.1.0
+tags:
+- name: ontology
+paths:
+  /api/v1/ontology/databases:
+    get:
+      tags:
+      - ontology
+      summary: List Ontology Databases
+      description: List all shared databases in the company (the ontology), plus user's own non-shared ones.
+      operationId: list_ontology_databases_api_v1_ontology_databases_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/OntologyDatabaseRead'
+                type: array
+                title: Response List Ontology Databases Api V1 Ontology Databases Get
+  /api/v1/ontology/databases/{database_id}/cascade:
+    get:
+      tags:
+      - ontology
+      summary: Get Database Cascade Dependencies
+      description: List all steps that will be triggered when this database refreshes.
+      operationId: get_database_cascade_dependencies_api_v1_ontology_databases__database_id__cascade_get
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CascadeDependency'
+                title: Response Get Database Cascade Dependencies Api V1 Ontology Databases  Database Id  Cascade Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/databases/{database_id}:
+    delete:
+      tags:
+      - ontology
+      summary: Delete Ontology Database
+      description: Delete a database if it is not used by any active steps.
+      operationId: delete_ontology_database_api_v1_ontology_databases__database_id__delete
+      parameters:
+      - name: database_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Database Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/graph:
+    get:
+      tags:
+      - ontology
+      summary: Get Ontology Graph
+      description: Return the company-wide dataset dependency graph (nodes + edges).
+      operationId: get_ontology_graph_api_v1_ontology_graph_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OntologyGraphRead'
+  /api/v1/ontology/cascade-mutes:
+    post:
+      tags:
+      - ontology
+      summary: Create Cascade Mute
+      description: Mute the auto-cascade for one (source, target, project) edge.
+      operationId: create_cascade_mute_api_v1_ontology_cascade_mutes_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CascadeEdgeMuteCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CascadeEdgeMuteRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/cascade-mutes/{mute_id}:
+    delete:
+      tags:
+      - ontology
+      summary: Delete Cascade Mute
+      description: Resume cascade — hard-delete the mute row.
+      operationId: delete_cascade_mute_api_v1_ontology_cascade_mutes__mute_id__delete
+      parameters:
+      - name: mute_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Mute Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    UsedByProject:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - project_id
+      - project_name
+      title: UsedByProject
+    OntologyGraphRead:
+      properties:
+        nodes:
+          items:
+            $ref: '#/components/schemas/OntologyGraphNode'
+          type: array
+          title: Nodes
+        edges:
+          items:
+            $ref: '#/components/schemas/OntologyGraphEdge'
+          type: array
+          title: Edges
+      type: object
+      required:
+      - nodes
+      - edges
+      title: OntologyGraphRead
+    OntologyGraphEdge:
+      properties:
+        source_database_id:
+          type: string
+          format: uuid
+          title: Source Database Id
+        target_database_id:
+          type: string
+          format: uuid
+          title: Target Database Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+        is_muted:
+          type: boolean
+          title: Is Muted
+        mute_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Mute Id
+        muted_by_user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Muted By User Id
+        muted_by_user_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Muted By User Name
+        muted_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Muted At
+        mute_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Mute Reason
+      type: object
+      required:
+      - source_database_id
+      - target_database_id
+      - project_id
+      - project_name
+      - is_muted
+      - mute_id
+      - muted_by_user_id
+      - muted_by_user_name
+      - muted_at
+      - mute_reason
+      title: OntologyGraphEdge
+    CascadeDependency:
+      properties:
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        step_title:
+          type: string
+          title: Step Title
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - step_id
+      - step_title
+      - project_id
+      - project_name
+      title: CascadeDependency
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CascadeEdgeMuteRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        source_database_id:
+          type: string
+          format: uuid
+          title: Source Database Id
+        target_database_id:
+          type: string
+          format: uuid
+          title: Target Database Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        muted_by_user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Muted By User Id
+        muted_at:
+          type: string
+          format: date-time
+          title: Muted At
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - id
+      - source_database_id
+      - target_database_id
+      - project_id
+      - muted_by_user_id
+      - muted_at
+      title: CascadeEdgeMuteRead
+    CascadeEdgeMuteCreate:
+      properties:
+        source_database_id:
+          type: string
+          format: uuid
+          title: Source Database Id
+        target_database_id:
+          type: string
+          format: uuid
+          title: Target Database Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - source_database_id
+      - target_database_id
+      - project_id
+      title: CascadeEdgeMuteCreate
+    OntologyGraphNode:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        table_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table Name
+        is_shared:
+          type: boolean
+          title: Is Shared
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+        source_provider_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Provider Slug
+        source_provider_display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Provider Display Name
+        source_provider_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Provider Domain
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
+        folder_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Folder Name
+        row_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Row Count
+        last_refreshed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Refreshed At
+        refresh_status:
+          type: string
+          title: Refresh Status
+        refresh_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Error
+        is_outdated:
+          type: boolean
+          title: Is Outdated
+          default: false
+        outdated_by_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Outdated By Id
+        trigger_types:
+          items:
+            type: string
+          type: array
+          title: Trigger Types
+        database_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Database Step Id
+      type: object
+      required:
+      - id
+      - name
+      - table_name
+      - is_shared
+      - project_id
+      - project_name
+      - source_provider_slug
+      - source_provider_display_name
+      - source_provider_domain
+      - row_count
+      - last_refreshed_at
+      - refresh_status
+      - trigger_types
+      - database_step_id
+      title: OntologyGraphNode
+    OntologyDatabaseRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        integration_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Integration Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        table_name:
+          type: string
+          title: Table Name
+        storage_path:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Storage Path
+        schema_info:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Schema Info
+        key_columns:
+          items:
+            type: string
+          type: array
+          title: Key Columns
+          default: []
+        source_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Step Id
+        source_user_file_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source User File Id
+        source_sheet_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Sheet Name
+        is_shared:
+          type: boolean
+          title: Is Shared
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        refresh_status:
+          type: string
+          title: Refresh Status
+        refresh_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Refresh Error
+        last_refreshed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Refreshed At
+        name_is_user_overridden:
+          type: boolean
+          title: Name Is User Overridden
+          default: false
+        row_count:
+          type: integer
+          title: Row Count
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        doc_status:
+          type: string
+          title: Doc Status
+          default: idle
+        doc_status_updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Doc Status Updated At
+        doc_last_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Doc Last Error
+        source_project_name:
+          type: string
+          title: Source Project Name
+          default: ''
+        source_provider_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Provider Slug
+        source_provider_display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Provider Display Name
+        source_provider_domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Source Provider Domain
+        used_by_projects:
+          items:
+            $ref: '#/components/schemas/UsedByProject'
+          type: array
+          title: Used By Projects
+          default: []
+        cascade_dependencies:
+          items:
+            $ref: '#/components/schemas/CascadeDependency'
+          type: array
+          title: Cascade Dependencies
+          default: []
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - description
+      - table_name
+      - storage_path
+      - schema_info
+      - is_shared
+      - is_suppressed
+      - refresh_status
+      - last_refreshed_at
+      - row_count
+      - size_bytes
+      - created_at
+      - updated_at
+      title: OntologyDatabaseRead
+      description: 'Database with extra ontology context: source project name, usage, and cascade deps.'

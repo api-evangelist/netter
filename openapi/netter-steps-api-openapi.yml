@@ -1,0 +1,1805 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions steps API
+  version: 0.1.0
+tags:
+- name: steps
+paths:
+  /api/v1/steps/:
+    get:
+      tags:
+      - steps
+      summary: List Steps
+      description: List steps, optionally filtered by project.
+      operationId: list_steps_api_v1_steps__get
+      parameters:
+      - name: project_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StepRead'
+                title: Response List Steps Api V1 Steps  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - steps
+      summary: Create Step
+      operationId: create_step_api_v1_steps__post
+      parameters:
+      - name: project_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}:
+    get:
+      tags:
+      - steps
+      summary: Get Step
+      operationId: get_step_api_v1_steps__step_id__get
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - steps
+      summary: Update Step
+      operationId: update_step_api_v1_steps__step_id__patch
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - steps
+      summary: Delete Step
+      operationId: delete_step_api_v1_steps__step_id__delete
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/code:
+    get:
+      tags:
+      - steps
+      summary: Get Step Code
+      description: Serve step code from S3.
+      operationId: get_step_code_api_v1_steps__step_id__code_get
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Step Code Api V1 Steps  Step Id  Code Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - steps
+      summary: Update Step Code
+      description: Verbatim-save a custom_code step's Python source to S3.
+      operationId: update_step_code_api_v1_steps__step_id__code_put
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepCodeUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Update Step Code Api V1 Steps  Step Id  Code Put
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/suppress:
+    post:
+      tags:
+      - steps
+      summary: Suppress Step
+      description: Soft-delete a step. Deactivates its trigger if any.
+      operationId: suppress_step_api_v1_steps__step_id__suppress_post
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/project/{project_id}/batch:
+    put:
+      tags:
+      - steps
+      summary: Batch Replace Steps
+      description: Replace all steps in a project (deploy-time).
+      operationId: batch_replace_steps_api_v1_steps_project__project_id__batch_put
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepBatchReplace'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StepRead'
+                title: Response Batch Replace Steps Api V1 Steps Project  Project Id  Batch Put
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/project/{project_id}/validate:
+    post:
+      tags:
+      - steps
+      summary: Validate Project Dag
+      description: Validate the current step DAG for a project.
+      operationId: validate_project_dag_api_v1_steps_project__project_id__validate_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Validate Project Dag Api V1 Steps Project  Project Id  Validate Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/swap-candidates:
+    get:
+      tags:
+      - steps
+      summary: Get Swap Candidates
+      operationId: get_swap_candidates_api_v1_steps__step_id__swap_candidates_get
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwapCandidateList'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/swap-input:
+    post:
+      tags:
+      - steps
+      summary: Post Swap Input
+      operationId: post_swap_input_api_v1_steps__step_id__swap_input_post
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SwapInputRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SwapInputResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/trigger:
+    post:
+      tags:
+      - steps
+      summary: Create Trigger
+      operationId: create_trigger_api_v1_steps__step_id__trigger_post
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - steps
+      summary: Update Trigger
+      operationId: update_trigger_api_v1_steps__step_id__trigger_patch
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TriggerUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TriggerRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - steps
+      summary: Delete Trigger
+      operationId: delete_trigger_api_v1_steps__step_id__trigger_delete
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/project/{project_id}/run:
+    post:
+      tags:
+      - steps
+      summary: Trigger Run
+      description: "Trigger a new run for a project.\n\n- root_step_id=None → run all active steps (Run All).\n- root_step_id=<id> → refresh that output: runs its ancestor closure back to roots.\n  The target must be a ``database`` step."
+      operationId: trigger_run_api_v1_steps_project__project_id__run_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RunCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__steps__schemas__RunRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/project/{project_id}/runs:
+    get:
+      tags:
+      - steps
+      summary: List Runs
+      description: List recent runs for a project.
+      operationId: list_runs_api_v1_steps_project__project_id__runs_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app__steps__schemas__RunRead'
+                title: Response List Runs Api V1 Steps Project  Project Id  Runs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/run/{run_id}:
+    get:
+      tags:
+      - steps
+      summary: Get Run
+      description: 'Get run details including step runs.
+
+
+        ``auth`` is declared to enforce authentication via FastAPI''s dependency
+
+        system; the project-perm check is resolved against the run''s own company
+
+        so multi-company users polling a run (e.g. dashboard InputForm) are not
+
+        404''d when their selected ``X-Company-ID`` differs from ``run.company_id``.'
+      operationId: get_run_api_v1_steps_run__run_id__get
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/app__steps__schemas__RunRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/run/{run_id}/cancel:
+    post:
+      tags:
+      - steps
+      summary: Cancel Run
+      description: Cancel a running DAG execution.
+      operationId: cancel_run_api_v1_steps_run__run_id__cancel_post
+      parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Cancel Run Api V1 Steps Run  Run Id  Cancel Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/steps/{step_id}/auto-fix:
+    post:
+      tags:
+      - steps
+      summary: Auto Fix Step
+      description: 'Dispatch an auto-fix job for a failed step.
+
+
+        Finds the most recent failed StepRun and sends error context to the agent
+
+        for automatic code repair.'
+      operationId: auto_fix_step_api_v1_steps__step_id__auto_fix_post
+      parameters:
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Step Id
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/changes:
+    get:
+      tags:
+      - steps
+      summary: List Changes
+      operationId: list_changes_api_v1_projects__project_id__changes_get
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      - name: since
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Since
+      - name: until
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Until
+      - name: actor_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Actor Type
+      - name: action
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action
+      - name: include_orphans
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Orphans
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          default: 200
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangesListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/projects/{project_id}/changes/goto:
+    post:
+      tags:
+      - steps
+      summary: Goto Change
+      description: 'Move the project''s timeline head to ``body.event_id``.
+
+
+        Browser-style: replays events forward or applies inverses backward
+
+        until the live DAG matches the state at the target event. No new
+
+        events are emitted. Subsequent edits truncate any ''future'' events
+
+        relative to the new head. ``event_id=None`` rewinds to the initial
+
+        state (pre-log).'
+      operationId: goto_change_api_v1_projects__project_id__changes_goto_post
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Project Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GotoRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  anyOf:
+                  - type: string
+                  - type: 'null'
+                title: Response Goto Change Api V1 Projects  Project Id  Changes Goto Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CodeType:
+      type: string
+      enum:
+      - python
+      - sql
+      title: CodeType
+      description: Runtime language for the step code.
+    StepBatchReplace:
+      properties:
+        steps:
+          items:
+            $ref: '#/components/schemas/StepBatchItem'
+          type: array
+          title: Steps
+      type: object
+      required:
+      - steps
+      title: StepBatchReplace
+      description: Replace all steps in a project (used at deploy time).
+    TriggerRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        trigger_type:
+          $ref: '#/components/schemas/TriggerType'
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+        is_active:
+          type: boolean
+          title: Is Active
+        last_triggered_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Triggered At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - step_id
+      - trigger_type
+      - trigger_config
+      - is_active
+      - last_triggered_at
+      - created_at
+      title: TriggerRead
+      description: Trigger response.
+    TriggerType:
+      type: string
+      enum:
+      - on_click
+      - schedule
+      title: TriggerType
+      description: 'How a root step can be triggered.
+
+
+        EVENT (polling) was deprecated in commit c523d2be (2026-05-02) and
+
+        deleted entirely in Phase 5: cross-dataset reactive updates use the
+
+        cascade model (database_dep) instead. ON_CLICK is implicit (every
+
+        dataset can be refreshed manually via the UI, no row needed) and is
+
+        only kept here for the rejection branch in CreateTrigger.'
+    Severity:
+      type: string
+      enum:
+      - compatible
+      - partial
+      - risky
+      - no_match
+      title: Severity
+    TriggerCreate:
+      properties:
+        trigger_type:
+          $ref: '#/components/schemas/TriggerType'
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+          default: {}
+      type: object
+      required:
+      - trigger_type
+      title: TriggerCreate
+      description: Attach a trigger to a root step.
+    StepRunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        logs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logs
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Processed
+        output_row_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Row Count
+        rows_new:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows New
+        rows_changed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Changed
+        rows_removed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Removed
+        ai_rows_cached:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Cached
+        ai_rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Processed
+      type: object
+      required:
+      - id
+      - run_id
+      - step_id
+      - status
+      - error
+      - logs
+      - started_at
+      - finished_at
+      title: StepRunRead
+      description: StepRun response.
+    StepUpdate:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        step_type:
+          anyOf:
+          - $ref: '#/components/schemas/StepType'
+          - type: 'null'
+        code_type:
+          anyOf:
+          - $ref: '#/components/schemas/CodeType'
+          - type: 'null'
+        sink_target:
+          anyOf:
+          - $ref: '#/components/schemas/SinkTarget'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        parent_step_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Parent Step Ids
+        in_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: In Format
+        out_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Out Format
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+        input_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Input Schema
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+      type: object
+      title: StepUpdate
+      description: Patch a step (all fields optional).
+    SwapColumnDiff:
+      properties:
+        matching:
+          items:
+            type: string
+          type: array
+          title: Matching
+        missing_in_candidate:
+          items:
+            type: string
+          type: array
+          title: Missing In Candidate
+        extra_in_candidate:
+          items:
+            type: string
+          type: array
+          title: Extra In Candidate
+        retyped:
+          items:
+            $ref: '#/components/schemas/SwapRetyped'
+          type: array
+          title: Retyped
+      type: object
+      required:
+      - matching
+      - missing_in_candidate
+      - extra_in_candidate
+      - retyped
+      title: SwapColumnDiff
+    RunCreate:
+      properties:
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        force_full:
+          type: boolean
+          title: Force Full
+          default: false
+      type: object
+      title: RunCreate
+      description: 'Trigger a new run.
+
+
+        ``root_step_id`` is the target output (a database step).
+
+        Null ``root_step_id`` means Run All — run every active step in the project.
+
+
+        ``force_full`` bypasses the AI Lambda''s content-addressed cache / the
+
+        custom Lambda''s api_action ledger for this run only — used for manual
+
+        replays after schema changes or bug fixes. Cascade-created runs leave
+
+        this False (see spec §7d — force_full does not propagate through
+
+        cascade).'
+    StepCodeUpdate:
+      properties:
+        code:
+          type: string
+          title: Code
+      type: object
+      required:
+      - code
+      title: StepCodeUpdate
+      description: Verbatim replacement of a custom_code step's Python source.
+    TriggerUpdate:
+      properties:
+        trigger_type:
+          anyOf:
+          - $ref: '#/components/schemas/TriggerType'
+          - type: 'null'
+        trigger_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Trigger Config
+      type: object
+      title: TriggerUpdate
+      description: Patch a trigger.
+    SwapCandidate:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          enum:
+          - database
+          - user_file
+          title: Type
+        owner_project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Owner Project Id
+        owner_project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Project Name
+        is_shared:
+          type: boolean
+          title: Is Shared
+        similarity_score:
+          type: number
+          title: Similarity Score
+        severity:
+          $ref: '#/components/schemas/Severity'
+        diff:
+          $ref: '#/components/schemas/SwapColumnDiff'
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - owner_project_id
+      - owner_project_name
+      - is_shared
+      - similarity_score
+      - severity
+      - diff
+      title: SwapCandidate
+    StepCreate:
+      properties:
+        slug:
+          type: string
+          title: Slug
+        title:
+          type: string
+          title: Title
+          default: ''
+        description:
+          type: string
+          title: Description
+          default: ''
+        step_type:
+          $ref: '#/components/schemas/StepType'
+        code_type:
+          $ref: '#/components/schemas/CodeType'
+          default: python
+        sink_target:
+          anyOf:
+          - $ref: '#/components/schemas/SinkTarget'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        parent_step_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Parent Step Ids
+          default: []
+        in_format:
+          type: string
+          title: In Format
+          default: ''
+        out_format:
+          type: string
+          title: Out Format
+          default: ''
+        input_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Input Schema
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+      type: object
+      required:
+      - slug
+      - step_type
+      title: StepCreate
+      description: Create a new step in a project DAG.
+    StepBatchItem:
+      properties:
+        slug:
+          type: string
+          title: Slug
+        title:
+          type: string
+          title: Title
+          default: ''
+        description:
+          type: string
+          title: Description
+          default: ''
+        step_type:
+          $ref: '#/components/schemas/StepType'
+        code_type:
+          $ref: '#/components/schemas/CodeType'
+          default: python
+        sink_target:
+          anyOf:
+          - $ref: '#/components/schemas/SinkTarget'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        parent_slugs:
+          items:
+            type: string
+          type: array
+          title: Parent Slugs
+          default: []
+        in_format:
+          type: string
+          title: In Format
+          default: ''
+        out_format:
+          type: string
+          title: Out Format
+          default: ''
+        code_url:
+          type: string
+          title: Code Url
+          default: ''
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Referenced Database Ids
+          default: []
+        input_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Input Schema
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+      type: object
+      required:
+      - slug
+      - step_type
+      title: StepBatchItem
+      description: One step in a batch replace.
+    SwapCurrentSource:
+      properties:
+        id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Id
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          enum:
+          - database
+          - user_file
+          title: Type
+        columns:
+          items:
+            $ref: '#/components/schemas/SwapColumn'
+          type: array
+          title: Columns
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - columns
+      title: SwapCurrentSource
+    ChangesListResponse:
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/DAGChangeEventRead'
+          type: array
+          title: Events
+        head_event_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Head Event Id
+      type: object
+      required:
+      - events
+      title: ChangesListResponse
+    SwapInputResponse:
+      properties:
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        status:
+          type: string
+          enum:
+          - ok
+          - no_op
+          title: Status
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - step_id
+      - status
+      - message
+      title: SwapInputResponse
+    app__steps__schemas__RunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+        trigger_source:
+          type: string
+          title: Trigger Source
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        temporal_workflow_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temporal Workflow Id
+        force_full:
+          type: boolean
+          title: Force Full
+          default: false
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        step_runs:
+          items:
+            $ref: '#/components/schemas/StepRunRead'
+          type: array
+          title: Step Runs
+          default: []
+      type: object
+      required:
+      - id
+      - project_id
+      - company_id
+      - user_id
+      - root_step_id
+      - status
+      - error
+      - error_summary
+      - trigger_source
+      - temporal_workflow_id
+      - started_at
+      - finished_at
+      title: RunRead
+      description: Run response.
+    DAGChangeEventRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+        actor_type:
+          type: string
+          title: Actor Type
+        actor_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Actor Id
+        action:
+          type: string
+          title: Action
+        target_type:
+          type: string
+          title: Target Type
+        target_id:
+          type: string
+          format: uuid
+          title: Target Id
+        target_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Target Slug
+        summary:
+          type: string
+          title: Summary
+        params:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Params
+        before:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Before
+        after:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: After
+        revert_target:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Revert Target
+      type: object
+      required:
+      - id
+      - project_id
+      - occurred_at
+      - actor_type
+      - actor_id
+      - action
+      - target_type
+      - target_id
+      - target_slug
+      - summary
+      - params
+      - before
+      - after
+      title: DAGChangeEventRead
+    GotoRequest:
+      properties:
+        event_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Event Id
+      type: object
+      title: GotoRequest
+      description: 'Body for ``POST /{project_id}/changes/goto`` — browser-style timeline navigation.
+
+
+        ``event_id=None`` rewinds to the initial state (before any recorded events).'
+    SwapInputRequest:
+      properties:
+        target_id:
+          type: string
+          format: uuid
+          title: Target Id
+      type: object
+      required:
+      - target_id
+      title: SwapInputRequest
+    StepRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        slug:
+          type: string
+          title: Slug
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        step_type:
+          $ref: '#/components/schemas/StepType'
+        code_type:
+          $ref: '#/components/schemas/CodeType'
+        sink_target:
+          anyOf:
+          - $ref: '#/components/schemas/SinkTarget'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        parent_step_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Parent Step Ids
+        order:
+          type: integer
+          title: Order
+        code_url:
+          type: string
+          title: Code Url
+        in_format:
+          type: string
+          title: In Format
+        out_format:
+          type: string
+          title: Out Format
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Referenced Database Ids
+        input_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Input Schema
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+        extra_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Metadata
+        entity_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Entity Id
+        status:
+          type: string
+          title: Status
+          default: active
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+        trigger:
+          anyOf:
+          - $ref: '#/components/schemas/TriggerRead'
+          - type: 'null'
+      type: object
+      required:
+      - id
+      - project_id
+      - company_id
+      - user_id
+      - slug
+      - title
+      - description
+      - step_type
+      - code_type
+      - sink_target
+      - provider_id
+      - parent_step_ids
+      - order
+      - code_url
+      - in_format
+      - out_format
+      - referenced_database_ids
+      - input_schema
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: StepRead
+      description: Step response.
+    SwapRetyped:
+      properties:
+        name:
+          type: string
+          title: Name
+        current_type:
+          type: string
+          title: Current Type
+        candidate_type:
+          type: string
+          title: Candidate Type
+      type: object
+      required:
+      - name
+      - current_type
+      - candidate_type
+      title: SwapRetyped
+    SinkTarget:
+      type: string
+      enum:
+      - database
+      title: SinkTarget
+      description: Where a data_sink step writes its output.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    StepType:
+      type: string
+      enum:
+      - source
+      - data_read
+      - process
+      - data_sink
+      - database
+      - dashboard
+      title: StepType
+      description: The role a step plays in the project DAG.
+    SwapColumn:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          title: Type
+          default: ''
+      type: object
+      required:
+      - name
+      title: SwapColumn
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    SwapCandidateList:
+      properties:
+        current_source:
+          $ref: '#/components/schemas/SwapCurrentSource'
+        candidates:
+          items:
+            $ref: '#/components/schemas/SwapCandidate'
+          type: array
+          title: Candidates
+      type: object
+      required:
+      - current_source
+      - candidates
+      title: SwapCandidateList

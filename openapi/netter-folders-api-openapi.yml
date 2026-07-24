@@ -1,0 +1,265 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions folders API
+  version: 0.1.0
+tags:
+- name: folders
+paths:
+  /api/v1/folders/:
+    get:
+      tags:
+      - folders
+      summary: List Folders
+      description: 'List all folders for the current company (flat list, clients build tree from parent_folder_id).
+
+
+        Non-owners see only folders they have at least VIEWER access to.'
+      operationId: list_folders_api_v1_folders__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/FolderRead'
+                type: array
+                title: Response List Folders Api V1 Folders  Get
+    post:
+      tags:
+      - folders
+      summary: Create Folder
+      description: Create a new folder (optionally nested under a parent).
+      operationId: create_folder_api_v1_folders__post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/folders/{folder_id}:
+    patch:
+      tags:
+      - folders
+      summary: Update Folder
+      description: Rename a folder.
+      operationId: update_folder_api_v1_folders__folder_id__patch
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - folders
+      summary: Delete Folder
+      description: 'Delete a folder.
+
+
+        Child folders and projects are promoted to the deleted folder''s parent
+
+        (or root if the deleted folder had no parent). Nothing is ever deleted
+
+        as a side-effect.'
+      operationId: delete_folder_api_v1_folders__folder_id__delete
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/folders/{folder_id}/move:
+    patch:
+      tags:
+      - folders
+      summary: Move Folder
+      description: 'Move a folder to a new parent (or to root if parent_folder_id is null).
+
+
+        Returns 409 if the move would create a circular reference.'
+      operationId: move_folder_api_v1_folders__folder_id__move_patch
+      parameters:
+      - name: folder_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Folder Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FolderMove'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FolderRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    FolderUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: FolderUpdate
+    FolderCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
+      type: object
+      required:
+      - name
+      title: FolderCreate
+    FolderRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - parent_folder_id
+      - created_at
+      - updated_at
+      title: FolderRead
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FolderMove:
+      properties:
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
+      type: object
+      title: FolderMove

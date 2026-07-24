@@ -1,0 +1,912 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions API
+  version: 0.1.0
+tags:
+- name: actions
+paths:
+  /api/v1/actions/{action_type}/invoke:
+    post:
+      tags:
+      - actions
+      summary: Invoke Action
+      operationId: invoke_action_api_v1_actions__action_type__invoke_post
+      parameters:
+      - name: action_type
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Action Type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+              title: Body
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/actions:
+    post:
+      tags:
+      - actions
+      summary: Create Action
+      operationId: create_action_api_v1_actions_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                  format: uuid
+                title: Response Create Action Api V1 Actions Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - actions
+      summary: List Actions
+      operationId: list_actions_api_v1_actions_get
+      parameters:
+      - name: entity_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Entity Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionSummary'
+                title: Response List Actions Api V1 Actions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/actions/runnable:
+    get:
+      tags:
+      - actions
+      summary: List Runnable
+      operationId: list_runnable_api_v1_actions_runnable_get
+      parameters:
+      - name: entity_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/RunnableActionRead'
+                title: Response List Runnable Api V1 Actions Runnable Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/actions/invocations:
+    get:
+      tags:
+      - actions
+      summary: List Invocations
+      operationId: list_invocations_api_v1_actions_invocations_get
+      parameters:
+      - name: entity_id
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 200
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InvocationListResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/actions/{action_id}/invoke:
+    post:
+      tags:
+      - actions
+      summary: Invoke Action Endpoint
+      operationId: invoke_action_endpoint_api_v1_actions__action_id__invoke_post
+      parameters:
+      - name: action_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Action Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionInvokeRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/actions/{action_id}:
+    get:
+      tags:
+      - actions
+      summary: Get Action
+      operationId: get_action_api_v1_actions__action_id__get
+      parameters:
+      - name: action_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Action Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - actions
+      summary: Update Action
+      operationId: update_action_api_v1_actions__action_id__patch
+      parameters:
+      - name: action_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Action Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActionUpdate'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/actions/{action_id}/archive:
+    post:
+      tags:
+      - actions
+      summary: Archive Action
+      operationId: archive_action_api_v1_actions__action_id__archive_post
+      parameters:
+      - name: action_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Action Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    EffectSummary:
+      properties:
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        is_anchor:
+          type: boolean
+          title: Is Anchor
+      type: object
+      required:
+      - entity_id
+      - kind
+      - is_anchor
+      title: EffectSummary
+      description: 'Per-effect descriptor for the company-scoped Actions panel: enough to
+
+        render the entity chip + kind badge for every effect without a follow-up
+
+        fetch. The frontend resolves ``entity_id`` to a display name from the
+
+        ontology entity list it already loads.'
+    ActionStatus:
+      type: string
+      enum:
+      - draft
+      - active
+      - archived
+      title: ActionStatus
+    ActionSummary:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        status:
+          $ref: '#/components/schemas/ActionStatus'
+        is_default_edit:
+          type: boolean
+          title: Is Default Edit
+        effects:
+          items:
+            $ref: '#/components/schemas/EffectSummary'
+          type: array
+          title: Effects
+      type: object
+      required:
+      - id
+      - name
+      - display_name
+      - description
+      - kind
+      - status
+      - is_default_edit
+      - effects
+      title: ActionSummary
+    PrincipalKind:
+      type: string
+      enum:
+      - role
+      - user
+      title: PrincipalKind
+      description: What an action_grant points at.
+    ActionKind:
+      type: string
+      enum:
+      - create
+      - modify
+      - delete
+      title: ActionKind
+      description: Which ontology row operation an Action drives.
+    ActionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        status:
+          $ref: '#/components/schemas/ActionStatus'
+        is_default_edit:
+          type: boolean
+          title: Is Default Edit
+        parameters:
+          items:
+            $ref: '#/components/schemas/ParameterRead'
+          type: array
+          title: Parameters
+        effects:
+          items:
+            $ref: '#/components/schemas/EffectRead'
+          type: array
+          title: Effects
+        grants:
+          items:
+            $ref: '#/components/schemas/GrantRead'
+          type: array
+          title: Grants
+      type: object
+      required:
+      - id
+      - name
+      - display_name
+      - description
+      - status
+      - is_default_edit
+      - parameters
+      - effects
+      - grants
+      title: ActionRead
+    GuardIn:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        op:
+          type: string
+          title: Op
+        value:
+          title: Value
+      type: object
+      required:
+      - column_name
+      - op
+      - value
+      title: GuardIn
+    InvocationResult:
+      type: string
+      enum:
+      - ok
+      - denied_who
+      - denied_inactive
+      - denied_guard
+      - denied_value
+      - denied_field_rules
+      - denied_rls
+      - error
+      title: InvocationResult
+    SourceKind:
+      type: string
+      enum:
+      - const
+      - param
+      title: SourceKind
+      description: Where a field-write's value comes from.
+    GrantIn:
+      properties:
+        principal_kind:
+          $ref: '#/components/schemas/PrincipalKind'
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      type: object
+      required:
+      - principal_kind
+      title: GrantIn
+    ActionCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+          default: ''
+        parameters:
+          items:
+            $ref: '#/components/schemas/ParameterIn'
+          type: array
+          title: Parameters
+          default: []
+        grants:
+          items:
+            $ref: '#/components/schemas/GrantIn'
+          type: array
+          title: Grants
+          default: []
+        effects:
+          items:
+            $ref: '#/components/schemas/EffectIn'
+          type: array
+          title: Effects
+          default: []
+      type: object
+      required:
+      - name
+      - display_name
+      title: ActionCreate
+    ParameterIn:
+      properties:
+        name:
+          type: string
+          title: Name
+        data_type:
+          type: string
+          title: Data Type
+          default: String
+        required:
+          type: boolean
+          title: Required
+          default: false
+        validation:
+          additionalProperties: true
+          type: object
+          title: Validation
+          default: {}
+        order:
+          type: integer
+          title: Order
+          default: 0
+      type: object
+      required:
+      - name
+      title: ParameterIn
+    ActionInvokeRequest:
+      properties:
+        row_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Row Key
+        params:
+          additionalProperties: true
+          type: object
+          title: Params
+      type: object
+      title: ActionInvokeRequest
+    EffectRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        is_anchor:
+          type: boolean
+          title: Is Anchor
+        relationship_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Relationship Id
+        field_writes:
+          items:
+            $ref: '#/components/schemas/FieldWriteRead'
+          type: array
+          title: Field Writes
+        guards:
+          items:
+            $ref: '#/components/schemas/GuardRead'
+          type: array
+          title: Guards
+      type: object
+      required:
+      - id
+      - entity_id
+      - kind
+      - is_anchor
+      - relationship_id
+      - field_writes
+      - guards
+      title: EffectRead
+    InvocationRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        action_id:
+          type: string
+          format: uuid
+          title: Action Id
+        action_display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action Display Name
+        action_kind:
+          anyOf:
+          - $ref: '#/components/schemas/ActionKind'
+          - type: 'null'
+        row_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Row Key
+        source:
+          $ref: '#/components/schemas/InvocationSource'
+        source_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Id
+        result:
+          $ref: '#/components/schemas/InvocationResult'
+        error_detail:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Detail
+        invoked_by:
+          type: string
+          format: uuid
+          title: Invoked By
+        invoked_at:
+          type: string
+          format: date-time
+          title: Invoked At
+        params:
+          additionalProperties: true
+          type: object
+          title: Params
+      type: object
+      required:
+      - id
+      - action_id
+      - source
+      - result
+      - invoked_by
+      - invoked_at
+      title: InvocationRead
+      description: 'One audit-trail row for the per-entity History timeline. Includes the
+
+        invoking Action''s display fields; ``invoked_by`` is a profile UUID that the
+
+        frontend maps to an email via the company members directory.'
+    InvocationListResponse:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/InvocationRead'
+          type: array
+          title: Items
+        hit_limit:
+          type: boolean
+          title: Hit Limit
+      type: object
+      required:
+      - items
+      - hit_limit
+      title: InvocationListResponse
+    GrantRead:
+      properties:
+        principal_kind:
+          $ref: '#/components/schemas/PrincipalKind'
+        role:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Role
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+      type: object
+      required:
+      - principal_kind
+      title: GrantRead
+    FieldWriteIn:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        source_kind:
+          $ref: '#/components/schemas/SourceKind'
+        const_value:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Const Value
+        param_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param Name
+      type: object
+      required:
+      - column_name
+      - source_kind
+      title: FieldWriteIn
+    RunnableActionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        display_name:
+          type: string
+          title: Display Name
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        parameters:
+          items:
+            $ref: '#/components/schemas/ParameterRead'
+          type: array
+          title: Parameters
+      type: object
+      required:
+      - id
+      - display_name
+      - kind
+      - parameters
+      title: RunnableActionRead
+    EffectIn:
+      properties:
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        kind:
+          $ref: '#/components/schemas/ActionKind'
+        is_anchor:
+          type: boolean
+          title: Is Anchor
+          default: false
+        relationship_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Relationship Id
+        field_writes:
+          items:
+            $ref: '#/components/schemas/FieldWriteIn'
+          type: array
+          title: Field Writes
+          default: []
+        guards:
+          items:
+            $ref: '#/components/schemas/GuardIn'
+          type: array
+          title: Guards
+          default: []
+      type: object
+      required:
+      - entity_id
+      - kind
+      title: EffectIn
+      description: 'One effect within an ActionCreate payload.
+
+
+        Exactly one effect must have ``is_anchor=True``.  The anchor has
+
+        ``relationship_id=None``; every secondary effect must supply a
+
+        ``relationship_id`` pointing to the ontology relationship that links it to
+
+        another effect in the same definition.'
+    InvocationSource:
+      type: string
+      enum:
+      - app
+      - automation
+      - ontology_page
+      - runner
+      - chat
+      title: InvocationSource
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FieldWriteRead:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        source_kind:
+          $ref: '#/components/schemas/SourceKind'
+        const_value:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Const Value
+        param_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Param Name
+      type: object
+      required:
+      - column_name
+      - source_kind
+      title: FieldWriteRead
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ActionUpdate:
+      properties:
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        status:
+          anyOf:
+          - $ref: '#/components/schemas/ActionStatus'
+          - type: 'null'
+        parameters:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/ParameterIn'
+            type: array
+          - type: 'null'
+          title: Parameters
+        effects:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/EffectIn'
+            type: array
+          - type: 'null'
+          title: Effects
+        grants:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GrantIn'
+            type: array
+          - type: 'null'
+          title: Grants
+      type: object
+      title: ActionUpdate
+    GuardRead:
+      properties:
+        column_name:
+          type: string
+          title: Column Name
+        op:
+          type: string
+          title: Op
+        value:
+          title: Value
+      type: object
+      required:
+      - column_name
+      - op
+      - value
+      title: GuardRead
+    ParameterRead:
+      properties:
+        name:
+          type: string
+          title: Name
+        data_type:
+          type: string
+          title: Data Type
+          default: String
+        required:
+          type: boolean
+          title: Required
+          default: false
+        validation:
+          additionalProperties: true
+          type: object
+          title: Validation
+          default: {}
+        order:
+          type: integer
+          title: Order
+          default: 0
+      type: object
+      required:
+      - name
+      title: ParameterRead

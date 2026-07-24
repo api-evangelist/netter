@@ -1,0 +1,1170 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions files API
+  version: 0.1.0
+tags:
+- name: files
+paths:
+  /api/v1/files/magic-links:
+    get:
+      tags:
+      - files
+      summary: List Magic Links
+      description: List all magic links for the company (any member).
+      operationId: list_magic_links_api_v1_files_magic_links_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/MagicLinkRead'
+                type: array
+                title: Response List Magic Links Api V1 Files Magic Links Get
+    post:
+      tags:
+      - files
+      summary: Create Magic Link
+      description: Create a new magic upload link. Any company member may create one.
+      operationId: create_magic_link_api_v1_files_magic_links_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MagicLinkCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagicLinkCreated'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/magic-links/{link_id}:
+    patch:
+      tags:
+      - files
+      summary: Update Magic Link
+      description: Update label and/or expiry of a magic link (creator or company owner).
+      operationId: update_magic_link_api_v1_files_magic_links__link_id__patch
+      parameters:
+      - name: link_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Link Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MagicLinkUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagicLinkRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - files
+      summary: Delete Magic Link
+      description: Revoke (soft-delete) a magic link (creator or company owner).
+      operationId: delete_magic_link_api_v1_files_magic_links__link_id__delete
+      parameters:
+      - name: link_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Link Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/upload/{token}/meta:
+    get:
+      tags:
+      - files
+      summary: Get Magic Link Meta
+      description: Return public metadata about a magic link (label, folder prefix, expiry).
+      operationId: get_magic_link_meta_api_v1_files_upload__token__meta_get
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MagicLinkMeta'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/upload/{token}:
+    post:
+      tags:
+      - files
+      summary: Magic Upload
+      description: 'Upload a file using a magic link token. No account required.
+
+
+        The token must be valid, active, and not expired.'
+      operationId: magic_upload_api_v1_files_upload__token__post
+      parameters:
+      - name: token
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Token
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_magic_upload_api_v1_files_upload__token__post'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileUploadResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/upload:
+    post:
+      tags:
+      - files
+      summary: Upload File
+      description: "Upload a CSV, JSON, or Excel file.\n\nAccepts either a Supabase JWT or an API key (``ntr_…``) in the\n``Authorization: Bearer`` header.\n\nThe optional ``folder`` form field places the file in that folder\n(found-or-created on the fly). It takes precedence over any path prefix\nembedded in the filename. Without it, the folder is still derived from a\n``/``-separated filename prefix; no folder means the file lands at root.\n\nUsage (API key)::\n\n    curl -X POST https://api.example.com/api/v1/files/upload \\\n        -H \"Authorization: Bearer ntr_...\" \\\n        -F \"file=@data.csv\" \\\n        -F \"folder=invoices/2024\""
+      operationId: upload_file_api_v1_files_upload_post
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_file_api_v1_files_upload_post'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileUploadResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/{user_file_id}/commit:
+    post:
+      tags:
+      - files
+      summary: Commit User File
+      description: Finalize a pending upload with chosen sheets + skip-rows.
+      operationId: commit_user_file_api_v1_files__user_file_id__commit_post
+      parameters:
+      - name: user_file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User File Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileUploadResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/{user_file_id}/parse-config:
+    get:
+      tags:
+      - files
+      summary: Get Parse Config
+      description: Return analyzer output + current Database state for the cog modal.
+      operationId: get_parse_config_api_v1_files__user_file_id__parse_config_get
+      parameters:
+      - name: user_file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User File Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseConfigResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - files
+      summary: Patch Parse Config
+      description: "Diff the request against current Databases and apply add/update/remove.\n\n* Sheet in request, no current Database → create + dispatch parse.\n* Sheet in request, Database exists, ``header_row_index`` differs →\n  update + dispatch parse.\n* Sheet in request, Database exists, unchanged → no-op.\n* Sheet not in request, Database exists → soft-suppress."
+      operationId: patch_parse_config_api_v1_files__user_file_id__parse_config_patch
+      parameters:
+      - name: user_file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User File Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileUploadResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/:
+    get:
+      tags:
+      - files
+      summary: List User Files
+      description: 'List uploaded files in the company the caller can see.
+
+
+        Owners see everything; members see files they hold a (direct or
+
+        folder-inherited) VIEWER grant on.
+
+
+        ``include_pending=true`` also returns uploads stuck in
+
+        ``parse_state=''pending''`` (never finalized through the wizard) so the
+
+        files-management UI can show them with a "to finalize" badge. Defaults to
+
+        committed-only so dataset pickers reusing this endpoint are unaffected.
+
+        The accessibility filter applies to pending rows the same way.'
+      operationId: list_user_files_api_v1_files__get
+      parameters:
+      - name: include_pending
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Pending
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserFileRead'
+                title: Response List User Files Api V1 Files  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/search:
+    get:
+      tags:
+      - files
+      summary: Search Files
+      description: 'Search files and folders by name across the whole company.
+
+
+        Case-insensitive substring match on ``name``. Results are gated by the same
+
+        per-resource VIEWER ACL the list endpoints use (owners see everything).
+
+        Empty ``q`` returns empty results without touching the database — the guard
+
+        runs before the permission-graph lookups so an empty query is truly free.'
+      operationId: search_files_api_v1_files_search_get
+      parameters:
+      - name: q
+        in: query
+        required: false
+        schema:
+          type: string
+          default: ''
+          title: Q
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileSearchResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/{file_id}:
+    get:
+      tags:
+      - files
+      summary: Get User File
+      description: Get metadata for a single file.
+      operationId: get_user_file_api_v1_files__file_id__get
+      parameters:
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: File Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - files
+      summary: Delete User File
+      description: Delete a file (record + S3 object) and cascade to file-backed databases.
+      operationId: delete_user_file_api_v1_files__file_id__delete
+      parameters:
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: File Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - files
+      summary: Rename User File
+      description: Rename a file and cascade to non-user-overridden file-backed databases.
+      operationId: rename_user_file_api_v1_files__file_id__patch
+      parameters:
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: File Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserFileRename'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/{file_id}/download:
+    get:
+      tags:
+      - files
+      summary: Download User File
+      description: Download the raw file content.
+      operationId: download_user_file_api_v1_files__file_id__download_get
+      parameters:
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: File Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/files/{file_id}/move:
+    post:
+      tags:
+      - files
+      summary: Move User File Endpoint
+      description: "Move a file into a folder (or to the root if ``target_folder_id`` is None).\n\nSide effects when source/target folders are merge-enabled:\n- source-side: drop the file's slice from the source collection (parquet\n  rewrite + DatasetMember delete) so dashboards reflect the move\n  immediately.\n- target-side: re-arm the file's databases and dispatch a Temporal parse\n  so the rows land in the target collection.\n\nFilename collisions in the destination are auto-resolved with\n``foo (1).csv`` style suffixes."
+      operationId: move_user_file_endpoint_api_v1_files__file_id__move_post
+      parameters:
+      - name: file_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: File Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserFileMove'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserFileRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    FileSearchResponse:
+      properties:
+        folders:
+          items:
+            $ref: '#/components/schemas/FileFolderSearchResult'
+          type: array
+          title: Folders
+        files:
+          items:
+            $ref: '#/components/schemas/UserFileSearchResult'
+          type: array
+          title: Files
+      type: object
+      title: FileSearchResponse
+      description: Company-wide file/folder name-search results.
+    FileFolderSearchResult:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Folder Id
+        merge_enabled:
+          type: boolean
+          title: Merge Enabled
+        schema_mode:
+          type: string
+          title: Schema Mode
+        merge_database_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Database Id
+        parent_path:
+          type: string
+          title: Parent Path
+          default: ''
+      type: object
+      required:
+      - id
+      - name
+      - merge_enabled
+      - schema_mode
+      title: FileFolderSearchResult
+      description: 'A folder search hit — folder identity plus the path of its parent chain.
+
+
+        Deliberately does NOT inherit ``FileFolderRead``: ``member_count`` /
+
+        ``has_children`` are derived per-folder (extra queries) and search doesn''t
+
+        need them, so returning them here would just fabricate ``0`` / ``false``.'
+    ParseConfigSheet:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        analyzer_header_row_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Analyzer Header Row Index
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        preview_rows:
+          items:
+            items:
+              type: string
+            type: array
+          type: array
+          title: Preview Rows
+        fail_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fail Reason
+        current_database:
+          anyOf:
+          - $ref: '#/components/schemas/ParseConfigDatabase'
+          - type: 'null'
+      type: object
+      title: ParseConfigSheet
+      description: Per-sheet info for the cog modal — analyzer output + current Database.
+    MagicLinkMeta:
+      properties:
+        company_name:
+          type: string
+          title: Company Name
+        label:
+          type: string
+          title: Label
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        is_active:
+          type: boolean
+          title: Is Active
+      type: object
+      required:
+      - company_name
+      - label
+      - folder_prefix
+      - expires_at
+      - is_active
+      title: MagicLinkMeta
+      description: Public view of a magic link — no token field.
+    DatabaseStub:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        refresh_status:
+          type: string
+          title: Refresh Status
+      type: object
+      required:
+      - id
+      - name
+      - refresh_status
+      title: DatabaseStub
+      description: 'Minimal Database summary returned alongside a UserFile on upload.
+
+
+        The full Database row is filled in asynchronously by the parse workflow.
+
+        Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
+    Body_magic_upload_api_v1_files_upload__token__post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        uploader_name:
+          type: string
+          maxLength: 200
+          title: Uploader Name
+          default: ''
+      type: object
+      required:
+      - file
+      title: Body_magic_upload_api_v1_files_upload__token__post
+    MagicLinkRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        created_by:
+          type: string
+          format: uuid
+          title: Created By
+        token:
+          type: string
+          title: Token
+        label:
+          type: string
+          title: Label
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        is_active:
+          type: boolean
+          title: Is Active
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - company_id
+      - created_by
+      - token
+      - label
+      - folder_prefix
+      - expires_at
+      - is_active
+      - created_at
+      title: MagicLinkRead
+    UserFileRename:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: UserFileRename
+      description: Request payload for ``PATCH /files/{id}``.
+    UserFileSearchResult:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
+        name:
+          type: string
+          title: Name
+        file_type:
+          type: string
+          title: File Type
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        meta:
+          additionalProperties: true
+          type: object
+          title: Meta
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        parse_state:
+          type: string
+          title: Parse State
+        folder_path:
+          type: string
+          title: Folder Path
+          default: ''
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - file_type
+      - size_bytes
+      - meta
+      - created_at
+      - parse_state
+      title: UserFileSearchResult
+      description: A file search hit — a UserFileRead plus the path of its containing folder.
+    MagicLinkUpdate:
+      properties:
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        expires_in_hours:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expires In Hours
+        is_permanent:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Permanent
+      type: object
+      title: MagicLinkUpdate
+    UserFileRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
+        name:
+          type: string
+          title: Name
+        file_type:
+          type: string
+          title: File Type
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        meta:
+          additionalProperties: true
+          type: object
+          title: Meta
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        parse_state:
+          type: string
+          title: Parse State
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - file_type
+      - size_bytes
+      - meta
+      - created_at
+      - parse_state
+      title: UserFileRead
+    SheetAnalysis:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        header_row_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Header Row Index
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        preview_rows:
+          items:
+            items:
+              type: string
+            type: array
+          type: array
+          title: Preview Rows
+        fail_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fail Reason
+      type: object
+      title: SheetAnalysis
+      description: 'Per-sheet analyzer output served by the upload wizard.
+
+
+        For CSV the wizard returns exactly one entry with ``name=None``. For
+
+        xlsx/xlsm, one entry per sheet in workbook order. ``preview_rows`` holds the
+
+        first ~10 raw rows (pre-skip) so the frontend can re-render the preview
+
+        client-side as the user changes the skip-rows input.'
+    UserFileUploadResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        file_type:
+          type: string
+          title: File Type
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        replaced:
+          type: boolean
+          title: Replaced
+          default: false
+        state:
+          type: string
+          title: State
+          default: committed
+        sheets:
+          items:
+            $ref: '#/components/schemas/SheetAnalysis'
+          type: array
+          title: Sheets
+        databases:
+          items:
+            $ref: '#/components/schemas/DatabaseStub'
+          type: array
+          title: Databases
+      type: object
+      required:
+      - id
+      - name
+      - file_type
+      - size_bytes
+      - created_at
+      title: UserFileUploadResponse
+    CommitSheet:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        header_row_index:
+          type: integer
+          minimum: 0.0
+          title: Header Row Index
+          default: 0
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+      type: object
+      title: CommitSheet
+      description: One entry in the commit / patch-parse-config request body.
+    MagicLinkCreated:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        created_by:
+          type: string
+          format: uuid
+          title: Created By
+        token:
+          type: string
+          title: Token
+        label:
+          type: string
+          title: Label
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        is_active:
+          type: boolean
+          title: Is Active
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        upload_url:
+          type: string
+          title: Upload Url
+      type: object
+      required:
+      - id
+      - company_id
+      - created_by
+      - token
+      - label
+      - folder_prefix
+      - expires_at
+      - is_active
+      - created_at
+      - upload_url
+      title: MagicLinkCreated
+      description: Returned on creation — includes the full upload URL hint.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CommitRequest:
+      properties:
+        sheets:
+          items:
+            $ref: '#/components/schemas/CommitSheet'
+          type: array
+          title: Sheets
+      type: object
+      required:
+      - sheets
+      title: CommitRequest
+    ParseConfigDatabase:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        header_row_index:
+          type: integer
+          title: Header Row Index
+        refresh_status:
+          type: string
+          title: Refresh Status
+      type: object
+      required:
+      - id
+      - name
+      - header_row_index
+      - refresh_status
+      title: ParseConfigDatabase
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MagicLinkCreate:
+      properties:
+        label:
+          type: string
+          title: Label
+          default: ''
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+          default: ''
+        expires_in_hours:
+          type: integer
+          title: Expires In Hours
+          default: 72
+        is_permanent:
+          type: boolean
+          title: Is Permanent
+          default: false
+      type: object
+      title: MagicLinkCreate
+    UserFileMove:
+      properties:
+        target_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Folder Id
+      type: object
+      title: UserFileMove
+      description: POST /files/{id}/move payload — destination folder (None = root).
+    ParseConfigResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        state:
+          type: string
+          title: State
+        sheets:
+          items:
+            $ref: '#/components/schemas/ParseConfigSheet'
+          type: array
+          title: Sheets
+      type: object
+      required:
+      - id
+      - state
+      - sheets
+      title: ParseConfigResponse
+    Body_upload_file_api_v1_files_upload_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        folder:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Folder
+      type: object
+      required:
+      - file
+      title: Body_upload_file_api_v1_files_upload_post

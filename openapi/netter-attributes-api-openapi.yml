@@ -1,0 +1,532 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions attributes API
+  version: 0.1.0
+tags:
+- name: attributes
+paths:
+  /api/v1/attributes:
+    get:
+      tags:
+      - attributes
+      summary: List Attribute Definitions
+      description: List all attribute definitions for the company.
+      operationId: list_attribute_definitions_api_v1_attributes_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/AttributeDefinitionRead'
+                type: array
+                title: Response List Attribute Definitions Api V1 Attributes Get
+    post:
+      tags:
+      - attributes
+      summary: Create Attribute Definition
+      description: Create an attribute definition. Requires company admin.
+      operationId: create_attribute_definition_api_v1_attributes_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttributeDefinitionCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeDefinitionRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attributes/{definition_id}:
+    patch:
+      tags:
+      - attributes
+      summary: Update Attribute Definition
+      description: Update an attribute definition's label. Requires company admin.
+      operationId: update_attribute_definition_api_v1_attributes__definition_id__patch
+      parameters:
+      - name: definition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Definition Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttributeDefinitionUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeDefinitionRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - attributes
+      summary: Delete Attribute Definition
+      description: Delete an attribute definition. Requires company admin.
+      operationId: delete_attribute_definition_api_v1_attributes__definition_id__delete
+      parameters:
+      - name: definition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Definition Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attributes/members/{user_id}:
+    get:
+      tags:
+      - attributes
+      summary: Get Member Attributes
+      description: Get attribute values for a company member. Requires company admin.
+      operationId: get_member_attributes_api_v1_attributes_members__user_id__get
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberAttributesRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - attributes
+      summary: Set Member Attributes
+      description: Set attribute values for a company member. Requires company admin.
+      operationId: set_member_attributes_api_v1_attributes_members__user_id__put
+      parameters:
+      - name: user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberAttributesWrite'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MemberAttributesRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attributes/automation/entities/{entity_id}/columns:
+    get:
+      tags:
+      - attributes
+      summary: Get Automation Entity Columns
+      description: List dataset columns available for matching/value for a given entity.
+      operationId: get_automation_entity_columns_api_v1_attributes_automation_entities__entity_id__columns_get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+                title: Response Get Automation Entity Columns Api V1 Attributes Automation Entities  Entity Id  Columns Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attributes/{definition_id}/automation:
+    get:
+      tags:
+      - attributes
+      summary: Get Attribute Automation
+      description: Get the automation rule for an attribute definition, or None if not configured.
+      operationId: get_attribute_automation_api_v1_attributes__definition_id__automation_get
+      parameters:
+      - name: definition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Definition Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/AttributeAutomationRead'
+                - type: 'null'
+                title: Response Get Attribute Automation Api V1 Attributes  Definition Id  Automation Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    put:
+      tags:
+      - attributes
+      summary: Put Attribute Automation
+      description: Configure (upsert) an automation rule and run an initial sync.
+      operationId: put_attribute_automation_api_v1_attributes__definition_id__automation_put
+      parameters:
+      - name: definition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Definition Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttributeAutomationWrite'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeAutomationConfigured'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - attributes
+      summary: Delete Attribute Automation Rule
+      description: Disable the automation rule for an attribute definition.
+      operationId: delete_attribute_automation_rule_api_v1_attributes__definition_id__automation_delete
+      parameters:
+      - name: definition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Definition Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/attributes/{definition_id}/automation/sync:
+    post:
+      tags:
+      - attributes
+      summary: Sync Attribute Automation
+      description: Trigger an on-demand sync for an attribute automation rule.
+      operationId: sync_attribute_automation_api_v1_attributes__definition_id__automation_sync_post
+      parameters:
+      - name: definition_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Definition Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributeSyncStats'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AttributeAutomationWrite:
+      properties:
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        match_kind:
+          type: string
+          enum:
+          - email
+          - user_id
+          title: Match Kind
+        match_column:
+          type: string
+          title: Match Column
+        value_column:
+          type: string
+          title: Value Column
+      type: object
+      required:
+      - entity_id
+      - match_kind
+      - match_column
+      - value_column
+      title: AttributeAutomationWrite
+    AttributeDefinitionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        key:
+          type: string
+          title: Key
+        label:
+          type: string
+          title: Label
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - key
+      - label
+      - created_at
+      title: AttributeDefinitionRead
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AttributeDefinitionUpdate:
+      properties:
+        label:
+          type: string
+          title: Label
+      type: object
+      required:
+      - label
+      title: AttributeDefinitionUpdate
+    AttributeAutomationConfigured:
+      properties:
+        automation:
+          $ref: '#/components/schemas/AttributeAutomationRead'
+        stats:
+          $ref: '#/components/schemas/AttributeSyncStats'
+      type: object
+      required:
+      - automation
+      - stats
+      title: AttributeAutomationConfigured
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AttributeAutomationRead:
+      properties:
+        definition_id:
+          type: string
+          format: uuid
+          title: Definition Id
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        match_kind:
+          type: string
+          title: Match Kind
+        match_column:
+          type: string
+          title: Match Column
+        value_column:
+          type: string
+          title: Value Column
+        is_active:
+          type: boolean
+          title: Is Active
+        last_synced_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Synced At
+        last_sync_matched:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Last Sync Matched
+        last_sync_unmatched:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Last Sync Unmatched
+      type: object
+      required:
+      - definition_id
+      - entity_id
+      - match_kind
+      - match_column
+      - value_column
+      - is_active
+      - last_synced_at
+      - last_sync_matched
+      - last_sync_unmatched
+      title: AttributeAutomationRead
+    AttributeDefinitionCreate:
+      properties:
+        key:
+          type: string
+          pattern: ^[a-z0-9_]{1,64}$
+          title: Key
+        label:
+          type: string
+          title: Label
+      type: object
+      required:
+      - key
+      - label
+      title: AttributeDefinitionCreate
+    AttributeSyncStats:
+      properties:
+        matched:
+          type: integer
+          title: Matched
+        unmatched:
+          type: integer
+          title: Unmatched
+        total_rows:
+          type: integer
+          title: Total Rows
+      type: object
+      required:
+      - matched
+      - unmatched
+      - total_rows
+      title: AttributeSyncStats
+    MemberAttributesWrite:
+      properties:
+        values:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          propertyNames:
+            format: uuid
+          type: object
+          title: Values
+      type: object
+      required:
+      - values
+      title: MemberAttributesWrite
+    MemberAttributesRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        attributes:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+          title: Attributes
+      type: object
+      required:
+      - user_id
+      - attributes
+      title: MemberAttributesRead

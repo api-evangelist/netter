@@ -1,0 +1,340 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions dashboard-data API
+  version: 0.1.0
+tags:
+- name: dashboard-data
+paths:
+  /api/v1/dashboard-data/{dashboard_id}/pipelines:
+    get:
+      tags:
+      - dashboard-data
+      summary: Get Dashboard Pipelines Deprecated
+      description: Deprecated — pipeline tables were dropped. Returns [].
+      operationId: get_dashboard_pipelines_deprecated_api_v1_dashboard_data__dashboard_id__pipelines_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Dashboard Pipelines Deprecated Api V1 Dashboard Data  Dashboard Id  Pipelines Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboard-data/{dashboard_id}/runs:
+    get:
+      tags:
+      - dashboard-data
+      summary: Get Dashboard Runs Deprecated
+      description: Deprecated — pipeline_run table was dropped. Returns [].
+      operationId: get_dashboard_runs_deprecated_api_v1_dashboard_data__dashboard_id__runs_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      - name: pipeline_id
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Pipeline Id
+      - name: status
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Dashboard Runs Deprecated Api V1 Dashboard Data  Dashboard Id  Runs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboard-data/{dashboard_id}/pipelines/{pipeline_id}/runs:
+    post:
+      tags:
+      - dashboard-data
+      summary: Trigger Dashboard Pipeline Run Deprecated
+      description: 'Deprecated — pipeline model is gone. Accepts the POST silently (202)
+
+        so generated dashboard trigger buttons don''t 500 the bundle; returns a
+
+        stub response identifying this as a no-op. Frontend should move to the
+
+        step-based trigger endpoints.'
+      operationId: trigger_dashboard_pipeline_run_deprecated_api_v1_dashboard_data__dashboard_id__pipelines__pipeline_id__runs_post
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      - name: pipeline_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Pipeline Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Trigger Dashboard Pipeline Run Deprecated Api V1 Dashboard Data  Dashboard Id  Pipelines  Pipeline Id  Runs Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboard-data/{dashboard_id}/tables:
+    get:
+      tags:
+      - dashboard-data
+      summary: Get Dashboard Tables
+      description: Return catalog of project databases + side tables with schemas.
+      operationId: get_dashboard_tables_api_v1_dashboard_data__dashboard_id__tables_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  additionalProperties: true
+                title: Response Get Dashboard Tables Api V1 Dashboard Data  Dashboard Id  Tables Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboard-data/{dashboard_id}/query:
+    post:
+      tags:
+      - dashboard-data
+      summary: Query Dashboard Data
+      description: Execute DuckDB SQL across all project databases + side tables.
+      operationId: query_dashboard_data_api_v1_dashboard_data__dashboard_id__query_post
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DashboardQueryRequest'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/DataQueryResponse'
+                - $ref: '#/components/schemas/PaginatedQueryResponse'
+                title: Response Query Dashboard Data Api V1 Dashboard Data  Dashboard Id  Query Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DashboardQueryRequest:
+      properties:
+        sql:
+          type: string
+          maxLength: 10000
+          title: Sql
+        limit:
+          type: integer
+          maximum: 10000.0
+          minimum: 1.0
+          title: Limit
+          default: 1000
+        page:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Page
+        page_size:
+          anyOf:
+          - type: integer
+            maximum: 1000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Page Size
+      type: object
+      required:
+      - sql
+      title: DashboardQueryRequest
+    PaginatedQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_rows:
+          type: integer
+          title: Total Rows
+        total_pages:
+          type: integer
+          title: Total Pages
+      type: object
+      required:
+      - columns
+      - rows
+      - page
+      - page_size
+      - total_rows
+      - total_pages
+      title: PaginatedQueryResponse
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse

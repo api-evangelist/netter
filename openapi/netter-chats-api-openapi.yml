@@ -1,0 +1,686 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions chats API
+  version: 0.1.0
+tags:
+- name: chats
+paths:
+  /api/v1/chats/:
+    post:
+      tags:
+      - chats
+      summary: Create Chat
+      description: Start a new AI Architect chat for a dashboard or project.
+      operationId: create_chat_api_v1_chats__post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - chats
+      summary: List Chats
+      description: List chats for the current company, optionally filtered by type.
+      operationId: list_chats_api_v1_chats__get
+      parameters:
+      - name: chat_type
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Type
+      - name: include_suppressed
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Suppressed
+      - name: mine
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Mine
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChatRead'
+                title: Response List Chats Api V1 Chats  Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}:
+    get:
+      tags:
+      - chats
+      summary: Get Chat
+      description: Get a single chat by ID.
+      operationId: get_chat_api_v1_chats__chat_id__get
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - chats
+      summary: Rename Chat
+      description: Rename a chat (title only).
+      operationId: rename_chat_api_v1_chats__chat_id__patch
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatTitleUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - chats
+      summary: Delete Chat
+      description: Hard-delete a chat and all its messages.
+      operationId: delete_chat_api_v1_chats__chat_id__delete
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/suppress:
+    post:
+      tags:
+      - chats
+      summary: Suppress Chat
+      description: Soft-delete a chat and its associated pipeline or dashboard.
+      operationId: suppress_chat_api_v1_chats__chat_id__suppress_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/cancel:
+    post:
+      tags:
+      - chats
+      summary: Cancel Chat
+      description: Signal the agent to cancel an in-progress generation for this chat.
+      operationId: cancel_chat_api_v1_chats__chat_id__cancel_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/attachments/{key}:
+    get:
+      tags:
+      - chats
+      summary: Download Chat Attachment
+      description: 'Stream a chat attachment by storage key.
+
+
+        Authz model: the signed ``token`` is the capability. Possession of a
+
+        valid token grants read access for the token''s TTL (7 days by default,
+
+        matching the prior S3 presigned-URL behavior). The upload endpoint is
+
+        still JWT-protected, so only authed users can ever obtain a valid
+
+        token. ``<img src>`` cannot send Authorization headers, so the JWT
+
+        trust model doesn''t work here — signed URLs do.'
+      operationId: download_chat_attachment_api_v1_chats_attachments__key__get
+      parameters:
+      - name: key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Key
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          description: HMAC-signed token returned by /attachments upload.
+          title: Token
+        description: HMAC-signed token returned by /attachments upload.
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema: {}
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/attachments:
+    post:
+      tags:
+      - chats
+      summary: Upload Attachment
+      description: Upload a file attachment (image or PDF) for a chat message.
+      operationId: upload_attachment_api_v1_chats__chat_id__attachments_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_upload_attachment_api_v1_chats__chat_id__attachments_post'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttachmentRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/messages:
+    get:
+      tags:
+      - chats
+      summary: List Messages
+      description: Get messages with cursor-based pagination.
+      operationId: list_messages_api_v1_chats__chat_id__messages_get
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 20
+          title: Limit
+      - name: before
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Before
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response List Messages Api V1 Chats  Chat Id  Messages Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - chats
+      summary: Create Message
+      description: Add a message to a chat.
+      operationId: create_message_api_v1_chats__chat_id__messages_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/context-usage:
+    get:
+      tags:
+      - chats
+      summary: Get Context Usage
+      description: Return context usage info for the frontend indicator.
+      operationId: get_context_usage_api_v1_chats__chat_id__context_usage_get
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Get Context Usage Api V1 Chats  Chat Id  Context Usage Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/chats/{chat_id}/compact:
+    post:
+      tags:
+      - chats
+      summary: Compact Chat
+      description: Manually trigger chat compaction.
+      operationId: compact_chat_api_v1_chats__chat_id__compact_post
+      parameters:
+      - name: chat_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Chat Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+                title: Response Compact Chat Api V1 Chats  Chat Id  Compact Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    AttachmentRead:
+      properties:
+        id:
+          type: string
+          title: Id
+        url:
+          type: string
+          title: Url
+        filename:
+          type: string
+          title: Filename
+        content_type:
+          type: string
+          title: Content Type
+        category:
+          type: string
+          title: Category
+        s3_key:
+          type: string
+          title: S3 Key
+      type: object
+      required:
+      - id
+      - url
+      - filename
+      - content_type
+      - category
+      - s3_key
+      title: AttachmentRead
+    ChatCreate:
+      properties:
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        chat_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+          default: New Chat
+      type: object
+      title: ChatCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatTitleUpdate:
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Title
+      type: object
+      required:
+      - title
+      title: ChatTitleUpdate
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MessageCreate:
+      properties:
+        role:
+          type: string
+          title: Role
+          default: user
+        content:
+          type: string
+          title: Content
+        extra_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Metadata
+      type: object
+      required:
+      - content
+      title: MessageCreate
+    Body_upload_attachment_api_v1_chats__chat_id__attachments_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_attachment_api_v1_chats__chat_id__attachments_post
+    MessageRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        chat_id:
+          type: string
+          format: uuid
+          title: Chat Id
+        user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: User Id
+        role:
+          type: string
+          title: Role
+        content:
+          type: string
+          title: Content
+        extra_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Metadata
+        is_compacted:
+          type: boolean
+          title: Is Compacted
+          default: false
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        sender_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sender Name
+        sender_email:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sender Email
+      type: object
+      required:
+      - id
+      - chat_id
+      - role
+      - content
+      - extra_metadata
+      - created_at
+      title: MessageRead
+    ChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead

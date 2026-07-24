@@ -1,0 +1,915 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions automations API
+  version: 0.1.0
+tags:
+- name: automations
+paths:
+  /api/v1/automations:
+    post:
+      tags:
+      - automations
+      summary: Create Automation
+      operationId: create_automation_api_v1_automations_post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomationCreate'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                  format: uuid
+                title: Response Create Automation Api V1 Automations Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    get:
+      tags:
+      - automations
+      summary: List Automations
+      operationId: list_automations_api_v1_automations_get
+      parameters:
+      - name: include_suppressed
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+          title: Include Suppressed
+      - name: limit
+        in: query
+        required: false
+        schema:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AutomationRead'
+                title: Response List Automations Api V1 Automations Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}:
+    get:
+      tags:
+      - automations
+      summary: Get Automation
+      operationId: get_automation_api_v1_automations__automation_id__get
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomationRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - automations
+      summary: Update Automation
+      operationId: update_automation_api_v1_automations__automation_id__patch
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomationUpdate'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/favorite:
+    put:
+      tags:
+      - automations
+      summary: Favorite Automation
+      description: Pin the workflow to the top of the caller's list. Idempotent; viewer+.
+      operationId: favorite_automation_api_v1_automations__automation_id__favorite_put
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomationRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - automations
+      summary: Unfavorite Automation
+      description: Remove the workflow from the caller's favorites. Idempotent; viewer+.
+      operationId: unfavorite_automation_api_v1_automations__automation_id__favorite_delete
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AutomationRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/nodes/{slug}/config:
+    put:
+      tags:
+      - automations
+      summary: Update Node Config
+      description: 'Replace a node''s ``config`` dict in place. Requires EDITOR on the automation.
+
+
+        Delegates to ``workflow_architect.application.dag_edits.update_node_config`` —
+
+        the same primitive the architect chat uses — so validation rules stay aligned.'
+      operationId: update_node_config_api_v1_automations__automation_id__nodes__slug__config_put
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      - name: slug
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Slug
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NodeConfigUpdate'
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/suppress:
+    post:
+      tags:
+      - automations
+      summary: Suppress Automation
+      operationId: suppress_automation_api_v1_automations__automation_id__suppress_post
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/unsuppress:
+    post:
+      tags:
+      - automations
+      summary: Unsuppress Automation
+      description: 'Restore a suppressed automation. If the row was ACTIVE before suppress
+
+        (suppress only flips ``is_suppressed`` — status stays as it was), this
+
+        endpoint also re-registers the Temporal schedule that ``suppress`` deleted.
+
+        Without that, the row sits ACTIVE forever with no backing schedule and
+
+        never fires again.'
+      operationId: unsuppress_automation_api_v1_automations__automation_id__unsuppress_post
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/activate:
+    post:
+      tags:
+      - automations
+      summary: Activate Automation
+      operationId: activate_automation_api_v1_automations__automation_id__activate_post
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/deactivate:
+    post:
+      tags:
+      - automations
+      summary: Deactivate Automation
+      operationId: deactivate_automation_api_v1_automations__automation_id__deactivate_post
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/run:
+    post:
+      tags:
+      - automations
+      summary: Run Automation Now
+      operationId: run_automation_now_api_v1_automations__automation_id__run_post
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      requestBody:
+        content:
+          application/json:
+            schema:
+              anyOf:
+              - $ref: '#/components/schemas/AutomationRunRequest'
+              - type: 'null'
+              title: Payload
+      responses:
+        '202':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunNowResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/runs:
+    get:
+      tags:
+      - automations
+      summary: List Automation Runs
+      operationId: list_automation_runs_api_v1_automations__automation_id__runs_get
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          default: 50
+          title: Limit
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/app__automations__schemas__RunRead'
+                title: Response List Automation Runs Api V1 Automations  Automation Id  Runs Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/automations/{automation_id}/runs/{run_id}:
+    get:
+      tags:
+      - automations
+      summary: Get Automation Run
+      operationId: get_automation_run_api_v1_automations__automation_id__runs__run_id__get
+      parameters:
+      - name: automation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Automation Id
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Run Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RunDetailRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    NodeRunStatus:
+      type: string
+      enum:
+      - success
+      - partial_success
+      - failed
+      - skipped
+      title: NodeRunStatus
+      description: Status of a single node execution within a run.
+    RunNowResponse:
+      properties:
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+      type: object
+      required:
+      - run_id
+      title: RunNowResponse
+    NodeCreate:
+      properties:
+        slug:
+          type: string
+          title: Slug
+        kind:
+          $ref: '#/components/schemas/NodeKind'
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+        position_x:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position X
+        position_y:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position Y
+      type: object
+      required:
+      - slug
+      - kind
+      title: NodeCreate
+    NodeRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        kind:
+          $ref: '#/components/schemas/NodeKind'
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+        position_x:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position X
+        position_y:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position Y
+      type: object
+      required:
+      - id
+      - slug
+      - kind
+      - config
+      - position_x
+      - position_y
+      title: NodeRead
+    AutomationUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        nodes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/NodeCreate'
+            type: array
+          - type: 'null'
+          title: Nodes
+        edges:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/EdgeCreate'
+            type: array
+          - type: 'null'
+          title: Edges
+      type: object
+      title: AutomationUpdate
+    PermissionLevel:
+      type: string
+      enum:
+      - viewer
+      - editor
+      - admin
+      title: PermissionLevel
+      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
+    RunDetailRead:
+      properties:
+        run:
+          $ref: '#/components/schemas/app__automations__schemas__RunRead'
+        node_runs:
+          items:
+            $ref: '#/components/schemas/NodeRunRead'
+          type: array
+          title: Node Runs
+      type: object
+      required:
+      - run
+      - node_runs
+      title: RunDetailRead
+    EdgeRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        from_node_id:
+          type: string
+          format: uuid
+          title: From Node Id
+        to_node_id:
+          type: string
+          format: uuid
+          title: To Node Id
+        port:
+          type: string
+          title: Port
+      type: object
+      required:
+      - id
+      - from_node_id
+      - to_node_id
+      - port
+      title: EdgeRead
+    RunStatus:
+      type: string
+      enum:
+      - running
+      - success
+      - partial_success
+      - failed
+      title: RunStatus
+      description: Status of an automation run (one fire).
+    NodeConfigUpdate:
+      properties:
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+      type: object
+      required:
+      - config
+      title: NodeConfigUpdate
+      description: 'Direct edit of a node''s ``config`` payload — bypasses the architect chat.
+
+
+        The new dict replaces the existing config wholesale (no shallow merge); validation
+
+        runs through ``validate_automation_dag(require_reachable=False)`` so an incomplete
+
+        body during editing is fine, but kind-specific config schema, dup-slug, port, and
+
+        cycle checks still apply.'
+    NodeRunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        node_id:
+          type: string
+          format: uuid
+          title: Node Id
+        status:
+          $ref: '#/components/schemas/NodeRunStatus'
+        items_in:
+          type: integer
+          title: Items In
+        items_out:
+          type: integer
+          title: Items Out
+        items_failed:
+          type: integer
+          title: Items Failed
+        duration_ms:
+          type: integer
+          title: Duration Ms
+        input_sample:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Input Sample
+        output_sample:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Output Sample
+        error_sample:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Error Sample
+      type: object
+      required:
+      - id
+      - node_id
+      - status
+      - items_in
+      - items_out
+      - items_failed
+      - duration_ms
+      - input_sample
+      - output_sample
+      - error_sample
+      title: NodeRunRead
+    AutomationRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        status:
+          $ref: '#/components/schemas/AutomationStatus'
+        created_by:
+          type: string
+          format: uuid
+          title: Created By
+        created_at:
+          type: string
+          title: Created At
+        updated_at:
+          type: string
+          title: Updated At
+        activated_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Activated At
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        nodes:
+          items:
+            $ref: '#/components/schemas/NodeRead'
+          type: array
+          title: Nodes
+        edges:
+          items:
+            $ref: '#/components/schemas/EdgeRead'
+          type: array
+          title: Edges
+        current_user_level:
+          anyOf:
+          - $ref: '#/components/schemas/PermissionLevel'
+          - type: 'null'
+        is_favorite:
+          type: boolean
+          title: Is Favorite
+          default: false
+      type: object
+      required:
+      - id
+      - company_id
+      - name
+      - description
+      - status
+      - created_by
+      - created_at
+      - updated_at
+      - activated_at
+      - is_suppressed
+      - nodes
+      - edges
+      title: AutomationRead
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AutomationCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        nodes:
+          items:
+            $ref: '#/components/schemas/NodeCreate'
+          type: array
+          title: Nodes
+        edges:
+          items:
+            $ref: '#/components/schemas/EdgeCreate'
+          type: array
+          title: Edges
+      type: object
+      required:
+      - name
+      - nodes
+      - edges
+      title: AutomationCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    EdgeCreate:
+      properties:
+        from_slug:
+          type: string
+          title: From Slug
+        to_slug:
+          type: string
+          title: To Slug
+        port:
+          type: string
+          title: Port
+          default: default
+      type: object
+      required:
+      - from_slug
+      - to_slug
+      title: EdgeCreate
+    app__automations__schemas__RunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        automation_id:
+          type: string
+          format: uuid
+          title: Automation Id
+        triggered_by:
+          type: string
+          title: Triggered By
+        triggered_by_user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Triggered By User Id
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        started_at:
+          type: string
+          title: Started At
+        ended_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ended At
+        item_count_total:
+          type: integer
+          title: Item Count Total
+        item_count_failed:
+          type: integer
+          title: Item Count Failed
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+      type: object
+      required:
+      - id
+      - automation_id
+      - triggered_by
+      - triggered_by_user_id
+      - status
+      - started_at
+      - ended_at
+      - item_count_total
+      - item_count_failed
+      - error_summary
+      title: RunRead
+    AutomationStatus:
+      type: string
+      enum:
+      - draft
+      - active
+      - paused
+      - archived
+      title: AutomationStatus
+      description: Top-level status of an automation.
+    AutomationRunRequest:
+      properties:
+        input:
+          additionalProperties: true
+          type: object
+          title: Input
+      type: object
+      title: AutomationRunRequest
+      description: 'Optional body for ``POST /automations/{id}/run`` ("Run now").
+
+
+        ``input`` carries the values for a ``trigger.app_invocation`` input schema (the
+
+        same shape the app-button endpoint accepts). Defaults to empty so schedule- and
+
+        event-triggered automations can still be fired with no body.'
+    NodeKind:
+      type: string
+      enum:
+      - trigger.schedule
+      - trigger.entity_change
+      - trigger.app_invocation
+      - fetch_entities
+      - query
+      - update_entity_row
+      - create_entity_row
+      - if
+      - aggregate_to_one
+      - ai_step
+      - send_email
+      - http_request
+      - provider_action
+      title: NodeKind
+      description: All v1 node kinds. Triggers + body nodes share one enum + one table.

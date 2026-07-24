@@ -1,0 +1,308 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions dashboard-versions API
+  version: 0.1.0
+tags:
+- name: dashboard-versions
+paths:
+  /api/v1/dashboards/{dashboard_id}/versions:
+    get:
+      tags:
+      - dashboard-versions
+      summary: List Versions
+      description: List all versions for a dashboard, newest first.
+      operationId: list_versions_api_v1_dashboards__dashboard_id__versions_get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      - name: limit
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 200
+          minimum: 1
+          default: 50
+          title: Limit
+      - name: offset
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+          title: Offset
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DashboardVersionSummary'
+                title: Response List Versions Api V1 Dashboards  Dashboard Id  Versions Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/versions/{version_id}:
+    get:
+      tags:
+      - dashboard-versions
+      summary: Get Version
+      description: Get a single version with full detail (including files).
+      operationId: get_version_api_v1_dashboards__dashboard_id__versions__version_id__get
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      - name: version_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Version Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/dashboards/{dashboard_id}/versions/{version_id}/restore:
+    post:
+      tags:
+      - dashboard-versions
+      summary: Restore Version
+      description: Restore a previous version as the current active version.
+      operationId: restore_version_api_v1_dashboards__dashboard_id__versions__version_id__restore_post
+      parameters:
+      - name: dashboard_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Dashboard Id
+      - name: version_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Version Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DashboardVersionSummary'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DashboardVersionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        dashboard_id:
+          type: string
+          format: uuid
+          title: Dashboard Id
+        version_number:
+          type: integer
+          title: Version Number
+        status:
+          type: string
+          title: Status
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        files:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Files
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        table_refs:
+          items:
+            type: string
+          type: array
+          title: Table Refs
+        pipeline_context_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pipeline Context Hash
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        generation_context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Generation Context
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - dashboard_id
+      - version_number
+      - status
+      - label
+      - bundle_url
+      - bundle_css
+      - bundle_imports
+      - table_refs
+      - pipeline_context_hash
+      - error_message
+      - created_at
+      title: DashboardVersionRead
+      description: Full schema for version detail endpoint (includes files).
+    DashboardVersionSummary:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        dashboard_id:
+          type: string
+          format: uuid
+          title: Dashboard Id
+        version_number:
+          type: integer
+          title: Version Number
+        status:
+          type: string
+          title: Status
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        pipeline_context_hash:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Pipeline Context Hash
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        generation_context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Generation Context
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - dashboard_id
+      - version_number
+      - status
+      - label
+      - bundle_url
+      - pipeline_context_hash
+      - error_message
+      - created_at
+      title: DashboardVersionSummary
+      description: Slim schema for version list endpoint (no files).

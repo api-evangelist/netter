@@ -1,0 +1,391 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions ontology-rows API
+  version: 0.1.0
+tags:
+- name: ontology-rows
+paths:
+  /api/v1/ontology/entities/{entity_id}/rows:
+    get:
+      tags:
+      - ontology-rows
+      summary: List Rows
+      description: 'List merged rows (source ⊕ overlay) for an entity, paginated.
+
+
+        Applies row-policy RLS so non-owner users only see rows their policies
+
+        allow — same enforcement as ``/records``.'
+      operationId: list_rows_api_v1_ontology_entities__entity_id__rows_get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: page
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          default: 1
+          title: Page
+      - name: page_size
+        in: query
+        required: false
+        schema:
+          type: integer
+          maximum: 500
+          minimum: 1
+          default: 100
+          title: Page Size
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityRowList'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    post:
+      tags:
+      - ontology-rows
+      summary: Insert Row
+      description: Insert a row — routed through the entity's default create Action.
+      operationId: insert_row_api_v1_ontology_entities__entity_id__rows_post
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityRowInsert'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityRowRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{entity_id}/rows/{row_key}:
+    get:
+      tags:
+      - ontology-rows
+      summary: Get Row
+      description: 'Fetch a single merged row by key (source ⊕ overlay), RLS-applied.
+
+
+        Powers "open this row" links (e.g. the action audit trail). 404 when the
+
+        row is tombstoned, RLS-hidden, or unknown.'
+      operationId: get_row_api_v1_ontology_entities__entity_id__rows__row_key__get
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: row_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Row Key
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityRowRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - ontology-rows
+      summary: Patch Row
+      description: Patch a row — routed through the entity's default modify Action.
+      operationId: patch_row_api_v1_ontology_entities__entity_id__rows__row_key__patch
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: row_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Row Key
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EntityRowPatch'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntityRowRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    delete:
+      tags:
+      - ontology-rows
+      summary: Delete Row
+      description: Tombstone a row — routed through the entity's default delete Action.
+      operationId: delete_row_api_v1_ontology_entities__entity_id__rows__row_key__delete
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      - name: row_key
+        in: path
+        required: true
+        schema:
+          type: string
+          title: Row Key
+      responses:
+        '204':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/ontology/entities/{entity_id}/sync:
+    post:
+      tags:
+      - ontology-rows
+      summary: Sync Entity
+      description: 'Trigger a source sync for the entity.
+
+
+        Write-gated: sync triggers a DuckDB scan over S3, which is expensive
+
+        enough that low-privilege viewers shouldn''t be able to fire it in a
+
+        tight loop.  Same write-role guard the other row endpoints use.'
+      operationId: sync_entity_api_v1_ontology_entities__entity_id__sync_post
+      parameters:
+      - name: entity_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Entity Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EntitySyncStatus'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    EntityRowList:
+      properties:
+        rows:
+          items:
+            $ref: '#/components/schemas/EntityRowRead'
+          type: array
+          title: Rows
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_source:
+          type: integer
+          title: Total Source
+          description: Source row count (excluding tombstones).
+        total_overlay_only:
+          type: integer
+          title: Total Overlay Only
+          description: Count of overlay-only inserts.
+      type: object
+      required:
+      - rows
+      - page
+      - page_size
+      - total_source
+      - total_overlay_only
+      title: EntityRowList
+    EntityRowRead:
+      properties:
+        row_key:
+          type: string
+          title: Row Key
+          description: Stable identity for this row within the entity.
+        values:
+          additionalProperties: true
+          type: object
+          title: Values
+          description: Column → value, post-merge.
+        has_overlay:
+          type: boolean
+          title: Has Overlay
+          description: True if any overlay edits applied to this row.
+          default: false
+        overlay_only:
+          type: boolean
+          title: Overlay Only
+          description: True if this row exists only in the overlay (no source counterpart).
+          default: false
+        source_deleted:
+          type: boolean
+          title: Source Deleted
+          description: True if the source row vanished after refresh; row is hidden by default.
+          default: false
+        updated_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Updated By
+          description: Last editor (None if no overlay).
+        updated_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Updated At
+          description: Overlay updated_at if an overlay exists.
+      type: object
+      required:
+      - row_key
+      - values
+      title: EntityRowRead
+      description: One merged row (source ⊕ overlay).
+    EntityRowPatch:
+      properties:
+        patch:
+          additionalProperties: true
+          type: object
+          title: Patch
+          description: Column → new value. Sparse — only changed columns.
+      type: object
+      required:
+      - patch
+      title: EntityRowPatch
+    EntityRowInsert:
+      properties:
+        values:
+          additionalProperties: true
+          type: object
+          title: Values
+          description: Column → value for the new row. Must be a subset of entity columns.
+      type: object
+      required:
+      - values
+      title: EntityRowInsert
+    EntitySyncStatus:
+      properties:
+        last_synced_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Synced At
+        source_row_count:
+          type: integer
+          title: Source Row Count
+        overlay_count:
+          type: integer
+          title: Overlay Count
+        state:
+          type: string
+          title: State
+          description: '''idle'' | ''syncing'' | ''error'''
+      type: object
+      required:
+      - last_synced_at
+      - source_row_count
+      - overlay_count
+      - state
+      title: EntitySyncStatus

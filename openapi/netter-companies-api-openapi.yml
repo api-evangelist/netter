@@ -1,0 +1,670 @@
+openapi: 3.1.0
+info:
+  title: DMI Backend actions companies API
+  version: 0.1.0
+tags:
+- name: companies
+paths:
+  /api/v1/companies:
+    get:
+      tags:
+      - companies
+      summary: List My Companies
+      description: List every company the caller belongs to — the one cross-tenant read.
+      operationId: list_my_companies_api_v1_companies_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyListResponse'
+    post:
+      tags:
+      - companies
+      summary: Create Company
+      description: Create a new company — caller becomes owner + default company.
+      operationId: create_company_api_v1_companies_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyCreate'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/accept-invitation:
+    post:
+      tags:
+      - companies
+      summary: Accept Invitation
+      description: Consume a pending invitation token and join its company.
+      operationId: accept_invitation_api_v1_companies_accept_invitation_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvitationAccept'
+        required: true
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyMemberSummary'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/invitations/validate:
+    get:
+      tags:
+      - companies
+      summary: Validate Invitation
+      description: 'Resolve a pending invitation token for the accept page.
+
+
+        Unauthenticated by design — the invitee has no account yet, so the
+
+        opaque token is the credential (same posture as password-reset
+
+        validation). Returns the invitee email + company name, or a domain
+
+        error (404 / 410) if the token is unknown, consumed, or expired.'
+      operationId: validate_invitation_api_v1_companies_invitations_validate_get
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+          title: Token
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyInvitationValidateRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}/switch:
+    post:
+      tags:
+      - companies
+      summary: Switch Default Company
+      description: Set the caller's default company — cross-tenant by design.
+      operationId: switch_default_company_api_v1_companies__company_id__switch_post
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Switch Default Company Api V1 Companies  Company Id  Switch Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}:
+    get:
+      tags:
+      - companies
+      summary: Get Company
+      description: Fetch the company referenced by the current scope.
+      operationId: get_company_api_v1_companies__company_id__get
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - companies
+      summary: Update Company
+      description: Rename the company — admins/owners only (operation enforces role).
+      operationId: update_company_api_v1_companies__company_id__patch
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyRead'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}/invite:
+    post:
+      tags:
+      - companies
+      summary: Invite Member
+      description: 'Invite a user. Returns a member summary when the email matches
+
+        an existing ``auth.users`` row (fast-path direct add), else a
+
+        pending invitation.'
+      operationId: invite_member_api_v1_companies__company_id__invite_post
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyInvite'
+      responses:
+        '201':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                anyOf:
+                - $ref: '#/components/schemas/CompanyInvitationRead'
+                - $ref: '#/components/schemas/CompanyMemberSummary'
+                title: Response Invite Member Api V1 Companies  Company Id  Invite Post
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}/members/{member_user_id}:
+    delete:
+      tags:
+      - companies
+      summary: Remove Member
+      description: Remove a member; members may only remove themselves.
+      operationId: remove_member_api_v1_companies__company_id__members__member_user_id__delete
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      - name: member_user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Member User Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Remove Member Api V1 Companies  Company Id  Members  Member User Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+    patch:
+      tags:
+      - companies
+      summary: Update Member Role
+      description: Change a member's role. Owners only (operation enforces role).
+      operationId: update_member_role_api_v1_companies__company_id__members__member_user_id__patch
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      - name: member_user_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Member User Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompanyMemberRoleUpdate'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompanyMemberSummary'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}/members:
+    get:
+      tags:
+      - companies
+      summary: List Members
+      description: List every member of a company. Caller must be a member.
+      operationId: list_members_api_v1_companies__company_id__members_get
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyMemberRead'
+                title: Response List Members Api V1 Companies  Company Id  Members Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}/invitations:
+    get:
+      tags:
+      - companies
+      summary: List Invitations
+      description: List pending invitations. Caller must be an owner or admin.
+      operationId: list_invitations_api_v1_companies__company_id__invitations_get
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CompanyInvitationRead'
+                title: Response List Invitations Api V1 Companies  Company Id  Invitations Get
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /api/v1/companies/{company_id}/invitations/{invitation_id}:
+    delete:
+      tags:
+      - companies
+      summary: Cancel Invitation
+      description: Revoke a pending invitation. Owners + admins only.
+      operationId: cancel_invitation_api_v1_companies__company_id__invitations__invitation_id__delete
+      parameters:
+      - name: company_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Company Id
+      - name: invitation_id
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+          title: Invitation Id
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+                title: Response Cancel Invitation Api V1 Companies  Company Id  Invitations  Invitation Id  Delete
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    CompanyInvite:
+      properties:
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CompanyInvite
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CompanyInvitationRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+        invited_by:
+          type: string
+          format: uuid
+          title: Invited By
+        status:
+          type: string
+          title: Status
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - company_id
+      - email
+      - role
+      - invited_by
+      - status
+      - created_at
+      title: CompanyInvitationRead
+    CompanyMemberSummary:
+      properties:
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+      type: object
+      required:
+      - company_id
+      - user_id
+      - role
+      - joined_at
+      title: CompanyMemberSummary
+      description: 'Lightweight member view — no auth.users join.
+
+
+        Used by :class:`AcceptInvitation` to report the newly-inserted member
+
+        without reaching into ``auth.users`` for the email.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CompanyMemberRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+        has_signed_in:
+          type: boolean
+          title: Has Signed In
+      type: object
+      required:
+      - user_id
+      - email
+      - role
+      - joined_at
+      - has_signed_in
+      title: CompanyMemberRead
+    CompanyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        role:
+          type: string
+          title: Role
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - name
+      - role
+      - created_at
+      title: CompanyRead
+    InvitationAccept:
+      properties:
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: InvitationAccept
+    CompanyCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: CompanyCreate
+    CompanyMemberRoleUpdate:
+      properties:
+        role:
+          type: string
+          enum:
+          - owner
+          - admin
+          - member
+          title: Role
+      type: object
+      required:
+      - role
+      title: CompanyMemberRoleUpdate
+      description: Request body for changing an existing member's role (owner-only).
+    CompanyInvitationValidateRead:
+      properties:
+        email:
+          type: string
+          title: Email
+        company_name:
+          type: string
+          title: Company Name
+        role:
+          type: string
+          title: Role
+      type: object
+      required:
+      - email
+      - company_name
+      - role
+      title: CompanyInvitationValidateRead
+      description: 'Public view of a pending invitation, resolved by token.
+
+
+        Returned by the unauthenticated ``/invitations/validate`` endpoint so
+
+        the accept page can show who the invite is for before the invitee
+
+        creates their account. Deliberately minimal — no ids, no inviter.'
+    CompanyListResponse:
+      properties:
+        companies:
+          items:
+            $ref: '#/components/schemas/CompanyRead'
+          type: array
+          title: Companies
+        default_company_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Default Company Id
+      type: object
+      required:
+      - companies
+      - default_company_id
+      title: CompanyListResponse
+    CompanyUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: CompanyUpdate
