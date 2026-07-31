@@ -1,0 +1,33 @@
+generated: '2026-07-20'
+method: searched
+source: https://netter.ai/docs/llms.txt
+standards:
+  - id: scim-2.0
+    conforms: true
+    evidence: 'docs: SCIM 2.0 provisioning (provision/deprovision from IdP)'
+    source: https://netter.ai/docs/security/scim-provisioning.md
+  - id: saml-2.0
+    conforms: true
+    evidence: 'docs: SAML 2.0 single sign-on (Entra ID, Okta, Google Workspace)'
+    source: https://netter.ai/docs/security/single-sign-on.md
+  - id: oauth2
+    conforms: true
+    evidence: 'integrations connect external systems via OAuth 2.0 (Nango broker)'
+    source: https://netter.ai/docs/integrations/authentication.md
+  - id: openid-connect
+    conforms: false
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: 'errors use FastAPI detail[] envelope, not application/problem+json'
+  - id: json-api
+    conforms: false
+  - id: pagination-offset-limit
+    conforms: true
+    evidence: 'limit/offset query parameters across list operations'
+    source: openapi/netter-openapi-original.json
+compliance_program:
+  published: false
+  note: >-
+    No SOC 2 / ISO 27001 / HIPAA / other certification is published on the public
+    site; not emitting a Compliance pointer. Netter does publish enterprise
+    security controls (SAML SSO, SCIM, RLS, row-policies).

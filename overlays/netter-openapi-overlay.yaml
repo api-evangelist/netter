@@ -1,0 +1,33 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Netter (DMI Backend)
+  version: 1.0.0
+extends: openapi/netter-openapi-original.json
+actions:
+  - target: $.info
+    update:
+      x-apievangelist-enriched: '2026-07-20'
+      x-provider: Netter
+      x-homepage: https://www.netter.ai
+      description: >-
+        Netter public + application API (FastAPI "DMI Backend"). The AI data
+        platform that centralizes scattered company data into a living ontology
+        and turns it into pipelines, dashboards, and apps via chat.
+  - target: $
+    update:
+      servers:
+        - url: https://api.netter.ai
+          description: Primary API host
+        - url: https://ingest.netter.ai
+          description: Static-IP ingest host for firewall allowlisting (same API)
+  - target: $.info
+    update:
+      x-authentication:
+        scheme: bearer
+        header: Authorization
+        format: 'Bearer ntr_...'
+        docs: https://netter.ai/docs/api/api-keys.md
+      x-apievangelist-notes: >-
+        Source spec declares no components.securitySchemes; auth is documented as
+        an ntr_-prefixed bearer API key. Errors use FastAPI detail[] envelopes,
+        not RFC 9457.

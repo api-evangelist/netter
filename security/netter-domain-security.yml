@@ -1,0 +1,28 @@
+generated: '2026-07-20'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.netter.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 27 20:16:48 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: netter.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Aug 27 17:15:55 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: api.netter.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 24 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: netter.ai
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: true
+  dmarc_policy: none

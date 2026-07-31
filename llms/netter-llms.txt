@@ -1,0 +1,45 @@
+# Product Guide
+
+> Step-by-step guides for every product—platform setup, analytics, and integrations in one place.
+
+## Docs
+
+- [API keys](https://netter.ai/docs/api/api-keys.md): Create, use, and revoke API keys for the Netter public API.
+- [Public API](https://netter.ai/docs/api/overview.md): Authenticate with an API key and upload files programmatically. The base URL, auth scheme, rate limits, and static IPs for allowlisting.
+- [Upload a file](https://netter.ai/docs/api/upload-file.md): Push a CSV, JSON, or Excel file into your workspace with a single API call.
+- [Actions](https://netter.ai/docs/applications/actions.md): Apps write to entities by invoking Actions. An Action is the admin-approved, governed write a viewer triggers from a button—never a raw edit.
+- [Entity bindings](https://netter.ai/docs/applications/bindings.md): Bindings declare which entities an app touches and at what permission level. They're the security boundary for viewer writes.
+- [Build an app](https://netter.ai/docs/applications/build.md): Describe the surface you want in chat; the architect generates React, bundles it, and serves it back to the company.
+- [Applications](https://netter.ai/docs/applications/overview.md): Apps are AI-generated React surfaces that read and write ontology entities. Admins design them; viewers use them.
+- [Versions](https://netter.ai/docs/applications/versions.md): Every generation of an app produces a new version. Roll forward, compare, and revert.
+- [Assistant](https://netter.ai/docs/assistant/overview.md): Netter's chat assistants answer questions, model your ontology, and build apps. Each chat works by calling tools—and every tool respects your permissions.
+- [Chat tools](https://netter.ai/docs/assistant/tools.md): Every tool the Netter assistant can call, grouped by what it does, with the permission each one requires. Read tools respect your access; write tools enforce the same levels as the UI.
+- [Authentication](https://netter.ai/docs/integrations/authentication.md): The four auth modes integrations use, when each applies, and how to rotate credentials.
+- [Connect Databricks](https://netter.ai/docs/integrations/databricks.md): Connect a Databricks workspace via OAuth so pipelines can read Unity Catalog tables.
+- [Connect GitHub](https://netter.ai/docs/integrations/github.md): Connect a GitHub user or organization via an OAuth App so pipelines can read repositories, issues, and workflows.
+- [Connect Gmail](https://netter.ai/docs/integrations/gmail.md): Connect a Gmail account via Google OAuth so pipelines can read or send mail.
+- [Connect INSEE SIRENE](https://netter.ai/docs/integrations/insee.md): Look up French company data—establishments, addresses, legal info—via the INSEE SIRENE API. Free, 30 requests per minute.
+- [Connect Notion](https://netter.ai/docs/integrations/notion.md): Connect a Notion workspace via OAuth so pipelines can read and write pages and databases.
+- [Integrations](https://netter.ai/docs/integrations/overview.md): Connect external systems once, then use them from any pipeline. Pipelines call providers through a proxy; secrets never touch generated step code.
+- [Connect Pappers](https://netter.ai/docs/integrations/pappers.md): Look up French company data via Pappers—better name search than INSEE, returns TVA and legal info directly. Credit-based pricing.
+- [Connect PostgreSQL](https://netter.ai/docs/integrations/postgresql.md): Connect any PostgreSQL database via host and credentials. No OAuth broker involved.
+- [Connect Salesforce](https://netter.ai/docs/integrations/salesforce.md): Connect a Salesforce org via OAuth so pipelines can read and write CRM objects.
+- [Connect Slack](https://netter.ai/docs/integrations/slack.md): Connect a Slack workspace via OAuth so pipelines can read messages, post replies, and react to events.
+- [Connect Snowflake](https://netter.ai/docs/integrations/snowflake.md): Connect a Snowflake user via JWT key-pair auth so pipelines can read warehouse tables.
+- [Actions](https://netter.ai/docs/ontology/actions.md): An Action is a named, governed write to an entity. Nothing writes to ontology data without one—apps and workflows all route through Actions, so every change is scoped, permissioned, and audited.
+- [Edit rows](https://netter.ai/docs/ontology/edit-rows.md): Insert, update, or delete entity rows without rewriting the pipeline. Edits live as overlays on top of the source data.
+- [Ontology](https://netter.ai/docs/ontology/overview.md): The ontology is your company-level business object model—entities, properties, and relationships built on top of the data your pipelines produce.
+- [Promote a database](https://netter.ai/docs/ontology/promote-data.md): Turn a raw project database into a typed ontology entity. Reversible via demote.
+- [Query in natural language](https://netter.ai/docs/ontology/query.md): Ask questions across the entity graph in plain English. The platform writes the SQL.
+- [Attributes](https://netter.ai/docs/permissions/attributes.md): Attributes describe members—their site, region, or department. Assign values per member, then use them to drive group rules and row-level policies.
+- [Groups](https://netter.ai/docs/permissions/groups.md): Grant access to many members at once. A group's membership combines hand-picked members with an optional attribute rule.
+- [Permission inheritance](https://netter.ai/docs/permissions/inheritance.md): Access flows down the resource graph. Sharing a container shares everything inside it, and data a resource merely reads becomes view-only for the people who can see it.
+- [Permissions](https://netter.ai/docs/permissions/overview.md): Two layers control who can see and change what—company roles set the baseline, and resource permissions grant access to specific items. Access then flows down through the resource graph.
+- [Row-level security](https://netter.ai/docs/permissions/row-level-security.md): RLS narrows what's inside a shared database or entity. A member who can read the Customers table can still be restricted to a subset of rows.
+- [Operators](https://netter.ai/docs/pipelines/operators.md): Operators are the pre-coded building blocks the Architect configures inside each step. Same step type, many operator choices.
+- [Build a pipeline](https://netter.ai/docs/pipelines/quickstart.md): Build your first pipeline by describing what you want in plain English. The AI Architect proposes the step DAG and you iterate.
+- [Runs](https://netter.ai/docs/pipelines/runs.md): Every execution of a pipeline is a Run. Runs can be started manually, by a schedule, or cascaded from an upstream refresh.
+- [Step types](https://netter.ai/docs/pipelines/step-types.md): Every step in a pipeline has exactly one type that determines its role, where it can sit in the DAG, and how it runs.
+- [Triggers](https://netter.ai/docs/pipelines/triggers.md): Triggers decide when a pipeline runs without anyone clicking. Attach them to database steps.
+- [SCIM provisioning](https://netter.ai/docs/security/scim-provisioning.md): Automate user lifecycle—provision and deprovision members from your identity provider with SCIM 2.0.
+- [Single sign-on (SAML 2.0)](https://netter.ai/docs/security/single-sign-on.md): Let your team sign in with their corporate identity provider—Microsoft Entra ID, Okta, Google Workspace, or any SAML 2.0 IdP.

@@ -1,0 +1,20 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/netter-openapi-original.json
+versioning:
+  scheme: uri-path
+  current: v1
+  prefix: /api/v1
+  spec_version: '0.1.0'
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: no deprecation/sunset policy published
+sla:
+  url: null
+status_page: null
+deprecated_operations: []
+note: >-
+  Netter is an early-stage (v1 / spec 0.1.0) API. No public status page,
+  deprecation policy, or SLA was found at probe time; StatusPage and Deprecation
+  pointers are intentionally not emitted.

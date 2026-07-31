@@ -1,22 +1,718 @@
 aid: netter
 name: Netter
-description: Netter is a company surfaced as a portfolio company of y-combinator and added to the API
-  Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment pipeline.
+description: >-
+  Netter is a Y Combinator-backed AI data platform ("Build with your data, not
+  your engineers") that centralizes a company's scattered data sources, cleans
+  and enriches them into a living ontology, and lets teams turn that into
+  dashboards, workflows, pipelines and AI-generated apps through chat rather than
+  tickets. Netter exposes a public REST API (the "DMI Backend", rooted at
+  /api/v1 on api.netter.ai) for programmatic file upload plus a broad application
+  surface covering projects, pipelines, ontology entities/rows/relationships,
+  integrations (Databricks, Snowflake, Salesforce, Slack, GitHub, Notion,
+  PostgreSQL and more), dashboards, permissions and an assistant. Auth is an
+  ntr_-prefixed bearer API key; enterprise controls include SAML 2.0 SSO and
+  SCIM 2.0 provisioning.
 url: https://raw.githubusercontent.com/api-evangelist/netter/refs/heads/main/apis.yml
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://www.netter.ai/assets/netter-symbol.svg
 x-type: company
 x-source: vc-portfolio
 x-backed-by:
 - y-combinator
-x-tier: stub
-x-tier-reason: portfolio-lead
+x-tier: active
+x-tier-reason: has-public-api
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-20'
+x-enrichment:
+  date: '2026-07-20'
+  status: enriched
+  artifacts_added: 15
+  pass: local-v1
 tags:
 - Company
-apis: []
+- Data
+- Data Platform
+- Analytics
+- Artificial Intelligence
+- Ontology
+- Data Integration
+- Pipelines
+- ETL
+- Y Combinator
+apis:
+- aid: netter:netter-actions-api
+  name: Netter actions API
+  description: The actions API from Netter — 7 operation(s) for actions.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - actions
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-actions-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-api-keys-api
+  name: Netter api-keys API
+  description: The api-keys API from Netter — 2 operation(s) for api-keys.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - api-keys
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-api-keys-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-app-chat-api
+  name: Netter app-chat API
+  description: The app-chat API from Netter — 1 operation(s) for app-chat.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - app-chat
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-app-chat-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-apps-api
+  name: Netter apps API
+  description: The apps API from Netter — 18 operation(s) for apps.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - apps
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-apps-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-apps-query-api
+  name: Netter apps-query API
+  description: The apps-query API from Netter — 2 operation(s) for apps-query.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - apps-query
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-apps-query-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-assistant-api
+  name: Netter assistant API
+  description: The assistant API from Netter — 2 operation(s) for assistant.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - assistant
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-assistant-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-attributes-api
+  name: Netter attributes API
+  description: The attributes API from Netter — 6 operation(s) for attributes.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - attributes
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-attributes-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-automations-api
+  name: Netter automations API
+  description: The automations API from Netter — 11 operation(s) for automations.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - automations
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-automations-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-chats-api
+  name: Netter chats API
+  description: The chats API from Netter — 9 operation(s) for chats.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - chats
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-chats-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-companies-api
+  name: Netter companies API
+  description: The companies API from Netter — 10 operation(s) for companies.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - companies
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-companies-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-dashboard-chat-api
+  name: Netter dashboard-chat API
+  description: The dashboard-chat API from Netter — 1 operation(s) for dashboard-chat.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - dashboard-chat
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-dashboard-chat-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-dashboard-data-api
+  name: Netter dashboard-data API
+  description: The dashboard-data API from Netter — 5 operation(s) for dashboard-data.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - dashboard-data
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-dashboard-data-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-dashboard-versions-api
+  name: Netter dashboard-versions API
+  description: The dashboard-versions API from Netter — 3 operation(s) for dashboard-versions.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - dashboard-versions
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-dashboard-versions-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-dashboards-api
+  name: Netter dashboards API
+  description: The dashboards API from Netter — 7 operation(s) for dashboards.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - dashboards
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-dashboards-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-databases-api
+  name: Netter databases API
+  description: The databases API from Netter — 6 operation(s) for databases.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - databases
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-databases-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-file-folders-api
+  name: Netter file-folders API
+  description: The file-folders API from Netter — 10 operation(s) for file-folders.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - file-folders
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-file-folders-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-files-api
+  name: Netter files API
+  description: The files API from Netter — 12 operation(s) for files.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - files
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-files-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-folders-api
+  name: Netter folders API
+  description: The folders API from Netter — 3 operation(s) for folders.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - folders
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-folders-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-groups-api
+  name: Netter groups API
+  description: The groups API from Netter — 4 operation(s) for groups.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - groups
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-groups-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-infra-api
+  name: Netter infra API
+  description: The infra API from Netter — 1 operation(s) for infra.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - infra
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-infra-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-integrations-api
+  name: Netter integrations API
+  description: The integrations API from Netter — 19 operation(s) for integrations.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - integrations
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-integrations-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-internal-api
+  name: Netter internal API
+  description: The internal API from Netter — 1 operation(s) for internal.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - internal
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-internal-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-join-advisor-api
+  name: Netter join-advisor API
+  description: The join-advisor API from Netter — 3 operation(s) for join-advisor.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - join-advisor
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-join-advisor-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-lego-architect-api
+  name: Netter lego-architect API
+  description: The lego-architect API from Netter — 5 operation(s) for lego-architect.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - lego-architect
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-lego-architect-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-me-api
+  name: Netter me API
+  description: The me API from Netter — 1 operation(s) for me.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - me
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-me-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-monitoring-api
+  name: Netter monitoring API
+  description: The monitoring API from Netter — 2 operation(s) for monitoring.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - monitoring
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-monitoring-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-api
+  name: Netter ontology API
+  description: The ontology API from Netter — 6 operation(s) for ontology.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-chat-api
+  name: Netter ontology-chat API
+  description: The ontology-chat API from Netter — 1 operation(s) for ontology-chat.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-chat
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-chat-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-entities-api
+  name: Netter ontology-entities API
+  description: The ontology-entities API from Netter — 6 operation(s) for ontology-entities.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-entities
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-entities-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-promotion-api
+  name: Netter ontology-promotion API
+  description: The ontology-promotion API from Netter — 3 operation(s) for ontology-promotion.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-promotion
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-promotion-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-query-api
+  name: Netter ontology-query API
+  description: The ontology-query API from Netter — 1 operation(s) for ontology-query.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-query
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-query-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-records-api
+  name: Netter ontology-records API
+  description: The ontology-records API from Netter — 4 operation(s) for ontology-records.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-records
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-records-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-relationships-api
+  name: Netter ontology-relationships API
+  description: The ontology-relationships API from Netter — 3 operation(s) for ontology-relationships.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-relationships
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-relationships-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-rows-api
+  name: Netter ontology-rows API
+  description: The ontology-rows API from Netter — 3 operation(s) for ontology-rows.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-rows
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-rows-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-ontology-traversal-api
+  name: Netter ontology-traversal API
+  description: The ontology-traversal API from Netter — 1 operation(s) for ontology-traversal.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - ontology-traversal
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-ontology-traversal-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-operators-api
+  name: Netter operators API
+  description: The operators API from Netter — 1 operation(s) for operators.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - operators
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-operators-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-permissions-api
+  name: Netter permissions API
+  description: The permissions API from Netter — 5 operation(s) for permissions.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - permissions
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-permissions-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-project-steps-api
+  name: Netter project-steps API
+  description: The project-steps API from Netter — 5 operation(s) for project-steps.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - project-steps
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-project-steps-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-projects-api
+  name: Netter projects API
+  description: The projects API from Netter — 11 operation(s) for projects.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - projects
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-projects-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-row-policies-api
+  name: Netter row-policies API
+  description: The row-policies API from Netter — 2 operation(s) for row-policies.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - row-policies
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-row-policies-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-run-history-api
+  name: Netter run-history API
+  description: The run-history API from Netter — 4 operation(s) for run-history.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - run-history
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-run-history-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-step-output-api
+  name: Netter step-output API
+  description: The step-output API from Netter — 2 operation(s) for step-output.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - step-output
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-step-output-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-steps-api
+  name: Netter steps API
+  description: The steps API from Netter — 16 operation(s) for steps.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - steps
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-steps-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
+- aid: netter:netter-workflow-architect-api
+  name: Netter workflow-architect API
+  description: The workflow-architect API from Netter — 2 operation(s) for workflow-architect.
+  humanURL: https://netter.ai/docs/api/overview.md
+  baseURL: https://api.netter.ai
+  tags:
+  - workflow-architect
+  properties:
+  - type: OpenAPI
+    url: openapi/netter-workflow-architect-api-openapi.yml
+  - type: Documentation
+    url: https://netter.ai/docs
+  - type: APIReference
+    url: https://netter.ai/docs/api/overview.md
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+common:
+- type: DomainSecurity
+  url: security/netter-domain-security.yml
+- type: Website
+  url: https://www.netter.ai
+- type: DeveloperPortal
+  url: https://netter.ai/docs
+- type: Documentation
+  url: https://netter.ai/docs
+- type: APIReference
+  url: https://netter.ai/docs/api/overview.md
+- type: GettingStarted
+  url: https://netter.ai/docs/pipelines/quickstart.md
+- type: SignUp
+  url: https://app.netter.ai/signup
+- type: Login
+  url: https://app.netter.ai/login
+- type: Support
+  url: mailto:samuel@netter.ai
+- type: OpenAPI
+  url: openapi/netter-openapi-original.json
+- type: Overlay
+  url: overlays/netter-openapi-overlay.yaml
+- type: LLMsTxt
+  url: llms/netter-llms.txt
+- type: Authentication
+  url: authentication/netter-authentication.yml
+- type: Conventions
+  url: conventions/netter-conventions.yml
+- type: ErrorCatalog
+  url: errors/netter-problem-types.yml
+- type: Conformance
+  url: conformance/netter-conformance.yml
+- type: Lifecycle
+  url: lifecycle/netter-lifecycle.yml
+- type: DataModel
+  url: data-model/netter-data-model.yml
+- type: MCPServer
+  url: mcp/netter-mcp.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: AgenticAccess
+  url: agentic-access/netter-agentic-access.yml

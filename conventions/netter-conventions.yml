@@ -1,0 +1,60 @@
+generated: '2026-07-20'
+method: searched
+source: https://netter.ai/docs/api/overview.md
+spec: openapi/netter-openapi-original.json
+description: >-
+  Cross-cutting request/response semantics for the Netter API (DMI Backend),
+  captured from the public API docs and derived from the OpenAPI. Netter is a
+  FastAPI-style JSON API rooted at /api/v1.
+conventions:
+  authentication:
+    style: bearer-api-key
+    header: Authorization
+    format: 'Bearer ntr_...'
+    ref: authentication/netter-authentication.yml
+  base_url: https://api.netter.ai
+  alt_base_url:
+    host: https://ingest.netter.ai
+    reason: static-IP ingest host for firewall allowlisting (same API, same key)
+    static_ips: ['13.248.236.203', '3.33.166.219']
+  media_type: application/json
+  versioning:
+    scheme: uri-path
+    current: v1
+    prefix: /api/v1
+  pagination:
+    style: offset-limit
+    params:
+      limit: max page size (present on ~21 list operations)
+      offset: row offset (present on ~6 list operations)
+    cursor_params:
+      before: id/time cursor on some feeds
+      since: incremental cursor on some feeds
+    derived_from: openapi query parameters
+  filtering_sorting:
+    params: [filters, filter_via, sort_by, sort_dir, status, mine, include_suppressed]
+    derived_from: openapi query parameters
+  idempotency:
+    supported: false
+    note: >-
+      No idempotency-key header or parameter is documented or present in the
+      OpenAPI. Not emitting an Idempotency pointer.
+  error_envelope:
+    shape: fastapi-detail
+    example: '{ "detail": [ { "loc": [...], "msg": "...", "type": "..." } ] }'
+    validation_status: 422
+    ref: errors/netter-problem-types.yml
+  rate_limiting:
+    documented: true
+    values_published: false
+    note: >-
+      The public API overview states the API has rate limits but does not publish
+      numeric thresholds or response headers; not fabricating values.
+    source: https://netter.ai/docs/api/overview.md
+  request_tracing:
+    request_id_header: not-documented
+  file_uploads:
+    endpoint: upload_file_api_v1_files_upload_post
+    transport: multipart/form-data (field "file")
+    allowed_types: [CSV, JSON, XLSX]
+    max_size_mb: 50

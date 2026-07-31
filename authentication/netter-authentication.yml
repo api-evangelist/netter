@@ -1,0 +1,57 @@
+generated: '2026-07-20'
+method: searched
+source: https://netter.ai/docs/api/overview.md
+docs: https://netter.ai/docs/api/api-keys.md
+note: >-
+  The published OpenAPI (api.netter.ai/openapi.json, "DMI Backend") declares no
+  components.securitySchemes, so this profile is captured from the Netter public
+  API documentation rather than derived from the spec.
+summary:
+  types: [apiKey, oauth2, saml2, scim2]
+  api_key_in: [header]
+  api_key_scheme: bearer
+  oauth2_flows: [authorizationCode]
+schemes:
+  - name: PublicAPIKey
+    type: http
+    scheme: bearer
+    location: header
+    header: Authorization
+    value_format: 'Bearer ntr_...'
+    key_prefix: ntr_
+    description: >-
+      Netter public API keys. Created in Settings -> API keys, shown once at
+      creation, tied to the creating user + active company, and inheriting that
+      user's permissions. Sent as a bearer token on every request. Revoking a key
+      is instant; requests with a revoked key return 401 Unauthorized.
+    manage:
+      create: create_api_key_api_v1_api_keys__post
+      list: list_api_keys_api_v1_api_keys__get
+      revoke: revoke_api_key_api_v1_api_keys__key_id__delete
+    docs: https://netter.ai/docs/api/api-keys.md
+  - name: SAMLSingleSignOn
+    type: saml2
+    description: >-
+      Workforce sign-in via any SAML 2.0 identity provider (Microsoft Entra ID,
+      Okta, Google Workspace, etc.). Platform authentication, not API request auth.
+    docs: https://netter.ai/docs/security/single-sign-on.md
+  - name: SCIMProvisioning
+    type: scim2
+    description: >-
+      SCIM 2.0 user lifecycle provisioning/deprovisioning from the customer IdP.
+    docs: https://netter.ai/docs/security/scim-provisioning.md
+integration_auth_modes:
+  note: >-
+    Auth modes Netter uses to connect *external* systems into pipelines (secrets
+    are brokered and never touch generated step code).
+  modes:
+    - mode: oauth2
+      broker: Nango
+      providers: [Databricks, GitHub, Gmail, Notion, Salesforce, Slack]
+    - mode: jwt-keypair
+      providers: [Snowflake]
+    - mode: host-credentials
+      providers: [PostgreSQL]
+    - mode: api-key
+      providers: [Pappers, INSEE SIRENE]
+  docs: https://netter.ai/docs/integrations/authentication.md

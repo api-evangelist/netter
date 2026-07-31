@@ -1,0 +1,73 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/netter-openapi-original.json
+description: >-
+  Entity-relationship graph derived from the Netter OpenAPI path structure and
+  id-reference fields. Netter's domain: companies contain projects; projects run
+  pipelines that produce databases; databases are promoted into ontology
+  entities that carry properties, rows, records, and relationships; apps and the
+  assistant read/write entities through governed actions.
+entities:
+  - name: Company
+    relationships:
+      - {type: has_many, target: Project, via: company_id}
+      - {type: has_many, target: Member, via: company_id}
+      - {type: has_many, target: Integration, via: company_id}
+      - {type: has_many, target: ApiKey, via: company_id}
+      - {type: has_many, target: Invitation, via: company_id}
+  - name: Project
+    relationships:
+      - {type: belongs_to, target: Company, via: company_id}
+      - {type: has_many, target: Database, via: project_id}
+      - {type: has_many, target: Dashboard, via: project_id}
+      - {type: has_many, target: Step, via: project_id}
+      - {type: has_many, target: Run, via: project_id}
+      - {type: has_one, target: Chat, via: project_id}
+      - {type: belongs_to, target: Folder, via: folder_id}
+  - name: Database
+    relationships:
+      - {type: belongs_to, target: Project, via: project_id}
+      - {type: promotes_to, target: Entity, via: database_id}
+  - name: Entity
+    domain: ontology
+    relationships:
+      - {type: has_many, target: Property, via: entity_id}
+      - {type: has_many, target: Row, via: entity_id}
+      - {type: has_many, target: Record, via: entity_id}
+      - {type: has_many, target: Relationship, via: entity_id}
+  - name: Relationship
+    domain: ontology
+    relationships:
+      - {type: belongs_to, target: Entity, via: from_entity_id}
+      - {type: belongs_to, target: Entity, via: to_entity_id}
+  - name: App
+    relationships:
+      - {type: has_many, target: AppVersion, via: app_id}
+      - {type: reads_writes, target: Entity, via: binding}
+      - {type: has_many, target: Action, via: app_id}
+  - name: Action
+    note: governed write to an ontology entity
+    relationships:
+      - {type: targets, target: Entity, via: entity_id}
+  - name: File
+    relationships:
+      - {type: belongs_to, target: Folder, via: folder}
+  - name: Folder
+    relationships:
+      - {type: has_many, target: File, via: folder_id}
+      - {type: has_many, target: Folder, via: parent_id}
+  - name: Chat
+    relationships:
+      - {type: has_many, target: Message, via: chat_id}
+      - {type: has_many, target: Attachment, via: chat_id}
+  - name: Integration
+    relationships:
+      - {type: belongs_to, target: Company, via: company_id}
+      - {type: references, target: Provider, via: provider_slug}
+  - name: ApiKey
+    fields: [id, name, key_prefix, is_active, last_used_at]
+    relationships:
+      - {type: belongs_to, target: Company, via: company_id}
+notes:
+  - id_format: most identifiers are UUID (format uuid in the spec)
+  - 297 component schemas back these entities

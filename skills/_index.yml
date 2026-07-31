@@ -1,0 +1,12 @@
+generated: '2026-07-20'
+method: generated
+source: openapi/netter-openapi-original.json
+skills:
+  - file: netter-upload-file.md
+    name: Upload a file to a Netter workspace
+    api: openapi/netter-openapi-original.json
+    operations: [create_api_key_api_v1_api_keys__post, upload_file_api_v1_files_upload_post, list_user_files_api_v1_files__get]
+  - file: netter-project-pipeline.md
+    name: Create a Netter project and run its pipeline
+    api: openapi/netter-openapi-original.json
+    operations: [create_project_api_v1_projects__post, list_project_databases_api_v1_projects__project_id__databases_get, run_all_steps_api_v1_projects__project_id__run_all_post, list_project_runs_api_v1_projects__project_id__runs_get, get_project_lineage_api_v1_projects__project_id__lineage_get]

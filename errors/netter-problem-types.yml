@@ -1,0 +1,33 @@
+generated: '2026-07-20'
+method: derived
+source: openapi/netter-openapi-original.json
+enriched_from: https://netter.ai/docs/api/api-keys.md
+format: fastapi-detail
+note: >-
+  The API returns FastAPI-style validation errors, not RFC 9457
+  application/problem+json. The 422 envelope is HTTPValidationError with a
+  detail[] array of ValidationError items (loc, msg, type).
+envelope:
+  schema: HTTPValidationError
+  field: detail
+  item_schema: ValidationError
+  item_fields: [loc, msg, type, input, ctx]
+problems:
+  - status: 422
+    title: Validation Error
+    schema: HTTPValidationError
+    content_type: application/json
+    occurrences: 277
+    remediation: >-
+      Inspect detail[].loc to find the offending field and detail[].msg for the
+      reason; correct the request body/params and retry.
+    derived: true
+  - status: 401
+    title: Unauthorized
+    content_type: application/json
+    remediation: >-
+      The API key is missing, malformed, or revoked. Provide a valid
+      'Authorization: Bearer ntr_...' key; if revoked, create a new key.
+    source: https://netter.ai/docs/api/api-keys.md
+    searched: true
+success_codes_observed: [200, 201, 202, 204]
