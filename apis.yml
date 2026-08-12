@@ -693,7 +693,7 @@ common:
 - type: Support
   url: mailto:samuel@netter.ai
 - type: OpenAPI
-  url: openapi/netter-openapi-original.json
+  url: openapi/_original/netter-openapi-original.json
 - type: Overlay
   url: overlays/netter-openapi-overlay.yaml
 - type: LLMsTxt
