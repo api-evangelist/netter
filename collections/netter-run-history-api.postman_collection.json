@@ -1,0 +1,695 @@
+{
+  "item": [
+    {
+      "id": "d73d8820-c6eb-407c-a938-ae61b4a62120",
+      "name": "run-history",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "66e54f3d-731c-4729-a924-e40b8142715b",
+          "name": "List Project Runs",
+          "request": {
+            "name": "List Project Runs",
+            "description": {
+              "content": "Paginated run timeline for the project. Newest first.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":project_id",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                },
+                {
+                  "disabled": false,
+                  "key": "before",
+                  "value": "<dateTime>",
+                  "description": "Return runs started before this timestamp"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1eca961a-131d-4ef8-bf01-2dec8b8b762e",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":project_id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"runs\": [\n    {\n      \"id\": \"ae833691-b6b1-406d-7773-3a35cfa64162\",\n      \"status\": \"string\",\n      \"trigger_source\": \"string\",\n      \"force_full\": true,\n      \"started_at\": \"2015-05-12T05:15:44.179Z\",\n      \"finished_at\": \"1956-12-15T17:57:20.795Z\",\n      \"source_run_id\": \"f699c77f-1d4f-95f1-22c9-8ffcdff7399c\",\n      \"root_step_id\": \"e9e5b87a-e108-d1a6-29e8-b977892b1acf\",\n      \"error\": \"string\",\n      \"error_summary\": \"string\",\n      \"total_rows_processed\": 0,\n      \"step_count\": 0,\n      \"incremental_count\": 0,\n      \"full_count\": 0\n    },\n    {\n      \"id\": \"9d32bd18-751a-11d4-0ab0-5e2f023f8d26\",\n      \"status\": \"string\",\n      \"trigger_source\": \"string\",\n      \"force_full\": true,\n      \"started_at\": \"1992-11-07T17:30:56.160Z\",\n      \"finished_at\": \"1982-11-13T10:00:35.132Z\",\n      \"source_run_id\": \"9265aece-3f5e-769b-b4eb-91ec8253a479\",\n      \"root_step_id\": \"06bb1054-a220-3897-9a79-9946f05aa910\",\n      \"error\": \"string\",\n      \"error_summary\": \"string\",\n      \"total_rows_processed\": 0,\n      \"step_count\": 0,\n      \"incremental_count\": 0,\n      \"full_count\": 0\n    }\n  ],\n  \"next_cursor\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4da7896e-db2b-4490-845c-4044f6d21e5e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":project_id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    },
+                    {
+                      "key": "before",
+                      "value": "<dateTime>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "51951132-176d-4e95-af27-a69e17935f56",
+          "name": "Get Run",
+          "request": {
+            "name": "Get Run",
+            "description": {
+              "content": "Run detail with StepRun rollup.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "runs",
+                ":run_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "run_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "cdf86538-aad8-415c-b4d4-24e5e545c084",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"b6a25338-046d-d265-9c97-f07046b07939\",\n  \"project_id\": \"4ea33e00-bc0c-ca77-9640-9b69d1c3e9e7\",\n  \"company_id\": \"e390f5ad-8345-4ee7-f4d0-d8bf20045e83\",\n  \"user_id\": \"51bd2ecc-f89a-828a-885c-6cf6a9227c62\",\n  \"root_step_id\": \"979b0194-feea-7418-6f49-ad2f976c7b80\",\n  \"status\": \"string\",\n  \"error\": \"string\",\n  \"error_summary\": \"string\",\n  \"trigger_source\": \"string\",\n  \"temporal_workflow_id\": \"string\",\n  \"started_at\": \"1969-07-08T12:44:36.178Z\",\n  \"finished_at\": \"2022-04-01T18:04:45.118Z\",\n  \"source_run_id\": \"0a956a64-c727-ee1d-5d8e-2394c65bc982\",\n  \"force_full\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a11028f2-d82c-4833-8b7b-f4901a136ade",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a191c568-82e1-45eb-980f-5d4f34a548a7",
+          "name": "List Cascade Events",
+          "request": {
+            "name": "List Cascade Events",
+            "description": {
+              "content": "Cascade-decision log for the project's run timeline.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "projects",
+                ":project_id",
+                "cascade_events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "since",
+                  "value": "<dateTime>"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "100"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "project_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "59ccb2b4-e760-46ca-bbe3-1d0895bf03bd",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":project_id",
+                    "cascade_events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "since",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"events\": [\n    {\n      \"id\": \"ac2b370a-c1a0-4285-2d17-e89b4341a4da\",\n      \"project_id\": \"2cad6733-6de0-2588-6f46-aade6c328185\",\n      \"source_run_id\": \"ff49a79d-0b9b-533f-7717-e264ba5c2dcd\",\n      \"source_database_id\": \"2dedf14e-bb5c-2855-6e6d-a74e3523c4a8\",\n      \"target_database_id\": \"7c5fcf63-a362-956f-6eb2-37c98deee1c4\",\n      \"target_step_id\": \"24839752-71f3-9290-1f2f-c430e88d141f\",\n      \"decision\": \"string\",\n      \"occurred_at\": \"2017-06-24T20:52:10.104Z\",\n      \"detail\": {}\n    },\n    {\n      \"id\": \"47c0d4e1-c697-3f20-cae7-4707a928db19\",\n      \"project_id\": \"dc548438-2b13-8eb6-2bc1-1ee87b311add\",\n      \"source_run_id\": \"0c29dfe0-d863-a300-e07e-645237e4962d\",\n      \"source_database_id\": \"3d037950-8585-0eaa-834d-5c665070fe1f\",\n      \"target_database_id\": \"00b0bfef-6044-47f3-a5df-7558c6e71d9d\",\n      \"target_step_id\": \"26a69c3e-afa0-4402-94f8-74d425263b84\",\n      \"decision\": \"string\",\n      \"occurred_at\": \"1957-12-20T11:27:43.109Z\",\n      \"detail\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7f37893-4136-4468-b7e2-4b7a8108931b",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "projects",
+                    ":project_id",
+                    "cascade_events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "since",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "100"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "project_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "884d3eeb-9fda-4ed5-9113-00914a738c70",
+          "name": "Get Step Run Rows",
+          "request": {
+            "name": "Get Step Run Rows",
+            "description": {
+              "content": "Head-sample of rows in this StepRun's step output.\n\nEvery step always runs full (incremental-rethink Task 10) — there is\nno per-run watermark window to slice by any more. This endpoint used\nto slice a ``(prior_watermark, this_watermark]`` window for\nincremental StepRuns; that branch was already dead in practice\n(nothing has written ``StepRun.output_watermark``/``execution_mode_used``\nsince Task 9) and the columns themselves are dropped in Task 13.\nAlways returns a head-sample of the step's cumulative output parquet\nplus its total row count.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "runs",
+                ":run_id",
+                "steps",
+                ":step_id",
+                "rows"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "run_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "step_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "833135d4-bfb6-4c99-967f-e68be382a6d9",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "runs",
+                    ":run_id",
+                    "steps",
+                    ":step_id",
+                    "rows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"step_run_id\": \"83c2082f-f211-4e60-c3ca-26f1674dc726\",\n  \"rows_processed\": 9848,\n  \"rows\": [\n    {\n      \"key_0\": 6284.346156962848,\n      \"key_1\": 8865.095615428423\n    },\n    {\n      \"key_0\": true,\n      \"key_1\": false,\n      \"key_2\": 3499\n    }\n  ],\n  \"truncated\": true,\n  \"total_rows\": 6449,\n  \"duration_ms\": 4959,\n  \"logs\": \"string\",\n  \"error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09f2ce45-80c0-4c9b-b054-0b9da216b2fc",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "runs",
+                    ":run_id",
+                    "steps",
+                    ":step_id",
+                    "rows"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "step_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bc80de2e-44b6-4e5a-8e6d-18987e9dc813",
+    "name": "DMI Backend actions run-history API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

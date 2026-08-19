@@ -1,0 +1,157 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions ontology-records API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ontology-records",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/records",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filters",
+                "value": "",
+                "type": "query",
+                "description": "JSON object of column->substring, e.g. {\"name\":\"Je\"}. Malformed JSON is ignored."
+              },
+              {
+                "name": "sort_by",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort_dir",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Records"
+        },
+        {
+          "info": {
+            "name": "List Unmatched Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:from_entity_id/unmatched/:to_entity_id",
+            "params": [
+              {
+                "name": "from_entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "to_entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "filter_via",
+                "value": "",
+                "type": "query",
+                "description": "Filter from_entity to only keys reachable from this entity"
+              }
+            ]
+          },
+          "docs": "List Unmatched Records"
+        },
+        {
+          "info": {
+            "name": "List Matched Records",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:from_entity_id/matched/:to_entity_id",
+            "params": [
+              {
+                "name": "from_entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "to_entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Matched Records"
+        },
+        {
+          "info": {
+            "name": "Get Record Related",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/records/:record_key/related",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "record_key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Record Related"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

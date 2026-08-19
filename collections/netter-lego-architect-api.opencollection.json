@@ -1,0 +1,180 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions lego-architect API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "lego-architect",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Or Create Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/lego-architect/projects/:project_id/chat",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get or create the lego-architect chat for this project."
+        },
+        {
+          "info": {
+            "name": "Send Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/lego-architect/:chat_id/message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Dispatch a new lego-architect turn for this chat."
+        },
+        {
+          "info": {
+            "name": "Add Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/lego-architect/projects/:project_id/steps",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add Step"
+        },
+        {
+          "info": {
+            "name": "Update Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/lego-architect/projects/:project_id/steps/:slug",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Step"
+        },
+        {
+          "info": {
+            "name": "Remove Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/lego-architect/projects/:project_id/steps/:slug",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove Step"
+        },
+        {
+          "info": {
+            "name": "Link Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/lego-architect/projects/:project_id/edges",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Link Step"
+        },
+        {
+          "info": {
+            "name": "Unlink Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/lego-architect/projects/:project_id/edges",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "parent_slug",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "child_slug",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Remove a parent → child edge. Takes `parent_slug` + `child_slug` as query params."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,287 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions chats API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "chats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Chats",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/chats/",
+            "params": [
+              {
+                "name": "chat_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_suppressed",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "mine",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List chats for the current company, optionally filtered by type."
+        },
+        {
+          "info": {
+            "name": "Create Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Start a new AI Architect chat for a dashboard or project."
+        },
+        {
+          "info": {
+            "name": "Get Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single chat by ID."
+        },
+        {
+          "info": {
+            "name": "Rename Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename a chat (title only)."
+        },
+        {
+          "info": {
+            "name": "Delete Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Hard-delete a chat and all its messages."
+        },
+        {
+          "info": {
+            "name": "Suppress Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/suppress",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Soft-delete a chat and its associated pipeline or dashboard."
+        },
+        {
+          "info": {
+            "name": "Cancel Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/cancel",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Signal the agent to cancel an in-progress generation for this chat."
+        },
+        {
+          "info": {
+            "name": "Download Chat Attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/chats/attachments/:key",
+            "params": [
+              {
+                "name": "key",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query",
+                "description": "HMAC-signed token returned by /attachments upload."
+              }
+            ]
+          },
+          "docs": "Stream a chat attachment by storage key.\n\nAuthz model: the signed ``token`` is the capability. Possession of a\nvalid token grants read access for the token's TTL (7 days by default,\nmatching the prior S3 presigned-URL behavior). The upload endpoint is\nstill JWT-protected, so only authed users can ever obtain a valid\ntoken. ``<img src>`` cannot send Authorization headers, so the JWT\ntrust model doesn't work here — signed URLs do."
+        },
+        {
+          "info": {
+            "name": "Upload Attachment",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/attachments",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a file attachment (image or PDF) for a chat message."
+        },
+        {
+          "info": {
+            "name": "List Messages",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/messages",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Get messages with cursor-based pagination."
+        },
+        {
+          "info": {
+            "name": "Create Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/messages",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a message to a chat."
+        },
+        {
+          "info": {
+            "name": "Get Context Usage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/context-usage",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return context usage info for the frontend indicator."
+        },
+        {
+          "info": {
+            "name": "Compact Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/compact",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Manually trigger chat compaction."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,476 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions integrations API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "integrations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Providers",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/providers",
+            "params": [
+              {
+                "name": "provider_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List available providers. Optionally filter by provider_type."
+        },
+        {
+          "info": {
+            "name": "List Integrations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/"
+          },
+          "docs": "List integrations the caller can see (owners see all)."
+        },
+        {
+          "info": {
+            "name": "Create Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Register or update an integration for the company (upsert by provider).\n\nHandles three paths:\n- Nango OAuth: ``nango_connection_id`` provided → mark connected.\n- Custom credentials: ``credentials`` dict provided → validate, test, encrypt.\n- Neither: mark disconnected.\n\nPer-resource permissions: any company member may CREATE a new\nintegration (they're auto-granted ADMIN on it); updating an existing\n(company, provider) row in place requires EDITOR on that integration."
+        },
+        {
+          "info": {
+            "name": "Get Nango Session Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/session-token",
+            "params": [
+              {
+                "name": "allowed_integrations",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Fetch a short-lived session token from Nango for the Connect UI.\n\nPass ?allowed_integrations=supabase to scope the session to a single provider.\nReturns the full Nango session dict (includes ``token`` + any extra fields).\n\nNote: the legacy endpoint calls Nango directly without provider validation,\nso we mirror that by going via the adapter rather than the MintNangoSessionToken\noperation (which requires a validated provider slug).\n\nPer-resource permissions: any company member may start a connect "
+        },
+        {
+          "info": {
+            "name": "Update Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "nango_connection_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Update an integration's status or connection details."
+        },
+        {
+          "info": {
+            "name": "Delete Integration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove an integration and its Nango connection."
+        },
+        {
+          "info": {
+            "name": "Get Crawler Schema",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/providers/:slug/crawler-schema",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return the wizard schema for a provider's crawler (public read).\n\nNo resource permission gate — the wizard fetches this before any\nintegration row exists (post-OAuth, pre-wizard-completion)."
+        },
+        {
+          "info": {
+            "name": "List Provider Actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/providers/:slug/actions",
+            "params": [
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Typed actions available for a provider's provider_action workflow node."
+        },
+        {
+          "info": {
+            "name": "Get Scope Options",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/scope-options",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Live scope discovery for a specific table.\n\nFetches scope items via the table's ``list_scope_items`` callable.\nResults are cached in-process for 60 seconds."
+        },
+        {
+          "info": {
+            "name": "Get Snowflake Databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/snowflake/databases",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "``SHOW DATABASES`` against the customer's Snowflake account."
+        },
+        {
+          "info": {
+            "name": "Get Snowflake Schemas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/snowflake/schemas",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "``SHOW SCHEMAS IN DATABASE <database>``. ``INFORMATION_SCHEMA``\nis filtered out by the underlying discovery function."
+        },
+        {
+          "info": {
+            "name": "Get Snowflake Tables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/snowflake/tables",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "``SHOW TABLES IN SCHEMA <database>.<schema>``."
+        },
+        {
+          "info": {
+            "name": "Describe Snowflake Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/snowflake/describe",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "database",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "``DESCRIBE TABLE <database>.<schema>.<table>`` mapped to\nPolars-style types — used to populate ``columns`` in the wizard\npayload that gets PATCHed to ``crawler_table_configs``."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Warehouses",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/databricks/warehouses",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "``GET /api/2.0/sql/warehouses`` against the customer's workspace."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Catalogs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/databricks/catalogs",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "``GET /api/2.1/unity-catalog/catalogs`` — list customer catalogs\n(filtered to drop the ``system`` catalog)."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Schemas",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/databricks/schemas",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "catalog",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "``GET /api/2.1/unity-catalog/schemas?catalog_name=<catalog>``.\n``information_schema`` is filtered out by the underlying discovery\nfunction."
+        },
+        {
+          "info": {
+            "name": "Get Databricks Tables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/databricks/tables",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "catalog",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "``GET /api/2.1/unity-catalog/tables?catalog_name=<>&schema_name=<>``."
+        },
+        {
+          "info": {
+            "name": "Describe Databricks Table",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/databricks/describe",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "catalog",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "schema",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "``GET /api/2.1/unity-catalog/tables/{catalog.schema.table}`` mapped to\nPolars-style types — used to populate ``columns`` in the wizard\npayload that gets PATCHed to ``crawler_table_configs``."
+        },
+        {
+          "info": {
+            "name": "Get Crawler Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/crawler-config",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return the effective crawler config for an integration (for the edit modal)."
+        },
+        {
+          "info": {
+            "name": "Patch Crawler Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/crawler-config",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Apply a crawler config patch and signal the running workflow."
+        },
+        {
+          "info": {
+            "name": "Refresh Integration Crawl",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/:integration_id/refresh-crawl",
+            "params": [
+              {
+                "name": "integration_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Wake the crawler workflow's polling loop immediately (\"Refresh now\").\n\nNo-op for providers without a registered crawler module. Falls back\nto ``start_crawler`` if no workflow is currently running."
+        },
+        {
+          "info": {
+            "name": "Nango Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/integrations/webhook"
+          },
+          "docs": "Handle webhooks from Nango (connection.created / connection.updated).\n\nVerifies the HMAC-SHA256 signature using NANGO_SECRET_KEY before processing."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

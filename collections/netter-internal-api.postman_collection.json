@@ -1,0 +1,108 @@
+{
+  "item": [
+    {
+      "id": "11ec37f2-8ae5-4532-9d83-81653e99b47b",
+      "name": "internal",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ab15c47a-a9d5-46b8-b26e-a94697273fb2",
+          "name": "Provision New User",
+          "request": {
+            "name": "Provision New User",
+            "description": {
+              "content": "Bootstrap tenancy for a freshly-created ``auth.user``.\n\nThe body is the same bytes the front signed — we re-parse them with\nPydantic here rather than declaring ``body: ProvisionNewUserRequest``\non the signature because FastAPI would otherwise read the request\nstream before the HMAC dep gets a chance, leaving the dep with an\nempty body to hash.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "provision-new-user"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "155cd77d-f6da-44ff-85c5-67591e4a8ba2",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "internal",
+                    "provision-new-user"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"user_id\": \"7739d9f7-8dc7-bdbc-ff02-b6df90927147\",\n  \"default_company_id\": \"89f60e38-84dd-1f74-5867-c86d76f6c22d\",\n  \"phase\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "55396b7e-0a75-491a-8c99-c8b42f44a37f",
+    "name": "DMI Backend actions internal API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

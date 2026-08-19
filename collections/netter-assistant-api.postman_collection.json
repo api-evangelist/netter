@@ -1,0 +1,281 @@
+{
+  "item": [
+    {
+      "id": "aa04d6cc-7e56-4c66-a3c5-e48b8726c791",
+      "name": "assistant",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "16b7a529-9f5d-4884-a397-0da2a34b096b",
+          "name": "Create Assistant Chat",
+          "request": {
+            "name": "Create Assistant Chat",
+            "description": {
+              "content": "Start a new assistant chat (one row per 'New chat' click).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "assistant",
+                "chats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1aff17d9-4d84-4a82-af76-074c38008dc9",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "assistant",
+                    "chats"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"5d61e987-48b9-6a8a-25ff-d2b985dc677c\",\n  \"company_id\": \"f48cbe27-6485-fb34-e6ac-1f735577dd55\",\n  \"user_id\": \"b76df0cb-60ea-d2c0-fd5c-2cbb5af9e43c\",\n  \"dashboard_id\": \"3fb1864f-90a3-73ed-bb50-735d78a532b4\",\n  \"chat_type\": \"string\",\n  \"title\": \"string\",\n  \"status\": \"generating\",\n  \"is_suppressed\": false,\n  \"created_at\": \"1992-11-02T11:44:34.343Z\",\n  \"updated_at\": \"1981-12-23T20:10:30.749Z\",\n  \"project_id\": \"b091b542-f6a5-7ff9-a8f2-fd0090a616f3\",\n  \"generation_token\": 0\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8050b024-8230-4632-aa1d-ed3ef8126f38",
+          "name": "Assistant Chat Message",
+          "request": {
+            "name": "Assistant Chat Message",
+            "description": {
+              "content": "Send a message to the assistant — dispatches an agent turn.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "assistant",
+                "chats",
+                ":chat_id",
+                "message"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "chat_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"<string>\",\n  \"tagged_entities\": [\n    {\n      \"id\": \"<uuid>\",\n      \"name\": \"<string>\"\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"name\": \"<string>\"\n    }\n  ],\n  \"referenced_database_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"attachments\": [\n    {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\"\n    },\n    {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\",\n      \"key_3\": \"<string>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "4a9c0ac9-e92b-47d8-ac2a-6085200aca7b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "assistant",
+                    "chats",
+                    ":chat_id",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "chat_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"tagged_entities\": [\n    {\n      \"id\": \"12181ac2-f306-69d7-c955-b104118ed764\",\n      \"name\": \"string\"\n    },\n    {\n      \"id\": \"103039f8-ee0e-bca6-70fd-8b85b68f601a\",\n      \"name\": \"string\"\n    }\n  ],\n  \"referenced_database_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"attachments\": [\n    {\n      \"key_0\": \"<string>\"\n    },\n    {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status\": \"generating\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d8d65a96-9338-413f-ad3d-eca07197a78d",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "assistant",
+                    "chats",
+                    ":chat_id",
+                    "message"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "chat_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"<string>\",\n  \"tagged_entities\": [\n    {\n      \"id\": \"12181ac2-f306-69d7-c955-b104118ed764\",\n      \"name\": \"string\"\n    },\n    {\n      \"id\": \"103039f8-ee0e-bca6-70fd-8b85b68f601a\",\n      \"name\": \"string\"\n    }\n  ],\n  \"referenced_database_ids\": [\n    \"<uuid>\",\n    \"<uuid>\"\n  ],\n  \"attachments\": [\n    {\n      \"key_0\": \"<string>\"\n    },\n    {\n      \"key_0\": \"<string>\",\n      \"key_1\": \"<string>\",\n      \"key_2\": \"<string>\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "1fe8e11f-e1e9-422b-8df0-30385a9f0b9a",
+    "name": "DMI Backend actions assistant API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

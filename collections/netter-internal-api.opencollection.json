@@ -1,0 +1,29 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions internal API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "internal",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Provision New User",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/internal/provision-new-user"
+          },
+          "docs": "Bootstrap tenancy for a freshly-created ``auth.user``.\n\nThe body is the same bytes the front signed — we re-parse them with\nPydantic here rather than declaring ``body: ProvisionNewUserRequest``\non the signature because FastAPI would otherwise read the request\nstream before the HMAC dep gets a chance, leaving the dep with an\nempty body to hash."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,1413 @@
+{
+  "item": [
+    {
+      "id": "ab1239da-49d7-4618-b2b9-6c57b207c545",
+      "name": "databases",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2f34544d-794f-43b5-bd58-4ed1a5cb9aca",
+          "name": "Create Database",
+          "request": {
+            "name": "Create Database",
+            "description": {
+              "content": "Create a new database record (metadata only, no Parquet yet).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"project_id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3635ce8c-6736-4d32-9cad-8603b3bc9998",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"description\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"183ec224-3aa2-7544-4df8-800d98c78d6e\",\n  \"company_id\": \"dd5fdcc2-7aa6-5732-c32f-586cc0b1aa58\",\n  \"user_id\": \"471f1017-3a09-5a66-5cbd-6931b88830a0\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"table_name\": \"string\",\n  \"storage_path\": \"string\",\n  \"schema_info\": [\n    {\n      \"key_0\": false\n    },\n    {\n      \"key_0\": false,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"is_shared\": false,\n  \"is_suppressed\": false,\n  \"refresh_status\": \"string\",\n  \"last_refreshed_at\": \"1984-12-20T21:32:08.298Z\",\n  \"row_count\": 5748,\n  \"size_bytes\": 7558,\n  \"created_at\": \"1987-08-27T15:55:36.960Z\",\n  \"updated_at\": \"2006-06-15T06:48:26.810Z\",\n  \"project_id\": \"2055da2c-59bc-bc9b-b394-09951dee6a97\",\n  \"integration_id\": \"1e5f2371-86ea-6db9-89c7-eff522c40d29\",\n  \"source_step_id\": \"4c0c1dcd-8236-cbc8-9880-adf2cfa3e349\",\n  \"source_user_file_id\": \"c7e7c16b-7904-6dd8-c984-53626e8ea2b8\",\n  \"source_sheet_name\": \"string\",\n  \"refresh_error\": \"string\",\n  \"name_is_user_overridden\": false,\n  \"doc_status\": \"idle\",\n  \"doc_status_updated_at\": \"1966-11-15T05:10:36.555Z\",\n  \"doc_last_error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e71beec6-daed-4a18-a33f-8b7bff63ee85",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"project_id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"description\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "9ebe3870-b7a8-49d5-8706-852260f15e56",
+          "name": "List Databases",
+          "request": {
+            "name": "List Databases",
+            "description": {
+              "content": "List databases, optionally filtered by project.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "project_id",
+                  "value": "<uuid>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c44a409f-eb4c-4931-b2f1-5a00f7aecd25",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "project_id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"485e87eb-c7ad-92d2-fca1-3709e86189ff\",\n    \"company_id\": \"4a17201f-660c-8382-be56-2ddf61592b87\",\n    \"user_id\": \"a8284a80-2b7a-52b8-7987-f9ee6d1666a6\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"table_name\": \"string\",\n    \"storage_path\": \"string\",\n    \"schema_info\": [\n      {\n        \"key_0\": 6693,\n        \"key_1\": true\n      },\n      {\n        \"key_0\": 3518.5457326708515\n      }\n    ],\n    \"is_shared\": false,\n    \"is_suppressed\": false,\n    \"refresh_status\": \"string\",\n    \"last_refreshed_at\": \"1948-05-23T00:57:50.601Z\",\n    \"row_count\": 6695,\n    \"size_bytes\": 9662,\n    \"created_at\": \"1960-12-09T08:13:53.371Z\",\n    \"updated_at\": \"1984-04-04T19:05:12.036Z\",\n    \"project_id\": \"82f29ff3-00e8-d0e2-1b4f-263873ebf2c8\",\n    \"integration_id\": \"1a726073-d0e8-9a26-f40c-3bdfc3865664\",\n    \"source_step_id\": \"1e8af99d-bdf5-68f7-24c8-47552cac4b24\",\n    \"source_user_file_id\": \"6db2bb85-1b20-8699-330a-bb71d58ef2e7\",\n    \"source_sheet_name\": \"string\",\n    \"refresh_error\": \"string\",\n    \"name_is_user_overridden\": false,\n    \"doc_status\": \"idle\",\n    \"doc_status_updated_at\": \"2006-07-11T23:00:26.950Z\",\n    \"doc_last_error\": \"string\"\n  },\n  {\n    \"id\": \"5040c79f-0706-93e7-9346-47ef7971a395\",\n    \"company_id\": \"4dedba2a-eefd-2372-93cc-8bc5f673ebde\",\n    \"user_id\": \"d031837b-3a7f-15ee-5efe-d31ba9adc0ba\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"table_name\": \"string\",\n    \"storage_path\": \"string\",\n    \"schema_info\": [\n      {\n        \"key_0\": true\n      },\n      {\n        \"key_0\": 5807\n      }\n    ],\n    \"is_shared\": true,\n    \"is_suppressed\": true,\n    \"refresh_status\": \"string\",\n    \"last_refreshed_at\": \"2002-06-07T20:32:28.262Z\",\n    \"row_count\": 6552,\n    \"size_bytes\": 3173,\n    \"created_at\": \"1982-12-17T03:38:22.748Z\",\n    \"updated_at\": \"1955-03-03T04:15:39.145Z\",\n    \"project_id\": \"aeea1939-06f4-624d-bff4-5c7064ff9a88\",\n    \"integration_id\": \"92e56fcf-ea6c-1609-cc06-3a8ff7e2073e\",\n    \"source_step_id\": \"e64430ff-6996-83ce-0fbc-97c64efe4f63\",\n    \"source_user_file_id\": \"0dc28631-26d2-cdc3-b8cb-bfd1ff447c9a\",\n    \"source_sheet_name\": \"string\",\n    \"refresh_error\": \"string\",\n    \"name_is_user_overridden\": false,\n    \"doc_status\": \"idle\",\n    \"doc_status_updated_at\": \"1954-09-23T20:34:30.864Z\",\n    \"doc_last_error\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2634fddb-5f3e-4dc6-9106-c1ca1537343b",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "project_id",
+                      "value": "<uuid>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "b4523c09-0dba-42ee-8952-a90ba8773b79",
+          "name": "Get Database",
+          "request": {
+            "name": "Get Database",
+            "description": {
+              "content": "Get a single database by ID.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "9b6c3e8c-e614-402c-abdc-f6ba1ee80455",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"183ec224-3aa2-7544-4df8-800d98c78d6e\",\n  \"company_id\": \"dd5fdcc2-7aa6-5732-c32f-586cc0b1aa58\",\n  \"user_id\": \"471f1017-3a09-5a66-5cbd-6931b88830a0\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"table_name\": \"string\",\n  \"storage_path\": \"string\",\n  \"schema_info\": [\n    {\n      \"key_0\": false\n    },\n    {\n      \"key_0\": false,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"is_shared\": false,\n  \"is_suppressed\": false,\n  \"refresh_status\": \"string\",\n  \"last_refreshed_at\": \"1984-12-20T21:32:08.298Z\",\n  \"row_count\": 5748,\n  \"size_bytes\": 7558,\n  \"created_at\": \"1987-08-27T15:55:36.960Z\",\n  \"updated_at\": \"2006-06-15T06:48:26.810Z\",\n  \"project_id\": \"2055da2c-59bc-bc9b-b394-09951dee6a97\",\n  \"integration_id\": \"1e5f2371-86ea-6db9-89c7-eff522c40d29\",\n  \"source_step_id\": \"4c0c1dcd-8236-cbc8-9880-adf2cfa3e349\",\n  \"source_user_file_id\": \"c7e7c16b-7904-6dd8-c984-53626e8ea2b8\",\n  \"source_sheet_name\": \"string\",\n  \"refresh_error\": \"string\",\n  \"name_is_user_overridden\": false,\n  \"doc_status\": \"idle\",\n  \"doc_status_updated_at\": \"1966-11-15T05:10:36.555Z\",\n  \"doc_last_error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0db7bc06-c166-418d-afea-298e82c5570d",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c106aeab-1c71-4643-a70b-e722f9756e15",
+          "name": "Update Database",
+          "request": {
+            "name": "Update Database",
+            "description": {
+              "content": "Update a database's name, description, schema, or sharing.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"schema_info\": [\n    {\n      \"key_0\": false,\n      \"key_1\": \"string\",\n      \"key_2\": 6150,\n      \"key_3\": \"string\",\n      \"key_4\": false\n    },\n    {\n      \"key_0\": false\n    }\n  ],\n  \"is_shared\": \"<boolean>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "0a5dce58-a0ad-4591-be79-51bda15450dd",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"schema_info\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 2344.7355408363833,\n      \"key_2\": \"string\",\n      \"key_3\": \"string\",\n      \"key_4\": 6149.90494635516\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 7452.196041393203,\n      \"key_2\": true,\n      \"key_3\": 3319.1978364933507\n    }\n  ],\n  \"is_shared\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"183ec224-3aa2-7544-4df8-800d98c78d6e\",\n  \"company_id\": \"dd5fdcc2-7aa6-5732-c32f-586cc0b1aa58\",\n  \"user_id\": \"471f1017-3a09-5a66-5cbd-6931b88830a0\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"table_name\": \"string\",\n  \"storage_path\": \"string\",\n  \"schema_info\": [\n    {\n      \"key_0\": false\n    },\n    {\n      \"key_0\": false,\n      \"key_1\": \"string\"\n    }\n  ],\n  \"is_shared\": false,\n  \"is_suppressed\": false,\n  \"refresh_status\": \"string\",\n  \"last_refreshed_at\": \"1984-12-20T21:32:08.298Z\",\n  \"row_count\": 5748,\n  \"size_bytes\": 7558,\n  \"created_at\": \"1987-08-27T15:55:36.960Z\",\n  \"updated_at\": \"2006-06-15T06:48:26.810Z\",\n  \"project_id\": \"2055da2c-59bc-bc9b-b394-09951dee6a97\",\n  \"integration_id\": \"1e5f2371-86ea-6db9-89c7-eff522c40d29\",\n  \"source_step_id\": \"4c0c1dcd-8236-cbc8-9880-adf2cfa3e349\",\n  \"source_user_file_id\": \"c7e7c16b-7904-6dd8-c984-53626e8ea2b8\",\n  \"source_sheet_name\": \"string\",\n  \"refresh_error\": \"string\",\n  \"name_is_user_overridden\": false,\n  \"doc_status\": \"idle\",\n  \"doc_status_updated_at\": \"1966-11-15T05:10:36.555Z\",\n  \"doc_last_error\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "be5d6609-7d1e-45ba-a737-43de47ead438",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"schema_info\": [\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 2344.7355408363833,\n      \"key_2\": \"string\",\n      \"key_3\": \"string\",\n      \"key_4\": 6149.90494635516\n    },\n    {\n      \"key_0\": \"string\",\n      \"key_1\": 7452.196041393203,\n      \"key_2\": true,\n      \"key_3\": 3319.1978364933507\n    }\n  ],\n  \"is_shared\": \"<boolean>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "0accd837-2db2-4fe3-bd7b-c548077a14f3",
+          "name": "Delete Database",
+          "request": {
+            "name": "Delete Database",
+            "description": {
+              "content": "Hard-delete a database and its Parquet file.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "01e454b4-2a75-4b60-9399-33a3c19fba45",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "06faaece-fef9-4a2c-8636-28e3b813e4ce",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4fc3f89d-7d99-4c2a-9ec7-b5ba81fdcbf3",
+          "name": "Preview Database",
+          "request": {
+            "name": "Preview Database",
+            "description": {
+              "content": "Preview first N rows of a database.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id",
+                "preview"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a414dcd8-f28d-4d83-a578-ebe415125c5d",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"columns\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rows\": [\n    {\n      \"key_0\": 1820,\n      \"key_1\": true\n    },\n    {\n      \"key_0\": 3294.8836018267302\n    }\n  ],\n  \"total_rows\": 3515,\n  \"truncated\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9ffb0fcf-8406-4ea1-a770-12e4dfbad601",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "preview"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5574afc5-9b26-479d-a713-5581ccec3c5d",
+          "name": "Query Database",
+          "request": {
+            "name": "Query Database",
+            "description": {
+              "content": "Run a DuckDB SQL query against the database's Parquet data.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id",
+                "query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "sql",
+                  "value": "<string>",
+                  "description": "(Required) SQL query (table is named 'data')"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "1000"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dc3ec02f-66fd-47ca-83a1-c89a40481637",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sql",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"columns\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rows\": [\n    {\n      \"key_0\": 1820,\n      \"key_1\": true\n    },\n    {\n      \"key_0\": 3294.8836018267302\n    }\n  ],\n  \"total_rows\": 3515,\n  \"truncated\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e4f63053-1c30-42f7-ab61-9f2824fad90a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "sql",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "360b0379-0d52-4099-a5a9-2b84d8a81a84",
+          "name": "Nl Query Database",
+          "request": {
+            "name": "Nl Query Database",
+            "description": {
+              "content": "Translate a natural-language question into DuckDB SQL and execute it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id",
+                "nl_query"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "1000"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"question\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "efbf1320-0b9c-4b19-bce6-d58706033ee8",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "nl_query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"question\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"title\": \"string\",\n  \"sql\": \"string\",\n  \"columns\": [\n    \"string\",\n    \"string\"\n  ],\n  \"rows\": [\n    {\n      \"key_0\": 1199.4037826934468,\n      \"key_1\": \"string\"\n    },\n    {\n      \"key_0\": 893\n    }\n  ],\n  \"total_rows\": 955,\n  \"truncated\": true\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "918a2ad0-c211-4cda-aa75-10eb5ba19449",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "nl_query"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "1000"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"question\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6c599784-9c12-45d0-9df3-300cce171467",
+          "name": "Refresh Database",
+          "request": {
+            "name": "Refresh Database",
+            "description": {
+              "content": "Refresh this Database. Cascade to children fires automatically.\n\n``force_full=true`` requests a full rebuild (ignore incremental\nwatermarks). Honored for project-owned datasets, where it is persisted\non the dispatched Run; integration-owned (crawler) refreshes always\nre-poll the source and ignore the flag.\n\n- Integration-owned (data lake table): signal the crawler workflow to poll\n  that integration. ``_update_database_stats`` then fires\n  ``trigger_dependent_steps`` for the children once the poll completes.\n- Project-owned: dispatch a Run rooted at the producing data_sink, which\n  walks the project's own ancestor closure (parents are NOT re-run —\n  the data_read step uses upstream data as it stands today). The run's\n  terminal phase fires ``trigger_dependent_steps`` for the children.\n- File-backed / unbacked: cannot be refreshed (400).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "databases",
+                ":database_id",
+                "refresh"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "force_full",
+                  "value": "false"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5935ec3b-7b93-4f44-ae1d-317102899408",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "refresh"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "force_full",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": \"string\",\n  \"key_1\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5666087b-77c8-4892-8d35-9777ce6fd1cb",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "databases",
+                    ":database_id",
+                    "refresh"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "force_full",
+                      "value": "false"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "b238dc0d-b8f0-4b9f-8d0b-20045444771a",
+    "name": "DMI Backend actions databases API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

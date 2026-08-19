@@ -1,0 +1,194 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "actions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Invoke Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/actions/:action_type/invoke",
+            "params": [
+              {
+                "name": "action_type",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke Action"
+        },
+        {
+          "info": {
+            "name": "List Actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/actions",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Actions"
+        },
+        {
+          "info": {
+            "name": "Create Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/actions",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Action"
+        },
+        {
+          "info": {
+            "name": "List Runnable",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/actions/runnable",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Runnable"
+        },
+        {
+          "info": {
+            "name": "List Invocations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/actions/invocations",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Invocations"
+        },
+        {
+          "info": {
+            "name": "Invoke Action Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/actions/:action_id/invoke",
+            "params": [
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invoke Action Endpoint"
+        },
+        {
+          "info": {
+            "name": "Get Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/actions/:action_id",
+            "params": [
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Action"
+        },
+        {
+          "info": {
+            "name": "Update Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/actions/:action_id",
+            "params": [
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Action"
+        },
+        {
+          "info": {
+            "name": "Archive Action",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/actions/:action_id/archive",
+            "params": [
+              {
+                "name": "action_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Archive Action"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

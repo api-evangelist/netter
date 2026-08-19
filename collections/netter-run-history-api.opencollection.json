@@ -1,0 +1,121 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions run-history API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "run-history",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Project Runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/projects/:project_id/runs",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before",
+                "value": "",
+                "type": "query",
+                "description": "Return runs started before this timestamp"
+              }
+            ]
+          },
+          "docs": "Paginated run timeline for the project. Newest first."
+        },
+        {
+          "info": {
+            "name": "Get Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/runs/:run_id",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Run detail with StepRun rollup."
+        },
+        {
+          "info": {
+            "name": "List Cascade Events",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/projects/:project_id/cascade_events",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Cascade-decision log for the project's run timeline."
+        },
+        {
+          "info": {
+            "name": "Get Step Run Rows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/runs/:run_id/steps/:step_id/rows",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Head-sample of rows in this StepRun's step output.\n\nEvery step always runs full (incremental-rethink Task 10) — there is\nno per-run watermark window to slice by any more. This endpoint used\nto slice a ``(prior_watermark, this_watermark]`` window for\nincremental StepRuns; that branch was already dead in practice\n(nothing has written ``StepRun.output_watermark``/``execution_mode_used``\nsince Task 9) and the columns themselves are dropped in Task 13.\nAlways returns a head-sample of the step's cumul"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

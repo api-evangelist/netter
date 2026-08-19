@@ -1,0 +1,92 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions dashboard-versions API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dashboard-versions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/versions",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all versions for a dashboard, newest first."
+        },
+        {
+          "info": {
+            "name": "Get Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/versions/:version_id",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single version with full detail (including files)."
+        },
+        {
+          "info": {
+            "name": "Restore Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/versions/:version_id/restore",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Restore a previous version as the current active version."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

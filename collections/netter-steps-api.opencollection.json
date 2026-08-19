@@ -1,0 +1,485 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions steps API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "steps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Steps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List steps, optionally filtered by project."
+        },
+        {
+          "info": {
+            "name": "Create Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Step"
+        },
+        {
+          "info": {
+            "name": "Get Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Step"
+        },
+        {
+          "info": {
+            "name": "Update Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Step"
+        },
+        {
+          "info": {
+            "name": "Delete Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Step"
+        },
+        {
+          "info": {
+            "name": "Get Step Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/code",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Serve step code from S3."
+        },
+        {
+          "info": {
+            "name": "Update Step Code",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/code",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Verbatim-save a custom_code step's Python source to S3."
+        },
+        {
+          "info": {
+            "name": "Suppress Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/suppress",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Soft-delete a step. Deactivates its trigger if any."
+        },
+        {
+          "info": {
+            "name": "Batch Replace Steps",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/steps/project/:project_id/batch",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace all steps in a project (deploy-time)."
+        },
+        {
+          "info": {
+            "name": "Validate Project Dag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/project/:project_id/validate",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Validate the current step DAG for a project."
+        },
+        {
+          "info": {
+            "name": "Get Swap Candidates",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/swap-candidates",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Swap Candidates"
+        },
+        {
+          "info": {
+            "name": "Post Swap Input",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/swap-input",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Post Swap Input"
+        },
+        {
+          "info": {
+            "name": "Create Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/trigger",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Trigger"
+        },
+        {
+          "info": {
+            "name": "Update Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/trigger",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Trigger"
+        },
+        {
+          "info": {
+            "name": "Delete Trigger",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/trigger",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete Trigger"
+        },
+        {
+          "info": {
+            "name": "Trigger Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/project/:project_id/run",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Trigger a new run for a project.\n\n- root_step_id=None → run all active steps (Run All).\n- root_step_id=<id> → refresh that output: runs its ancestor closure back to roots.\n  The target must be a ``database`` step."
+        },
+        {
+          "info": {
+            "name": "List Runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/project/:project_id/runs",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List recent runs for a project."
+        },
+        {
+          "info": {
+            "name": "Get Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/run/:run_id",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get run details including step runs.\n\n``auth`` is declared to enforce authentication via FastAPI's dependency\nsystem; the project-perm check is resolved against the run's own company\nso multi-company users polling a run (e.g. dashboard InputForm) are not\n404'd when their selected ``X-Company-ID`` differs from ``run.company_id``."
+        },
+        {
+          "info": {
+            "name": "Cancel Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/run/:run_id/cancel",
+            "params": [
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cancel a running DAG execution."
+        },
+        {
+          "info": {
+            "name": "Auto Fix Step",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/auto-fix",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Dispatch an auto-fix job for a failed step.\n\nFinds the most recent failed StepRun and sends error context to the agent\nfor automatic code repair."
+        },
+        {
+          "info": {
+            "name": "List Changes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/projects/:project_id/changes",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "since",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "until",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "actor_type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_orphans",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Changes"
+        },
+        {
+          "info": {
+            "name": "Goto Change",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/projects/:project_id/changes/goto",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move the project's timeline head to ``body.event_id``.\n\nBrowser-style: replays events forward or applies inverses backward\nuntil the live DAG matches the state at the target event. No new\nevents are emitted. Subsequent edits truncate any 'future' events\nrelative to the new head. ``event_id=None`` rewinds to the initial\nstate (pre-log)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

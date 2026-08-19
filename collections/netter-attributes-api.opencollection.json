@@ -1,0 +1,218 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions attributes API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "attributes",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Attribute Definitions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/attributes"
+          },
+          "docs": "List all attribute definitions for the company."
+        },
+        {
+          "info": {
+            "name": "Create Attribute Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/attributes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an attribute definition. Requires company admin."
+        },
+        {
+          "info": {
+            "name": "Update Attribute Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/attributes/:definition_id",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an attribute definition's label. Requires company admin."
+        },
+        {
+          "info": {
+            "name": "Delete Attribute Definition",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/attributes/:definition_id",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an attribute definition. Requires company admin."
+        },
+        {
+          "info": {
+            "name": "Get Member Attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/attributes/members/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get attribute values for a company member. Requires company admin."
+        },
+        {
+          "info": {
+            "name": "Set Member Attributes",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/attributes/members/:user_id",
+            "params": [
+              {
+                "name": "user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set attribute values for a company member. Requires company admin."
+        },
+        {
+          "info": {
+            "name": "Get Automation Entity Columns",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/attributes/automation/entities/:entity_id/columns",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List dataset columns available for matching/value for a given entity."
+        },
+        {
+          "info": {
+            "name": "Get Attribute Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/attributes/:definition_id/automation",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get the automation rule for an attribute definition, or None if not configured."
+        },
+        {
+          "info": {
+            "name": "Put Attribute Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/attributes/:definition_id/automation",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Configure (upsert) an automation rule and run an initial sync."
+        },
+        {
+          "info": {
+            "name": "Delete Attribute Automation Rule",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/attributes/:definition_id/automation",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Disable the automation rule for an attribute definition."
+        },
+        {
+          "info": {
+            "name": "Sync Attribute Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/attributes/:definition_id/automation/sync",
+            "params": [
+              {
+                "name": "definition_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Trigger an on-demand sync for an attribute automation rule."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

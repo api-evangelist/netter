@@ -1,0 +1,204 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions dashboards API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dashboards",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Dashboards",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_suppressed",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List dashboards, optionally filtered by project (respects permissions)."
+        },
+        {
+          "info": {
+            "name": "Create Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboards/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new dashboard (EDITOR on the project; creator gets ADMIN)."
+        },
+        {
+          "info": {
+            "name": "Get Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single dashboard by ID."
+        },
+        {
+          "info": {
+            "name": "Update Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a dashboard's name or description."
+        },
+        {
+          "info": {
+            "name": "Delete Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Hard-delete a dashboard. FK CASCADE deletes associated chats."
+        },
+        {
+          "info": {
+            "name": "Get Or Create Dashboard Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/chat",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return the existing dashboard chat or create one."
+        },
+        {
+          "info": {
+            "name": "Suppress Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/suppress",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Soft-delete a dashboard and cascade suppress its chats."
+        },
+        {
+          "info": {
+            "name": "Get Dashboard Dependencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/dependencies",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Legacy endpoint — always returns empty list (pipeline model retired)."
+        },
+        {
+          "info": {
+            "name": "Get Dashboard Bundle",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/bundle.js",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Serve the dashboard's JS bundle (proxied from S3)."
+        },
+        {
+          "info": {
+            "name": "Regenerate Dashboard",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboards/:dashboard_id/regenerate",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Regenerate a dashboard independently (without running finalize_steps)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,62 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions apps-query API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "apps-query",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run App Query",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/query",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run a guarded SELECT against the app's bound ontology entities."
+        },
+        {
+          "info": {
+            "name": "Run App Query Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/query/batch",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run several guarded SELECTs against the app's bound entities in one\nrequest, sharing a single DuckDB connection + one materialized merge.\n\nApp-level failures (missing / not ready) return 404 / 409. Per-query\nfailures (bad SQL, DuckDB errors) are isolated into each result's\n``error`` field with HTTP 200 — one broken widget never blanks the page."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

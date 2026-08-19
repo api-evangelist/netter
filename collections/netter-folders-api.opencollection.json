@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions folders API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/folders/"
+          },
+          "docs": "List all folders for the current company (flat list, clients build tree from parent_folder_id).\n\nNon-owners see only folders they have at least VIEWER access to."
+        },
+        {
+          "info": {
+            "name": "Create Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/folders/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new folder (optionally nested under a parent)."
+        },
+        {
+          "info": {
+            "name": "Update Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename a folder."
+        },
+        {
+          "info": {
+            "name": "Delete Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a folder.\n\nChild folders and projects are promoted to the deleted folder's parent\n(or root if the deleted folder had no parent). Nothing is ever deleted\nas a side-effect."
+        },
+        {
+          "info": {
+            "name": "Move Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/folders/:folder_id/move",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move a folder to a new parent (or to root if parent_folder_id is null).\n\nReturns 409 if the move would create a circular reference."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

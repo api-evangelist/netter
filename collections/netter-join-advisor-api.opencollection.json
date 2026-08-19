@@ -1,0 +1,76 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions join-advisor API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "join-advisor",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Join Advisor Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/join-advisor-chat",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return the existing join advisor chat for a step, or 404."
+        },
+        {
+          "info": {
+            "name": "Start Join Advisor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/join-advisor",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Start a Join Advisor session for a join operator step.\n\nValidates the step is a join operator, finds the latest successful run,\ncreates or reuses an advisor chat, and dispatches the agent task."
+        },
+        {
+          "info": {
+            "name": "Send Join Advisor Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/chats/:chat_id/join-advisor-message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a follow-up message to an existing Join Advisor chat."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

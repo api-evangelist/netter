@@ -1,0 +1,58 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions workflow-architect API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "workflow-architect",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Or Create Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/workflow-architect/automations/:automation_id/chat",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Or Create Chat"
+        },
+        {
+          "info": {
+            "name": "Send Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/workflow-architect/chats/:chat_id/message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send Message"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

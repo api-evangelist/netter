@@ -1,0 +1,266 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions companies API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "companies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List My Companies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies"
+          },
+          "docs": "List every company the caller belongs to — the one cross-tenant read."
+        },
+        {
+          "info": {
+            "name": "Create Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new company — caller becomes owner + default company."
+        },
+        {
+          "info": {
+            "name": "Accept Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/accept-invitation",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Consume a pending invitation token and join its company."
+        },
+        {
+          "info": {
+            "name": "Validate Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/invitations/validate",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Resolve a pending invitation token for the accept page.\n\nUnauthenticated by design — the invitee has no account yet, so the\nopaque token is the credential (same posture as password-reset\nvalidation). Returns the invitee email + company name, or a domain\nerror (404 / 410) if the token is unknown, consumed, or expired."
+        },
+        {
+          "info": {
+            "name": "Switch Default Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/switch",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Set the caller's default company — cross-tenant by design."
+        },
+        {
+          "info": {
+            "name": "Get Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch the company referenced by the current scope."
+        },
+        {
+          "info": {
+            "name": "Update Company",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename the company — admins/owners only (operation enforces role)."
+        },
+        {
+          "info": {
+            "name": "Invite Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/invite",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Invite a user. Returns a member summary when the email matches\nan existing ``auth.users`` row (fast-path direct add), else a\npending invitation."
+        },
+        {
+          "info": {
+            "name": "Update Member Role",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/members/:member_user_id",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "member_user_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Change a member's role. Owners only (operation enforces role)."
+        },
+        {
+          "info": {
+            "name": "Remove Member",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/members/:member_user_id",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "member_user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a member; members may only remove themselves."
+        },
+        {
+          "info": {
+            "name": "List Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/members",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List every member of a company. Caller must be a member."
+        },
+        {
+          "info": {
+            "name": "List Invitations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/invitations",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List pending invitations. Caller must be an owner or admin."
+        },
+        {
+          "info": {
+            "name": "Cancel Invitation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/companies/:company_id/invitations/:invitation_id",
+            "params": [
+              {
+                "name": "company_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "invitation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revoke a pending invitation. Owners + admins only."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

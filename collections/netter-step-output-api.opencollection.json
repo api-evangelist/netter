@@ -1,0 +1,69 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions step-output API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "step-output",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Step Output",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/output",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "table",
+                "value": "",
+                "type": "query",
+                "description": "Output table name for multi-output steps"
+              }
+            ]
+          },
+          "docs": "Return schema + 20-row sample (or scalar JSON) for a step's latest output."
+        },
+        {
+          "info": {
+            "name": "Query Step Output",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/steps/:step_id/output/query",
+            "params": [
+              {
+                "name": "step_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run a DuckDB SQL query over the step's latest Parquet output (table alias 'data')."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

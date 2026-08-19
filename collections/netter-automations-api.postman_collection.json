@@ -1,0 +1,2086 @@
+{
+  "item": [
+    {
+      "id": "f61a98b4-9f8d-46d7-8d1d-4c5174aa7b18",
+      "name": "automations",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c5bc6fbe-616d-4fe7-8b80-c413377143dc",
+          "name": "Create Automation",
+          "request": {
+            "name": "Create Automation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"nodes\": [\n    {\n      \"slug\": \"<string>\",\n      \"kind\": \"<string>\",\n      \"config\": {\n        \"key_0\": false\n      },\n      \"position_x\": \"<integer>\",\n      \"position_y\": \"<integer>\"\n    },\n    {\n      \"slug\": \"<string>\",\n      \"kind\": \"<string>\",\n      \"config\": {\n        \"key_0\": 3844\n      },\n      \"position_x\": \"<integer>\",\n      \"position_y\": \"<integer>\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"from_slug\": \"<string>\",\n      \"to_slug\": \"<string>\",\n      \"port\": \"default\"\n    },\n    {\n      \"from_slug\": \"<string>\",\n      \"to_slug\": \"<string>\",\n      \"port\": \"default\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6bdb4737-9cb9-469f-9262-fe6b6ce8c6fd",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"nodes\": [\n    {\n      \"slug\": \"string\",\n      \"kind\": \"aggregate_to_one\",\n      \"config\": {\n        \"key_0\": \"string\",\n        \"key_1\": true\n      },\n      \"position_x\": 1757,\n      \"position_y\": 8640\n    },\n    {\n      \"slug\": \"string\",\n      \"kind\": \"query\",\n      \"config\": {\n        \"key_0\": 3847.207049513274,\n        \"key_1\": 9204.473393956298,\n        \"key_2\": 807.3492315734266,\n        \"key_3\": 9456.643835464502\n      },\n      \"position_x\": 611,\n      \"position_y\": 8831\n    }\n  ],\n  \"edges\": [\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    },\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"key_0\": \"88eec849-1a32-d438-18df-74a9f737058e\",\n  \"key_1\": \"dcb9a810-e8e6-2645-cbf8-24fa8203a376\",\n  \"key_2\": \"d7bd96aa-9076-b4e0-d2c5-b95ca0ea962b\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "fc41e3c9-24a3-4438-afe7-c1c5e0faba1c",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"nodes\": [\n    {\n      \"slug\": \"string\",\n      \"kind\": \"aggregate_to_one\",\n      \"config\": {\n        \"key_0\": \"string\",\n        \"key_1\": true\n      },\n      \"position_x\": 1757,\n      \"position_y\": 8640\n    },\n    {\n      \"slug\": \"string\",\n      \"kind\": \"query\",\n      \"config\": {\n        \"key_0\": 3847.207049513274,\n        \"key_1\": 9204.473393956298,\n        \"key_2\": 807.3492315734266,\n        \"key_3\": 9456.643835464502\n      },\n      \"position_x\": 611,\n      \"position_y\": 8831\n    }\n  ],\n  \"edges\": [\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    },\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    }\n  ],\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7a43221c-1647-460d-a56b-80943419f16e",
+          "name": "List Automations",
+          "request": {
+            "name": "List Automations",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "include_suppressed",
+                  "value": "false"
+                },
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "55887323-ed66-44d3-882b-9c3910ec1732",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_suppressed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"dd671fbb-3866-fe8d-97c2-71d368fb8aa5\",\n    \"company_id\": \"7ed08d66-551b-fd8a-705b-f24c30313780\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"status\": \"active\",\n    \"created_by\": \"71cfc7d1-aaa3-385e-8c9d-0ad442d39392\",\n    \"created_at\": \"string\",\n    \"updated_at\": \"string\",\n    \"activated_at\": \"string\",\n    \"is_suppressed\": false,\n    \"nodes\": [\n      {\n        \"id\": \"9801f9a6-a7dd-dc76-94c2-293e6014c85b\",\n        \"slug\": \"string\",\n        \"kind\": \"create_entity_row\",\n        \"config\": {\n          \"key_0\": \"string\",\n          \"key_1\": \"string\"\n        },\n        \"position_x\": 9271,\n        \"position_y\": 6920\n      },\n      {\n        \"id\": \"2df45398-1f71-c334-2771-e906371d93f9\",\n        \"slug\": \"string\",\n        \"kind\": \"trigger.schedule\",\n        \"config\": {\n          \"key_0\": \"string\",\n          \"key_1\": 1611\n        },\n        \"position_x\": 438,\n        \"position_y\": 4199\n      }\n    ],\n    \"edges\": [\n      {\n        \"id\": \"73075c9b-d095-f580-7931-567b145a30f9\",\n        \"from_node_id\": \"3679ccdf-164d-ef4c-5295-26a6eb84d0eb\",\n        \"to_node_id\": \"5bb58b6c-4e7d-bb0c-1397-8e572ed4696e\",\n        \"port\": \"string\"\n      },\n      {\n        \"id\": \"f1f98bd5-1081-c691-fe63-9dbecb3a0f79\",\n        \"from_node_id\": \"6624ba03-394c-5ead-4369-657b761279e6\",\n        \"to_node_id\": \"3b177f04-584a-4add-e3b8-6d3111dfa64c\",\n        \"port\": \"string\"\n      }\n    ],\n    \"current_user_level\": \"admin\",\n    \"is_favorite\": false\n  },\n  {\n    \"id\": \"5b63978c-84aa-aa67-28ae-b8b6edb95f34\",\n    \"company_id\": \"76ae9ef0-d531-e76e-2a02-e9bae692fd24\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"status\": \"draft\",\n    \"created_by\": \"e21da0c5-32e3-74f0-a859-856f347e3ec0\",\n    \"created_at\": \"string\",\n    \"updated_at\": \"string\",\n    \"activated_at\": \"string\",\n    \"is_suppressed\": true,\n    \"nodes\": [\n      {\n        \"id\": \"7e1cacde-ba99-fa0f-d530-031266a3f5d3\",\n        \"slug\": \"string\",\n        \"kind\": \"create_entity_row\",\n        \"config\": {\n          \"key_0\": 5349\n        },\n        \"position_x\": 9835,\n        \"position_y\": 7207\n      },\n      {\n        \"id\": \"9397ac1a-7973-d3f5-ae70-f6abd9732979\",\n        \"slug\": \"string\",\n        \"kind\": \"trigger.schedule\",\n        \"config\": {\n          \"key_0\": true\n        },\n        \"position_x\": 3226,\n        \"position_y\": 422\n      }\n    ],\n    \"edges\": [\n      {\n        \"id\": \"83577620-8386-68ca-5b89-2032f0211aa9\",\n        \"from_node_id\": \"11361fb7-5fbd-f844-2538-ab4fedd55239\",\n        \"to_node_id\": \"887bd88b-804f-6040-6821-2601d0dc830d\",\n        \"port\": \"string\"\n      },\n      {\n        \"id\": \"af4e51a6-93bd-e703-60a0-37ef5d86dd88\",\n        \"from_node_id\": \"e50ddc04-76a3-2af5-2e17-289137e0f915\",\n        \"to_node_id\": \"52aea29f-8a04-f04b-a6fd-2c2c75095af3\",\n        \"port\": \"string\"\n      }\n    ],\n    \"current_user_level\": \"editor\",\n    \"is_favorite\": false\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2c7fed69-457f-4baa-9b19-7a9976f64c0b",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "include_suppressed",
+                      "value": "false"
+                    },
+                    {
+                      "key": "limit",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "76e36823-ffe6-44b0-b743-e22964f11682",
+          "name": "Get Automation",
+          "request": {
+            "name": "Get Automation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b82c52ef-09b1-4972-8944-c4b38fb797cc",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"926604a2-5c46-c224-1669-aa06f0c778d8\",\n  \"company_id\": \"7e1416d8-6ade-22fa-22b8-aafaaf29863b\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"draft\",\n  \"created_by\": \"8b9b558c-cc77-4e0b-ff10-45d229148e93\",\n  \"created_at\": \"string\",\n  \"updated_at\": \"string\",\n  \"activated_at\": \"string\",\n  \"is_suppressed\": true,\n  \"nodes\": [\n    {\n      \"id\": \"67c84e7b-4683-5f20-d4d0-d60385dc52b6\",\n      \"slug\": \"string\",\n      \"kind\": \"query\",\n      \"config\": {\n        \"key_0\": 3529\n      },\n      \"position_x\": 6538,\n      \"position_y\": 5680\n    },\n    {\n      \"id\": \"6fa13aea-2dc0-c314-35c4-0582228220cb\",\n      \"slug\": \"string\",\n      \"kind\": \"aggregate_to_one\",\n      \"config\": {\n        \"key_0\": 474,\n        \"key_1\": true\n      },\n      \"position_x\": 595,\n      \"position_y\": 1997\n    }\n  ],\n  \"edges\": [\n    {\n      \"id\": \"4458bbd0-4229-e76e-a8c7-0da48cf5f12b\",\n      \"from_node_id\": \"0d7f797b-96ed-b2ef-05fe-8e88022d0cfc\",\n      \"to_node_id\": \"692b14e2-04d2-d410-f8d4-e065f433ae42\",\n      \"port\": \"string\"\n    },\n    {\n      \"id\": \"9f0b8543-c2bf-7557-266c-d8ebfcaa12c9\",\n      \"from_node_id\": \"d94ac7a6-835b-b767-0172-c95a36043bf6\",\n      \"to_node_id\": \"3a919509-185f-f696-e565-243088cc9399\",\n      \"port\": \"string\"\n    }\n  ],\n  \"current_user_level\": \"viewer\",\n  \"is_favorite\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e68a3f70-0572-4730-8e9e-ee550724d129",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "04d17b72-362e-4d74-966f-147926106a57",
+          "name": "Update Automation",
+          "request": {
+            "name": "Update Automation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"nodes\": [\n    {\n      \"slug\": \"<string>\",\n      \"kind\": \"<string>\",\n      \"config\": {\n        \"key_0\": 5520,\n        \"key_1\": \"string\",\n        \"key_2\": \"string\",\n        \"key_3\": \"string\"\n      },\n      \"position_x\": \"<integer>\",\n      \"position_y\": \"<integer>\"\n    },\n    {\n      \"slug\": \"<string>\",\n      \"kind\": \"<string>\",\n      \"config\": {\n        \"key_0\": 2437.054836387461,\n        \"key_1\": 1676\n      },\n      \"position_x\": \"<integer>\",\n      \"position_y\": \"<integer>\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"from_slug\": \"<string>\",\n      \"to_slug\": \"<string>\",\n      \"port\": \"default\"\n    },\n    {\n      \"from_slug\": \"<string>\",\n      \"to_slug\": \"<string>\",\n      \"port\": \"default\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de181aca-7984-44ed-b126-5103d8758a18",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"nodes\": [\n    {\n      \"slug\": \"string\",\n      \"kind\": \"trigger.entity_change\",\n      \"config\": {\n        \"key_0\": 7293.618827017692\n      },\n      \"position_x\": 2875,\n      \"position_y\": 8789\n    },\n    {\n      \"slug\": \"string\",\n      \"kind\": \"ai_step\",\n      \"config\": {\n        \"key_0\": 929.148647052519,\n        \"key_1\": 9993.59543803992,\n        \"key_2\": true\n      },\n      \"position_x\": 5631,\n      \"position_y\": 2447\n    }\n  ],\n  \"edges\": [\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    },\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "a6c4f6fe-ab51-49fe-b3a2-9a2d6ab7c5dc",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"nodes\": [\n    {\n      \"slug\": \"string\",\n      \"kind\": \"trigger.entity_change\",\n      \"config\": {\n        \"key_0\": 7293.618827017692\n      },\n      \"position_x\": 2875,\n      \"position_y\": 8789\n    },\n    {\n      \"slug\": \"string\",\n      \"kind\": \"ai_step\",\n      \"config\": {\n        \"key_0\": 929.148647052519,\n        \"key_1\": 9993.59543803992,\n        \"key_2\": true\n      },\n      \"position_x\": 5631,\n      \"position_y\": 2447\n    }\n  ],\n  \"edges\": [\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    },\n    {\n      \"from_slug\": \"string\",\n      \"to_slug\": \"string\",\n      \"port\": \"default\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "755df183-d1bf-41e5-850f-50de0fa89703",
+          "name": "Favorite Automation",
+          "request": {
+            "name": "Favorite Automation",
+            "description": {
+              "content": "Pin the workflow to the top of the caller's list. Idempotent; viewer+.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "favorite"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "ff785511-e4d5-47c2-8ba0-4e30406e60bd",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "favorite"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"926604a2-5c46-c224-1669-aa06f0c778d8\",\n  \"company_id\": \"7e1416d8-6ade-22fa-22b8-aafaaf29863b\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"draft\",\n  \"created_by\": \"8b9b558c-cc77-4e0b-ff10-45d229148e93\",\n  \"created_at\": \"string\",\n  \"updated_at\": \"string\",\n  \"activated_at\": \"string\",\n  \"is_suppressed\": true,\n  \"nodes\": [\n    {\n      \"id\": \"67c84e7b-4683-5f20-d4d0-d60385dc52b6\",\n      \"slug\": \"string\",\n      \"kind\": \"query\",\n      \"config\": {\n        \"key_0\": 3529\n      },\n      \"position_x\": 6538,\n      \"position_y\": 5680\n    },\n    {\n      \"id\": \"6fa13aea-2dc0-c314-35c4-0582228220cb\",\n      \"slug\": \"string\",\n      \"kind\": \"aggregate_to_one\",\n      \"config\": {\n        \"key_0\": 474,\n        \"key_1\": true\n      },\n      \"position_x\": 595,\n      \"position_y\": 1997\n    }\n  ],\n  \"edges\": [\n    {\n      \"id\": \"4458bbd0-4229-e76e-a8c7-0da48cf5f12b\",\n      \"from_node_id\": \"0d7f797b-96ed-b2ef-05fe-8e88022d0cfc\",\n      \"to_node_id\": \"692b14e2-04d2-d410-f8d4-e065f433ae42\",\n      \"port\": \"string\"\n    },\n    {\n      \"id\": \"9f0b8543-c2bf-7557-266c-d8ebfcaa12c9\",\n      \"from_node_id\": \"d94ac7a6-835b-b767-0172-c95a36043bf6\",\n      \"to_node_id\": \"3a919509-185f-f696-e565-243088cc9399\",\n      \"port\": \"string\"\n    }\n  ],\n  \"current_user_level\": \"viewer\",\n  \"is_favorite\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fc6134a-8b40-4de1-8707-c20e64fc6127",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "favorite"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5c134e37-a02b-4fb1-bc79-cda9cfeda46a",
+          "name": "Unfavorite Automation",
+          "request": {
+            "name": "Unfavorite Automation",
+            "description": {
+              "content": "Remove the workflow from the caller's favorites. Idempotent; viewer+.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "favorite"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b6c33fc8-49c7-4ac6-93fa-4ea1f7e60274",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "favorite"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"926604a2-5c46-c224-1669-aa06f0c778d8\",\n  \"company_id\": \"7e1416d8-6ade-22fa-22b8-aafaaf29863b\",\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"status\": \"draft\",\n  \"created_by\": \"8b9b558c-cc77-4e0b-ff10-45d229148e93\",\n  \"created_at\": \"string\",\n  \"updated_at\": \"string\",\n  \"activated_at\": \"string\",\n  \"is_suppressed\": true,\n  \"nodes\": [\n    {\n      \"id\": \"67c84e7b-4683-5f20-d4d0-d60385dc52b6\",\n      \"slug\": \"string\",\n      \"kind\": \"query\",\n      \"config\": {\n        \"key_0\": 3529\n      },\n      \"position_x\": 6538,\n      \"position_y\": 5680\n    },\n    {\n      \"id\": \"6fa13aea-2dc0-c314-35c4-0582228220cb\",\n      \"slug\": \"string\",\n      \"kind\": \"aggregate_to_one\",\n      \"config\": {\n        \"key_0\": 474,\n        \"key_1\": true\n      },\n      \"position_x\": 595,\n      \"position_y\": 1997\n    }\n  ],\n  \"edges\": [\n    {\n      \"id\": \"4458bbd0-4229-e76e-a8c7-0da48cf5f12b\",\n      \"from_node_id\": \"0d7f797b-96ed-b2ef-05fe-8e88022d0cfc\",\n      \"to_node_id\": \"692b14e2-04d2-d410-f8d4-e065f433ae42\",\n      \"port\": \"string\"\n    },\n    {\n      \"id\": \"9f0b8543-c2bf-7557-266c-d8ebfcaa12c9\",\n      \"from_node_id\": \"d94ac7a6-835b-b767-0172-c95a36043bf6\",\n      \"to_node_id\": \"3a919509-185f-f696-e565-243088cc9399\",\n      \"port\": \"string\"\n    }\n  ],\n  \"current_user_level\": \"viewer\",\n  \"is_favorite\": false\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0ed75e17-f7a7-4a8a-8b42-fffa91b660a1",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "favorite"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "49c2c725-b3ca-4869-9606-c7bd9561d6c6",
+          "name": "Update Node Config",
+          "request": {
+            "name": "Update Node Config",
+            "description": {
+              "content": "Replace a node's ``config`` dict in place. Requires EDITOR on the automation.\n\nDelegates to ``workflow_architect.application.dag_edits.update_node_config`` —\nthe same primitive the architect chat uses — so validation rules stay aligned.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "nodes",
+                ":slug",
+                "config"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "slug",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"config\": {\n    \"key_0\": 392\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ba7a95d6-23d4-48e1-bf3c-e779b2d53092",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "nodes",
+                    ":slug",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"key_0\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "be095bb9-7721-442a-aa58-c5353e59cf41",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "nodes",
+                    ":slug",
+                    "config"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "slug",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"config\": {\n    \"key_0\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ac9f77c1-2e75-42b6-8a2e-56411de23172",
+          "name": "Suppress Automation",
+          "request": {
+            "name": "Suppress Automation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "suppress"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "24f6f03d-0b97-4853-a632-37397a1d3211",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "suppress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0f0c6d01-be41-4a13-ab84-a1bca5c84771",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "suppress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "08a9406e-86d7-4fbe-a0d7-b2a7af1e9a49",
+          "name": "Unsuppress Automation",
+          "request": {
+            "name": "Unsuppress Automation",
+            "description": {
+              "content": "Restore a suppressed automation. If the row was ACTIVE before suppress\n(suppress only flips ``is_suppressed`` — status stays as it was), this\nendpoint also re-registers the Temporal schedule that ``suppress`` deleted.\nWithout that, the row sits ACTIVE forever with no backing schedule and\nnever fires again.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "unsuppress"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "729ff789-8e9a-4cb4-ae47-1569584e7fb2",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "unsuppress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c7f4ff3d-4bb4-451a-a35a-cd75597defcf",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "unsuppress"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "70433eda-e65f-4858-83cc-ebafa22e6197",
+          "name": "Activate Automation",
+          "request": {
+            "name": "Activate Automation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "activate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "629defae-bc4e-449c-ac6f-80c66f8dd97f",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "activate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "cc694f1c-7265-4476-92e1-36627fb872a6",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "activate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a601849d-87cf-44ad-aa19-2b1580d67a8e",
+          "name": "Deactivate Automation",
+          "request": {
+            "name": "Deactivate Automation",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "deactivate"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "dfabfe60-243e-430e-8cea-8f5ed661a507",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "deactivate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "POST",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "7b3f8c98-c09b-48b7-b213-d943c44b76ea",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "deactivate"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "43d6b615-c21e-46e1-a32e-a7e1c912c9fe",
+          "name": "Run Automation Now",
+          "request": {
+            "name": "Run Automation Now",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "run"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"input\": {\n    \"key_0\": false\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6feb208e-237f-4c68-a980-170a94bb3501",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"key_0\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run_id\": \"347a2d98-48bb-051a-fc09-c219defb94ee\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "719cc24e-3b40-4ac4-95ef-ce42ec61b25e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"input\": {\n    \"key_0\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "3f08291b-483c-4840-86a9-c16237984869",
+          "name": "List Automation Runs",
+          "request": {
+            "name": "List Automation Runs",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "limit",
+                  "value": "50"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "53861d48-58cb-4204-969f-4d3127c01bd4",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"5cbf8029-2d3d-6fd3-a054-fccd68bc414c\",\n    \"automation_id\": \"5ff2fe3d-d45d-35db-e0f0-6ce28de32d1a\",\n    \"triggered_by\": \"string\",\n    \"triggered_by_user_id\": \"85a3fb25-951e-8283-819b-38364728fa8f\",\n    \"status\": \"failed\",\n    \"started_at\": \"string\",\n    \"ended_at\": \"string\",\n    \"item_count_total\": 3193,\n    \"item_count_failed\": 1942,\n    \"error_summary\": \"string\"\n  },\n  {\n    \"id\": \"cade771f-ead3-6293-1293-f23f646d779e\",\n    \"automation_id\": \"bb6ffeab-b332-b3ca-70d7-981754721c9d\",\n    \"triggered_by\": \"string\",\n    \"triggered_by_user_id\": \"0a5fd338-2cad-cbca-418d-35fdd9ddf4d6\",\n    \"status\": \"success\",\n    \"started_at\": \"string\",\n    \"ended_at\": \"string\",\n    \"item_count_total\": 3385,\n    \"item_count_failed\": 904,\n    \"error_summary\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d11a3ca-b4ce-492d-b0eb-bbab76f9aa9e",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "limit",
+                      "value": "50"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "94b00623-571c-431e-a577-32b78905b739",
+          "name": "Get Automation Run",
+          "request": {
+            "name": "Get Automation Run",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "automations",
+                ":automation_id",
+                "runs",
+                ":run_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "automation_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "run_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "93b1bc57-0708-4494-a84f-9413069df577",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"run\": {\n    \"id\": \"ed173466-0bec-ddff-abe5-40feba715e64\",\n    \"automation_id\": \"c933909f-4c3a-84cf-7321-c0fd864d17ad\",\n    \"triggered_by\": \"string\",\n    \"triggered_by_user_id\": \"a1a86dd0-a9f8-f1fb-bad5-fbeb2e8d8622\",\n    \"status\": \"running\",\n    \"started_at\": \"string\",\n    \"ended_at\": \"string\",\n    \"item_count_total\": 3261,\n    \"item_count_failed\": 8174,\n    \"error_summary\": \"string\"\n  },\n  \"node_runs\": [\n    {\n      \"id\": \"5ca610d0-b241-9d20-68c8-2237d5856186\",\n      \"node_id\": \"163ed777-4a0f-806a-7666-9bb8c170b5f5\",\n      \"status\": \"skipped\",\n      \"items_in\": 350,\n      \"items_out\": 292,\n      \"items_failed\": 5050,\n      \"duration_ms\": 252,\n      \"input_sample\": {\n        \"key_0\": 3374.5129538095475,\n        \"key_1\": false\n      },\n      \"output_sample\": {\n        \"key_0\": 138.67557706422008\n      },\n      \"error_sample\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"id\": \"ed23f247-d3f9-6446-7478-57a3456e02f2\",\n      \"node_id\": \"9cf2bb64-3c1d-05d5-4c69-ec62b0c6e512\",\n      \"status\": \"failed\",\n      \"items_in\": 9620,\n      \"items_out\": 1858,\n      \"items_failed\": 6462,\n      \"duration_ms\": 656,\n      \"input_sample\": {\n        \"key_0\": 1883\n      },\n      \"output_sample\": {\n        \"key_0\": 8538.101805539698\n      },\n      \"error_sample\": {\n        \"key_0\": true\n      }\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04759392-7036-4456-b883-4812176a3565",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "automations",
+                    ":automation_id",
+                    "runs",
+                    ":run_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "automation_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "run_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "62dd8484-0a9c-4c4d-a718-697e52598307",
+    "name": "DMI Backend actions automations API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

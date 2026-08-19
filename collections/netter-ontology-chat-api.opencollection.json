@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions ontology-chat API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ontology-chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Ontology Chat Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/chats/:chat_id/message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a message to the ontology design advisor."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

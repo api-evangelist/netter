@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions app-chat API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "app-chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send App Chat Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/app-chat/:chat_id/message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a message to an app-specific chat for targeted edits."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

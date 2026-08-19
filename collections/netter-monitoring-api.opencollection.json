@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions monitoring API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "monitoring",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Monitoring Overview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/monitoring/"
+          },
+          "docs": "Return a centralised monitoring overview for the company."
+        },
+        {
+          "info": {
+            "name": "Get Monitoring Insights",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/monitoring/insights"
+          },
+          "docs": "Return AI-native actionable insights for the company."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

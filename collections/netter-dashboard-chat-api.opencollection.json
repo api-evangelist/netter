@@ -1,0 +1,40 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions dashboard-chat API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dashboard-chat",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Send Dashboard Chat Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboard-chat/:chat_id/message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a message to a dashboard-specific chat for targeted edits."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

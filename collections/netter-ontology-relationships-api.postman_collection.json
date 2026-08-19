@@ -1,0 +1,700 @@
+{
+  "item": [
+    {
+      "id": "4bb66bea-e2a0-45d5-b8fb-31be02de590c",
+      "name": "ontology-relationships",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ce28bacd-38eb-465a-bc03-2d1f0ed8c9de",
+          "name": "List Relationships",
+          "request": {
+            "name": "List Relationships",
+            "description": {
+              "content": "List all relationships for the company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5f042e56-c396-4663-a468-d2c553111aab",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"e74fe9cc-70e5-17ae-c4eb-2b2f35796ab0\",\n    \"company_id\": \"5a3e4419-4ecb-c404-fb34-617d9b9cbe1a\",\n    \"from_entity_id\": \"5ade37b1-e320-7cf8-1494-073f700ea076\",\n    \"to_entity_id\": \"528c2960-c8f5-882f-52cf-123054b1d657\",\n    \"name\": \"string\",\n    \"relationship_type\": \"string\",\n    \"cardinality\": \"string\",\n    \"from_key\": \"string\",\n    \"to_key\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"2005-08-30T14:18:17.756Z\",\n    \"updated_at\": \"2020-09-08T23:31:20.487Z\",\n    \"from_entity_name\": \"\",\n    \"to_entity_name\": \"\"\n  },\n  {\n    \"id\": \"04030f82-442e-4897-47f8-4730487a42ce\",\n    \"company_id\": \"a8b55bb2-d434-6d2d-02a7-ee1aac10e7f0\",\n    \"from_entity_id\": \"d51c8280-5d58-de8b-b7c3-1bb1188aca73\",\n    \"to_entity_id\": \"82ef6121-d3fc-6354-9f5b-0dc593b97931\",\n    \"name\": \"string\",\n    \"relationship_type\": \"string\",\n    \"cardinality\": \"string\",\n    \"from_key\": \"string\",\n    \"to_key\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"2003-08-26T07:29:47.828Z\",\n    \"updated_at\": \"1988-09-11T18:59:15.477Z\",\n    \"from_entity_name\": \"\",\n    \"to_entity_name\": \"\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fb2dbf6a-5775-4eac-8331-84b20bb3e4bd",
+          "name": "Create Relationship",
+          "request": {
+            "name": "Create Relationship",
+            "description": {
+              "content": "Manually create a relationship (and its inverse). Requires admin/owner.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"from_entity_id\": \"<uuid>\",\n  \"to_entity_id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"relationship_type\": \"<string>\",\n  \"cardinality\": \"<string>\",\n  \"from_key\": \"<string>\",\n  \"to_key\": \"<string>\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bcccd6e4-954d-4afe-96e3-f7ea98aa3dd3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"from_entity_id\": \"<uuid>\",\n  \"to_entity_id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"relationship_type\": \"<string>\",\n  \"cardinality\": \"<string>\",\n  \"from_key\": \"<string>\",\n  \"to_key\": \"<string>\",\n  \"description\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c57458f5-9aa6-80fa-2900-45ae088dd945\",\n  \"company_id\": \"8e180309-75bc-f2ec-88f2-5220995dc3e0\",\n  \"from_entity_id\": \"c15b075c-5656-274f-07ce-4ec8b0d0be60\",\n  \"to_entity_id\": \"6ef7ae17-665a-49ca-e78f-8294a3172e7c\",\n  \"name\": \"string\",\n  \"relationship_type\": \"string\",\n  \"cardinality\": \"string\",\n  \"from_key\": \"string\",\n  \"to_key\": \"string\",\n  \"description\": \"string\",\n  \"created_at\": \"1999-10-18T10:39:31.519Z\",\n  \"updated_at\": \"1995-02-17T12:57:26.938Z\",\n  \"from_entity_name\": \"\",\n  \"to_entity_name\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "09143851-a5ec-4daa-96ab-9888888a5d35",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"from_entity_id\": \"<uuid>\",\n  \"to_entity_id\": \"<uuid>\",\n  \"name\": \"<string>\",\n  \"relationship_type\": \"<string>\",\n  \"cardinality\": \"<string>\",\n  \"from_key\": \"<string>\",\n  \"to_key\": \"<string>\",\n  \"description\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5b9e744e-db61-40f5-acc2-1487efba1892",
+          "name": "List Entity Relationships",
+          "request": {
+            "name": "List Entity Relationships",
+            "description": {
+              "content": "List relationships for one entity (both directions).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id",
+                "relationships"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "04343df7-a88f-46e4-93e1-9c40cf6fc39b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"b5547340-6517-2781-0fe7-56b14bded500\",\n    \"company_id\": \"006b6dad-d2eb-3480-190a-056a124d2afd\",\n    \"from_entity_id\": \"380b9254-5446-79f7-9dad-48aaf24effbf\",\n    \"to_entity_id\": \"977c399c-2f2d-2d4b-e375-2c6c2279f3a5\",\n    \"name\": \"string\",\n    \"relationship_type\": \"string\",\n    \"cardinality\": \"string\",\n    \"from_key\": \"string\",\n    \"to_key\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"2024-04-05T09:30:55.420Z\",\n    \"updated_at\": \"2009-11-12T05:42:05.091Z\",\n    \"from_entity_name\": \"\",\n    \"to_entity_name\": \"\"\n  },\n  {\n    \"id\": \"8752e2e1-c86b-379f-f72a-0116b9d10358\",\n    \"company_id\": \"402ad09c-eb04-b5f1-1eb5-75a00b205630\",\n    \"from_entity_id\": \"fd657cc6-9186-deb2-4755-e28aed6ad614\",\n    \"to_entity_id\": \"33cf4a72-9132-4c9f-0b1f-3253d647ee0a\",\n    \"name\": \"string\",\n    \"relationship_type\": \"string\",\n    \"cardinality\": \"string\",\n    \"from_key\": \"string\",\n    \"to_key\": \"string\",\n    \"description\": \"string\",\n    \"created_at\": \"1976-12-14T21:22:01.284Z\",\n    \"updated_at\": \"1991-10-01T19:43:37.992Z\",\n    \"from_entity_name\": \"\",\n    \"to_entity_name\": \"\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6cc80c2-8579-468f-a1fe-2d6972882d8c",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "relationships"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "269e4e07-f9c4-45ee-87a4-77286109505c",
+          "name": "Update Relationship",
+          "request": {
+            "name": "Update Relationship",
+            "description": {
+              "content": "Update relationship name, type, or description. Requires admin/owner.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "relationships",
+                ":relationship_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "relationship_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"relationship_type\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d4e5a431-5dad-4d15-9e25-a47f96e9a9bc",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships",
+                    ":relationship_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "relationship_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"relationship_type\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"c57458f5-9aa6-80fa-2900-45ae088dd945\",\n  \"company_id\": \"8e180309-75bc-f2ec-88f2-5220995dc3e0\",\n  \"from_entity_id\": \"c15b075c-5656-274f-07ce-4ec8b0d0be60\",\n  \"to_entity_id\": \"6ef7ae17-665a-49ca-e78f-8294a3172e7c\",\n  \"name\": \"string\",\n  \"relationship_type\": \"string\",\n  \"cardinality\": \"string\",\n  \"from_key\": \"string\",\n  \"to_key\": \"string\",\n  \"description\": \"string\",\n  \"created_at\": \"1999-10-18T10:39:31.519Z\",\n  \"updated_at\": \"1995-02-17T12:57:26.938Z\",\n  \"from_entity_name\": \"\",\n  \"to_entity_name\": \"\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "84a3e544-e72e-4e84-92f3-05673826a6d5",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships",
+                    ":relationship_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "relationship_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"relationship_type\": \"<string>\",\n  \"description\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "90960962-1374-4102-ac2b-28fbfcfa9f64",
+          "name": "Delete Relationship",
+          "request": {
+            "name": "Delete Relationship",
+            "description": {
+              "content": "Delete a relationship and its paired inverse. Requires admin/owner.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "relationships",
+                ":relationship_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "relationship_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "c1ed0da7-cea7-40d7-a72f-d9ced4daeae2",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships",
+                    ":relationship_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "relationship_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "be874da5-100c-4a0f-837e-06d1f89bc547",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "relationships",
+                    ":relationship_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "relationship_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4799b1db-d3c0-45e4-bb4f-3033b9319b4d",
+    "name": "DMI Backend actions ontology-relationships API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

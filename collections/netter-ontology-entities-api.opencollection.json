@@ -1,0 +1,220 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions ontology-entities API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ontology-entities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Entities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities"
+          },
+          "docs": "List all entities the caller can see (VIEWER+). Owners see everything."
+        },
+        {
+          "info": {
+            "name": "Create Managed Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/entities",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an entity with no source dataset (entity from nothing)."
+        },
+        {
+          "info": {
+            "name": "Get Entity Graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entity-graph"
+          },
+          "docs": "Company entity graph (nodes = entities, edges = relationships).\n\nPath is ``/entity-graph`` rather than ``/entities/graph`` so it does not\ncollide with ``GET /entities/{entity_id}`` (which would parse ``graph`` as a\nUUID). Permission-filtered to VIEWER+ accessible entities."
+        },
+        {
+          "info": {
+            "name": "Get Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get entity detail with properties, relationships, and fed-by projects."
+        },
+        {
+          "info": {
+            "name": "Update Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update entity display_name or description."
+        },
+        {
+          "info": {
+            "name": "Archive Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Archive an entity (soft-delete)."
+        },
+        {
+          "info": {
+            "name": "List Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/properties",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List properties for an entity."
+        },
+        {
+          "info": {
+            "name": "Create Managed Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/properties",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Add a managed (admin-defined) property to an entity."
+        },
+        {
+          "info": {
+            "name": "Update Properties",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/properties",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Bulk update property display names, descriptions, and order."
+        },
+        {
+          "info": {
+            "name": "Delete Managed Property",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/properties/:property_id",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "property_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove a managed property from an entity (source-origin properties are rejected)."
+        },
+        {
+          "info": {
+            "name": "Preview Field Rules",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/properties/preview-rules",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Count existing rows that would violate the candidate field rules (no data is changed)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

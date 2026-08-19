@@ -1,0 +1,51 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions assistant API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "assistant",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Assistant Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/assistant/chats"
+          },
+          "docs": "Start a new assistant chat (one row per 'New chat' click)."
+        },
+        {
+          "info": {
+            "name": "Assistant Chat Message",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/assistant/chats/:chat_id/message",
+            "params": [
+              {
+                "name": "chat_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a message to the assistant — dispatches an agent turn."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

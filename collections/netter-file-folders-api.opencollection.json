@@ -1,0 +1,282 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions file-folders API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "file-folders",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List File Folders",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/file-folders",
+            "params": [
+              {
+                "name": "parent_folder_id",
+                "value": "",
+                "type": "query",
+                "description": "If provided, return only direct children of this folder. Use the special value 'root' (encoded as missing) to list root folders."
+              },
+              {
+                "name": "flat",
+                "value": "",
+                "type": "query",
+                "description": "If true, return every folder in the company (legacy flat view). When false (default) the response is scoped to direct children of ``parent_folder_id`` (or the root level if omitted)."
+              }
+            ]
+          },
+          "docs": "List FileFolders. Default = direct children of ``parent_folder_id``.\n\nThe flat-list mode is preserved for clients that haven't been migrated to\nnested navigation yet (the current frontend on ``main`` consumes a flat\nlist); they pass ``flat=true`` and get every folder back."
+        },
+        {
+          "info": {
+            "name": "Create File Folder Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/file-folders",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new FileFolder, optionally nested under ``parent_folder_id``.\n\nAny company member may create a root folder (the creator is auto-granted\nADMIN on it inside the operation). Creating a subfolder mutates the\nparent's subtree, so it requires EDITOR on the parent."
+        },
+        {
+          "info": {
+            "name": "Get File Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single folder's metadata (used by the explorer header / breadcrumbs)."
+        },
+        {
+          "info": {
+            "name": "Update File Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename and/or toggle merge and/or update write-semantics (incl. the\nfull_delivery batch fields) on a FileFolder.\n\nOrdering: deterministic pre-checks FIRST, then write-semantics, then\nrename, then merge_enabled. Each of the three blocks commits its own\ntransaction internally (full cross-block atomicity is out of scope — see\nthe \"Atomicity contract\" comment below), so every failure mode that's\ndeterministic from the request body + the folder's state at the start of\nthe request (not a race) is chec"
+        },
+        {
+          "info": {
+            "name": "Delete File Folder Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Cascade-delete a folder. Non-empty/merge folders require type-to-confirm."
+        },
+        {
+          "info": {
+            "name": "Get Folder Breadcrumbs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/breadcrumbs",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return the breadcrumb path from root → folder (inclusive).\n\nOrder: root first, target last — matches the visual order in the UI so the\nfrontend can render the chain unmodified."
+        },
+        {
+          "info": {
+            "name": "List Folder Members",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/members",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List the contributing files (with per-file ``merge_error``) of a folder's\ncollection dataset. Empty list if the folder isn't merge-enabled."
+        },
+        {
+          "info": {
+            "name": "List Folder Batches",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/batches",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List batch groups (by ``batch_key``) for a folder's ``full_delivery``\nconfig, with each group's read-time computed lifecycle status. Empty list\nif the folder isn't merge-enabled or has no batch members."
+        },
+        {
+          "info": {
+            "name": "Force Merge Batch",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/batches/:batch_key:force-merge",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "batch_key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Escape hatch for a stuck batch (e.g. timed out at 9/10 files): seal\nwhatever live members currently exist for ``batch_key``, ignoring the\nfolder's configured ``batch_size``.\n\nReuses the exact shared seal path (``services.batch_seal.seal_batch``)\nand advisory lock as the automatic Nth-file seal, so force-merging is\nindistinguishable from a \"natural\" seal to every downstream reader."
+        },
+        {
+          "info": {
+            "name": "Discard Batch Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/batches/:batch_key:discard",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "batch_key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete every member row of ``batch_key`` (collection parquet untouched).\n\nTakes the same transaction-scoped advisory lock as ``:force-merge`` and the\nautomatic seal, keyed on the collection id, BEFORE deleting anything — a\nconcurrent seal that already loaded these members (pre-lock) would\notherwise re-upload them into the collection right after we discard them,\norphaning the write. If the discarded batch is the currently-sealed one,\nthe folder's ``sealed_batch_key`` done-marker is cleared in the"
+        },
+        {
+          "info": {
+            "name": "Preview Delete Folder",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/delete-preview",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Cascade-delete preview. Drives the type-to-confirm dialog on the UI."
+        },
+        {
+          "info": {
+            "name": "Test Group Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/group-key:test",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Dry-run a candidate ``batch_key_pattern`` regex against the folder's\nalready-committed filenames, without persisting anything. Lets the admin\npreview capture groups while still authoring the ``full_delivery`` config\n(before saving it via the folder PATCH ``batch_key_pattern`` field).\nRead-only — VIEWER, like the other GET inspection routes on this resource."
+        },
+        {
+          "info": {
+            "name": "Move File Folder Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/file-folders/:folder_id/move",
+            "params": [
+              {
+                "name": "folder_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Re-parent a folder. ``target_parent_id=None`` moves to the root.\n\nAuto-renames on sibling collision (``foo → foo (1)``); raises 409 on\ncycle / depth-cap / merge-leaf invariant violations."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

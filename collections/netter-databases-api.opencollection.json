@@ -1,0 +1,211 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions databases API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "databases",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/databases/",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List databases, optionally filtered by project."
+        },
+        {
+          "info": {
+            "name": "Create Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/databases/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new database record (metadata only, no Parquet yet)."
+        },
+        {
+          "info": {
+            "name": "Get Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single database by ID."
+        },
+        {
+          "info": {
+            "name": "Update Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a database's name, description, schema, or sharing."
+        },
+        {
+          "info": {
+            "name": "Delete Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Hard-delete a database and its Parquet file."
+        },
+        {
+          "info": {
+            "name": "Preview Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id/preview",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Preview first N rows of a database."
+        },
+        {
+          "info": {
+            "name": "Query Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id/query",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "sql",
+                "value": "",
+                "type": "query",
+                "description": "SQL query (table is named 'data')"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Run a DuckDB SQL query against the database's Parquet data."
+        },
+        {
+          "info": {
+            "name": "Nl Query Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id/nl_query",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Translate a natural-language question into DuckDB SQL and execute it."
+        },
+        {
+          "info": {
+            "name": "Refresh Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/databases/:database_id/refresh",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "force_full",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Refresh this Database. Cascade to children fires automatically.\n\n``force_full=true`` requests a full rebuild (ignore incremental\nwatermarks). Honored for project-owned datasets, where it is persisted\non the dispatched Run; integration-owned (crawler) refreshes always\nre-poll the source and ignore the flag.\n\n- Integration-owned (data lake table): signal the crawler workflow to poll\n  that integration. ``_update_database_stats`` then fires\n  ``trigger_dependent_steps`` for the children once the po"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

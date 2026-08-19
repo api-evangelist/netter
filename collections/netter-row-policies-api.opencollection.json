@@ -1,0 +1,108 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions row-policies API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "row-policies",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Row Access Policies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/row-policies/:resource_type/:resource_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all RLS rules for a resource. Requires ADMIN on the resource."
+        },
+        {
+          "info": {
+            "name": "Create Row Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/row-policies/:resource_type/:resource_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an RLS rule for a resource. Requires ADMIN on the resource."
+        },
+        {
+          "info": {
+            "name": "Update Row Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/row-policies/policy/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an RLS rule's operator, values, or attribute_key. Requires ADMIN on the resource."
+        },
+        {
+          "info": {
+            "name": "Delete Row Access Policy",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/row-policies/policy/:policy_id",
+            "params": [
+              {
+                "name": "policy_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete an RLS rule. Requires ADMIN on the resource."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

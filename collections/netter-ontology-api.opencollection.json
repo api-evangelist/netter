@@ -1,0 +1,109 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions ontology API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ontology",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Ontology Databases",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/databases"
+          },
+          "docs": "List all shared databases in the company (the ontology), plus user's own non-shared ones."
+        },
+        {
+          "info": {
+            "name": "Get Database Cascade Dependencies",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/databases/:database_id/cascade",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all steps that will be triggered when this database refreshes."
+        },
+        {
+          "info": {
+            "name": "Delete Ontology Database",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/ontology/databases/:database_id",
+            "params": [
+              {
+                "name": "database_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a database if it is not used by any active steps."
+        },
+        {
+          "info": {
+            "name": "Get Ontology Graph",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/graph"
+          },
+          "docs": "Return the company-wide dataset dependency graph (nodes + edges)."
+        },
+        {
+          "info": {
+            "name": "Create Cascade Mute",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/cascade-mutes",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Mute the auto-cascade for one (source, target, project) edge."
+        },
+        {
+          "info": {
+            "name": "Delete Cascade Mute",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/ontology/cascade-mutes/:mute_id",
+            "params": [
+              {
+                "name": "mute_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Resume cascade — hard-delete the mute row."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

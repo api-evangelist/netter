@@ -1,0 +1,118 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions project-steps API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "project-steps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Project Steps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/project-steps/:project_id/steps",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all non-suppressed steps in a project."
+        },
+        {
+          "info": {
+            "name": "Get Project Lineage",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/project-steps/:project_id/lineage",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return the full project DAG for lineage visualization."
+        },
+        {
+          "info": {
+            "name": "Run All Steps",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/project-steps/:project_id/run-all",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "force_full",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Run all root steps in a project + cascade to downstream.\n\n``force_full=true`` (query param) bypasses the AI Lambda's content-\naddressed cache / the custom Lambda's api_action ledger for this run\nonly — used for manual \"rebuild from scratch\" replays after schema\nchanges or bug fixes. Cascade-created runs do NOT inherit\n``force_full`` (spec §7d)."
+        },
+        {
+          "info": {
+            "name": "List Project Runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/project-steps/:project_id/runs",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List recent runs for a project, newest first, with step runs."
+        },
+        {
+          "info": {
+            "name": "Pause All Steps",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/project-steps/:project_id/pause-all",
+            "params": [
+              {
+                "name": "project_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deactivate all triggers in a project."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

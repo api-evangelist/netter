@@ -1,0 +1,741 @@
+{
+  "item": [
+    {
+      "id": "5e028e1f-e7dd-4662-8836-8309c4fac645",
+      "name": "ontology",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "507c6bd2-7c66-4e64-b7e0-10bd4397f564",
+          "name": "List Ontology Databases",
+          "request": {
+            "name": "List Ontology Databases",
+            "description": {
+              "content": "List all shared databases in the company (the ontology), plus user's own non-shared ones.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "databases"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "5b8e1b0d-72e2-48a6-8a63-faede8c320d9",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "databases"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"b733b1e2-4289-7d87-05f6-5e2b299cac80\",\n    \"company_id\": \"1046b8ed-d484-d319-4d81-093bc36dc512\",\n    \"user_id\": \"afb7bc12-713c-38cc-87a3-4b751c4445a1\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"table_name\": \"string\",\n    \"storage_path\": \"string\",\n    \"schema_info\": [\n      {\n        \"key_0\": 2265\n      },\n      {\n        \"key_0\": 4514,\n        \"key_1\": 8087\n      }\n    ],\n    \"is_shared\": false,\n    \"is_suppressed\": true,\n    \"refresh_status\": \"string\",\n    \"last_refreshed_at\": \"1998-10-22T19:22:20.424Z\",\n    \"row_count\": 7660,\n    \"size_bytes\": 3359,\n    \"created_at\": \"2000-02-29T08:36:33.331Z\",\n    \"updated_at\": \"2022-03-28T10:10:50.812Z\",\n    \"project_id\": \"309dad51-a86d-ae86-8772-b2ca75c6cf5b\",\n    \"integration_id\": \"674cf7bd-272a-f109-0bcf-9d49cc926c2a\",\n    \"source_step_id\": \"33a0a12f-eead-0b55-eb88-971845075bc1\",\n    \"source_user_file_id\": \"0a256dfd-f236-88c4-1687-712e04d809bd\",\n    \"source_sheet_name\": \"string\",\n    \"refresh_error\": \"string\",\n    \"name_is_user_overridden\": false,\n    \"doc_status\": \"idle\",\n    \"doc_status_updated_at\": \"1962-12-30T06:46:30.063Z\",\n    \"doc_last_error\": \"string\",\n    \"source_project_name\": \"\",\n    \"source_provider_slug\": \"string\",\n    \"source_provider_display_name\": \"string\",\n    \"source_provider_domain\": \"string\"\n  },\n  {\n    \"id\": \"989ba75d-c363-5214-6a02-000e36ac38de\",\n    \"company_id\": \"b5f01844-c392-c1cf-6b2a-1aaa81e0e78f\",\n    \"user_id\": \"cceea284-d08b-49e4-bdd4-2eb1efcd9cf8\",\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"table_name\": \"string\",\n    \"storage_path\": \"string\",\n    \"schema_info\": [\n      {\n        \"key_0\": 689,\n        \"key_1\": 3009,\n        \"key_2\": 7986.359430220361\n      },\n      {\n        \"key_0\": 4175\n      }\n    ],\n    \"is_shared\": false,\n    \"is_suppressed\": true,\n    \"refresh_status\": \"string\",\n    \"last_refreshed_at\": \"2015-06-17T09:01:23.123Z\",\n    \"row_count\": 8405,\n    \"size_bytes\": 6457,\n    \"created_at\": \"2003-06-15T06:29:22.251Z\",\n    \"updated_at\": \"1950-06-25T10:24:34.299Z\",\n    \"project_id\": \"7d1c0279-66b7-730c-f80c-d66bf11d2245\",\n    \"integration_id\": \"5a46f10c-c257-0f0e-0075-3d502e5716e7\",\n    \"source_step_id\": \"c82c5930-5421-9051-951e-7630ec6b4eb6\",\n    \"source_user_file_id\": \"0d6af926-d6a0-16df-fd70-2f169d88065c\",\n    \"source_sheet_name\": \"string\",\n    \"refresh_error\": \"string\",\n    \"name_is_user_overridden\": false,\n    \"doc_status\": \"idle\",\n    \"doc_status_updated_at\": \"1972-11-18T11:29:50.529Z\",\n    \"doc_last_error\": \"string\",\n    \"source_project_name\": \"\",\n    \"source_provider_slug\": \"string\",\n    \"source_provider_display_name\": \"string\",\n    \"source_provider_domain\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8f86b0a2-d6da-455f-a6fb-ad660f046246",
+          "name": "Get Database Cascade Dependencies",
+          "request": {
+            "name": "Get Database Cascade Dependencies",
+            "description": {
+              "content": "List all steps that will be triggered when this database refreshes.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "databases",
+                ":database_id",
+                "cascade"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "04011801-ee2a-4f2e-b228-01e0300f7783",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "databases",
+                    ":database_id",
+                    "cascade"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"step_id\": \"8a03abec-1707-ad0b-3217-8c498363ad0c\",\n    \"step_title\": \"string\",\n    \"project_id\": \"ad098c02-a18d-a158-8320-b20512e491cb\",\n    \"project_name\": \"string\"\n  },\n  {\n    \"step_id\": \"43b8cc11-96ad-a207-332e-1d06d97d60ed\",\n    \"step_title\": \"string\",\n    \"project_id\": \"4c71a3c4-707d-d528-16d7-eae0a476f943\",\n    \"project_name\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "04ea574c-ac17-4049-bfd9-f1889e0f5ede",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "databases",
+                    ":database_id",
+                    "cascade"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "37c6d3fc-0f9c-4c15-ad49-d74489e66692",
+          "name": "Delete Ontology Database",
+          "request": {
+            "name": "Delete Ontology Database",
+            "description": {
+              "content": "Delete a database if it is not used by any active steps.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "databases",
+                ":database_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "database_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "92c3d08a-3c39-4367-aecb-831de664d855",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "03808e3b-210e-41a8-8434-a95481fb6e15",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "databases",
+                    ":database_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "database_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2942d4f4-0a2c-4362-8e8b-cb6bb8cebc6d",
+          "name": "Get Ontology Graph",
+          "request": {
+            "name": "Get Ontology Graph",
+            "description": {
+              "content": "Return the company-wide dataset dependency graph (nodes + edges).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "graph"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7d28cfde-3d24-43a3-a4f7-a51af043f8ed",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "graph"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"nodes\": [\n    {\n      \"id\": \"c23fa484-22dc-ee07-4b6c-e128551d6749\",\n      \"name\": \"string\",\n      \"table_name\": \"string\",\n      \"is_shared\": true,\n      \"project_id\": \"cbce0bb4-01cd-6fdf-bd51-bb8db461296e\",\n      \"project_name\": \"string\",\n      \"source_provider_slug\": \"string\",\n      \"source_provider_display_name\": \"string\",\n      \"source_provider_domain\": \"string\",\n      \"row_count\": 3916,\n      \"last_refreshed_at\": \"2006-07-08T23:08:38.270Z\",\n      \"refresh_status\": \"string\",\n      \"trigger_types\": [\n        \"string\",\n        \"string\"\n      ],\n      \"database_step_id\": \"54dc3c16-8e87-9561-ee73-9682be9260c4\",\n      \"folder_id\": \"199524e1-b1b9-ac33-d574-f902ee345c0d\",\n      \"folder_name\": \"string\",\n      \"refresh_error\": \"string\",\n      \"is_outdated\": false,\n      \"outdated_by_id\": \"e32b69e9-3663-39f7-5367-5de6f4437640\"\n    },\n    {\n      \"id\": \"0e699162-0b24-268d-8a5e-9fd4ed9888f1\",\n      \"name\": \"string\",\n      \"table_name\": \"string\",\n      \"is_shared\": true,\n      \"project_id\": \"661c14ac-831c-6fa9-bd56-cac067ef3eb4\",\n      \"project_name\": \"string\",\n      \"source_provider_slug\": \"string\",\n      \"source_provider_display_name\": \"string\",\n      \"source_provider_domain\": \"string\",\n      \"row_count\": 9092,\n      \"last_refreshed_at\": \"1978-05-18T17:21:37.580Z\",\n      \"refresh_status\": \"string\",\n      \"trigger_types\": [\n        \"string\",\n        \"string\"\n      ],\n      \"database_step_id\": \"a4f7ce96-bc77-7e6b-ff05-7daddfb568d5\",\n      \"folder_id\": \"a596d135-635a-f598-bdf6-b45251299bf3\",\n      \"folder_name\": \"string\",\n      \"refresh_error\": \"string\",\n      \"is_outdated\": false,\n      \"outdated_by_id\": \"6923f39e-d6ab-7a54-4c54-f75f0e18a415\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source_database_id\": \"0d6bcf63-5c0a-8768-1126-41a13193bbff\",\n      \"target_database_id\": \"6f1c057d-38bc-4be2-f4df-55fea95f108b\",\n      \"project_id\": \"797c44c6-1e1c-293d-f2c6-9b6952c24b72\",\n      \"project_name\": \"string\",\n      \"is_muted\": false,\n      \"mute_id\": \"78de8d72-0062-040b-3377-eea55556501f\",\n      \"muted_by_user_id\": \"54c3bb91-043b-30c7-2c95-bfcb514e1633\",\n      \"muted_by_user_name\": \"string\",\n      \"muted_at\": \"1946-12-26T01:42:36.199Z\",\n      \"mute_reason\": \"string\"\n    },\n    {\n      \"source_database_id\": \"bc88d8e1-8e2a-fec1-ce42-e538d9008a6e\",\n      \"target_database_id\": \"86de6748-b902-e8b5-2e9d-dbe48a6f532f\",\n      \"project_id\": \"c5e0ecb9-8961-aa54-d9b2-30aa467c9efb\",\n      \"project_name\": \"string\",\n      \"is_muted\": false,\n      \"mute_id\": \"b76c5c8f-6136-e408-4622-80c0e33fc5f9\",\n      \"muted_by_user_id\": \"2ac57b5e-48b2-54f1-3876-a639de503f44\",\n      \"muted_by_user_name\": \"string\",\n      \"muted_at\": \"2014-05-27T18:08:17.272Z\",\n      \"mute_reason\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7d772999-d329-4947-aca6-63110b6819a8",
+          "name": "Create Cascade Mute",
+          "request": {
+            "name": "Create Cascade Mute",
+            "description": {
+              "content": "Mute the auto-cascade for one (source, target, project) edge.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "cascade-mutes"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"source_database_id\": \"<uuid>\",\n  \"target_database_id\": \"<uuid>\",\n  \"project_id\": \"<uuid>\",\n  \"reason\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "46032488-83f9-40f0-9a95-f131bca71eea",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "cascade-mutes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source_database_id\": \"<uuid>\",\n  \"target_database_id\": \"<uuid>\",\n  \"project_id\": \"<uuid>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"9312d66c-c039-40ad-b43d-95b77073834e\",\n  \"source_database_id\": \"6fe3447a-552d-480f-04e2-a61ef90f2ec9\",\n  \"target_database_id\": \"0b8adf41-fcba-a62e-2424-0a6fdf470359\",\n  \"project_id\": \"b8428d0b-8e38-ecb1-2fa2-f5b2ea6862b8\",\n  \"muted_by_user_id\": \"eec2a009-3788-c789-23d9-1e8b02f911ab\",\n  \"muted_at\": \"2008-07-17T19:09:56.034Z\",\n  \"reason\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1cb8a178-6074-438a-bc46-4639b186082a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "cascade-mutes"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"source_database_id\": \"<uuid>\",\n  \"target_database_id\": \"<uuid>\",\n  \"project_id\": \"<uuid>\",\n  \"reason\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "272879d4-0ea1-45e9-bd0c-7099cc540577",
+          "name": "Delete Cascade Mute",
+          "request": {
+            "name": "Delete Cascade Mute",
+            "description": {
+              "content": "Resume cascade — hard-delete the mute row.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "cascade-mutes",
+                ":mute_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "mute_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "85c6bd40-f5a9-48f1-87f4-4502bdcb20aa",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "cascade-mutes",
+                    ":mute_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "mute_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e2cc4c00-98f5-45cc-8648-4784d3efd36a",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "cascade-mutes",
+                    ":mute_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "mute_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "bf4b087d-ed66-436d-94c2-e65780fc874b",
+    "name": "DMI Backend actions ontology API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

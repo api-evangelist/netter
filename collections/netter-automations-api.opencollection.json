@@ -1,0 +1,299 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions automations API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "automations",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Automations",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/automations",
+            "params": [
+              {
+                "name": "include_suppressed",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Automations"
+        },
+        {
+          "info": {
+            "name": "Create Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/automations",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create Automation"
+        },
+        {
+          "info": {
+            "name": "Get Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Automation"
+        },
+        {
+          "info": {
+            "name": "Update Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update Automation"
+        },
+        {
+          "info": {
+            "name": "Favorite Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/favorite",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Pin the workflow to the top of the caller's list. Idempotent; viewer+."
+        },
+        {
+          "info": {
+            "name": "Unfavorite Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/favorite",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Remove the workflow from the caller's favorites. Idempotent; viewer+."
+        },
+        {
+          "info": {
+            "name": "Update Node Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/nodes/:slug/config",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "slug",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Replace a node's ``config`` dict in place. Requires EDITOR on the automation.\n\nDelegates to ``workflow_architect.application.dag_edits.update_node_config`` —\nthe same primitive the architect chat uses — so validation rules stay aligned."
+        },
+        {
+          "info": {
+            "name": "Suppress Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/suppress",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Suppress Automation"
+        },
+        {
+          "info": {
+            "name": "Unsuppress Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/unsuppress",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Restore a suppressed automation. If the row was ACTIVE before suppress\n(suppress only flips ``is_suppressed`` — status stays as it was), this\nendpoint also re-registers the Temporal schedule that ``suppress`` deleted.\nWithout that, the row sits ACTIVE forever with no backing schedule and\nnever fires again."
+        },
+        {
+          "info": {
+            "name": "Activate Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/activate",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Activate Automation"
+        },
+        {
+          "info": {
+            "name": "Deactivate Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/deactivate",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deactivate Automation"
+        },
+        {
+          "info": {
+            "name": "Run Automation Now",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/run",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run Automation Now"
+        },
+        {
+          "info": {
+            "name": "List Automation Runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/runs",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List Automation Runs"
+        },
+        {
+          "info": {
+            "name": "Get Automation Run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/automations/:automation_id/runs/:run_id",
+            "params": [
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "run_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Automation Run"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,137 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions dashboard-data API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "dashboard-data",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Dashboard Pipelines Deprecated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboard-data/:dashboard_id/pipelines",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deprecated — pipeline tables were dropped. Returns []."
+        },
+        {
+          "info": {
+            "name": "Get Dashboard Runs Deprecated",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboard-data/:dashboard_id/runs",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pipeline_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "status",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Deprecated — pipeline_run table was dropped. Returns []."
+        },
+        {
+          "info": {
+            "name": "Trigger Dashboard Pipeline Run Deprecated",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboard-data/:dashboard_id/pipelines/:pipeline_id/runs",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "pipeline_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Deprecated — pipeline model is gone. Accepts the POST silently (202)\nso generated dashboard trigger buttons don't 500 the bundle; returns a\nstub response identifying this as a no-op. Frontend should move to the\nstep-based trigger endpoints."
+        },
+        {
+          "info": {
+            "name": "Get Dashboard Tables",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/dashboard-data/:dashboard_id/tables",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return catalog of project databases + side tables with schemas."
+        },
+        {
+          "info": {
+            "name": "Query Dashboard Data",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/dashboard-data/:dashboard_id/query",
+            "params": [
+              {
+                "name": "dashboard_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Execute DuckDB SQL across all project databases + side tables."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

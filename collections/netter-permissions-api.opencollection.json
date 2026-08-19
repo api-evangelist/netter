@@ -1,0 +1,197 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions permissions API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "permissions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Resource Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/permissions/resource/:resource_type/:resource_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all permissions on a resource. Requires admin."
+        },
+        {
+          "info": {
+            "name": "Grant Resource Permission",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/permissions/resource/:resource_type/:resource_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Grant a permission on a resource to a user or group. Requires admin."
+        },
+        {
+          "info": {
+            "name": "Update Resource Permission",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/permissions/resource/:resource_type/:resource_id/:grantee_type/:grantee_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "grantee_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "grantee_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a grantee's permission level on a resource. Requires admin."
+        },
+        {
+          "info": {
+            "name": "Revoke Resource Permission",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/permissions/resource/:resource_type/:resource_id/:grantee_type/:grantee_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "grantee_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "grantee_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revoke a grantee's permission on a resource. Requires admin."
+        },
+        {
+          "info": {
+            "name": "List User Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/permissions/user/:target_user_id",
+            "params": [
+              {
+                "name": "target_user_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List all permissions for a user with resource names. Requires owner.\n\nIncludes both direct user grants and grants via the user's effective\ngroups. Role check lives inside\n:class:`ListUserPermissions.execute_with_names` — raises\n:class:`PermissionDenied` (→ HTTP 403) when the caller isn't an owner."
+        },
+        {
+          "info": {
+            "name": "List My Permissions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/permissions/my",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all permissions granted to the current user (direct + group grants)."
+        },
+        {
+          "info": {
+            "name": "Effective Access",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/permissions/effective/:resource_type/:resource_id",
+            "params": [
+              {
+                "name": "resource_type",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "resource_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Every user's effective level on the resource, with provenance — feeds the share panel.\n\nReturns one entry per user who has any access (direct or via group/ancestor),\nwith the contributing grant paths and whether each path is data-flow-capped.\nRequires ADMIN on the resource."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

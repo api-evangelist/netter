@@ -1,0 +1,340 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions files API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "files",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Magic Links",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/magic-links"
+          },
+          "docs": "List all magic links for the company (any member)."
+        },
+        {
+          "info": {
+            "name": "Create Magic Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/magic-links",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new magic upload link. Any company member may create one."
+        },
+        {
+          "info": {
+            "name": "Update Magic Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/files/magic-links/:link_id",
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update label and/or expiry of a magic link (creator or company owner)."
+        },
+        {
+          "info": {
+            "name": "Delete Magic Link",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/files/magic-links/:link_id",
+            "params": [
+              {
+                "name": "link_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Revoke (soft-delete) a magic link (creator or company owner)."
+        },
+        {
+          "info": {
+            "name": "Get Magic Link Meta",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/upload/:token/meta",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return public metadata about a magic link (label, folder prefix, expiry)."
+        },
+        {
+          "info": {
+            "name": "Magic Upload",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/upload/:token",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a file using a magic link token. No account required.\n\nThe token must be valid, active, and not expired."
+        },
+        {
+          "info": {
+            "name": "Upload File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/upload",
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload a CSV, JSON, or Excel file.\n\nAccepts either a Supabase JWT or an API key (``ntr_…``) in the\n``Authorization: Bearer`` header.\n\nThe optional ``folder`` form field places the file in that folder\n(found-or-created on the fly). It takes precedence over any path prefix\nembedded in the filename. Without it, the folder is still derived from a\n``/``-separated filename prefix; no folder means the file lands at root.\n\nUsage (API key)::\n\n    curl -X POST https://api.example.com/api/v1/files/upload \\"
+        },
+        {
+          "info": {
+            "name": "Commit User File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/:user_file_id/commit",
+            "params": [
+              {
+                "name": "user_file_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Finalize a pending upload with chosen sheets + skip-rows."
+        },
+        {
+          "info": {
+            "name": "Get Parse Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/:user_file_id/parse-config",
+            "params": [
+              {
+                "name": "user_file_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return analyzer output + current Database state for the cog modal."
+        },
+        {
+          "info": {
+            "name": "Patch Parse Config",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/files/:user_file_id/parse-config",
+            "params": [
+              {
+                "name": "user_file_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Diff the request against current Databases and apply add/update/remove.\n\n* Sheet in request, no current Database → create + dispatch parse.\n* Sheet in request, Database exists, ``header_row_index`` differs →\n  update + dispatch parse.\n* Sheet in request, Database exists, unchanged → no-op.\n* Sheet not in request, Database exists → soft-suppress."
+        },
+        {
+          "info": {
+            "name": "List User Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/",
+            "params": [
+              {
+                "name": "include_pending",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List uploaded files in the company the caller can see.\n\nOwners see everything; members see files they hold a (direct or\nfolder-inherited) VIEWER grant on.\n\n``include_pending=true`` also returns uploads stuck in\n``parse_state='pending'`` (never finalized through the wizard) so the\nfiles-management UI can show them with a \"to finalize\" badge. Defaults to\ncommitted-only so dataset pickers reusing this endpoint are unaffected.\nThe accessibility filter applies to pending rows the same way."
+        },
+        {
+          "info": {
+            "name": "Search Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/search",
+            "params": [
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Search files and folders by name across the whole company.\n\nCase-insensitive substring match on ``name``. Results are gated by the same\nper-resource VIEWER ACL the list endpoints use (owners see everything).\nEmpty ``q`` returns empty results without touching the database — the guard\nruns before the permission-graph lookups so an empty query is truly free."
+        },
+        {
+          "info": {
+            "name": "Get User File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/:file_id",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get metadata for a single file."
+        },
+        {
+          "info": {
+            "name": "Rename User File",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/files/:file_id",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Rename a file and cascade to non-user-overridden file-backed databases."
+        },
+        {
+          "info": {
+            "name": "Delete User File",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/files/:file_id",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a file (record + S3 object) and cascade to file-backed databases."
+        },
+        {
+          "info": {
+            "name": "Download User File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/files/:file_id/download",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download the raw file content."
+        },
+        {
+          "info": {
+            "name": "Move User File Endpoint",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/files/:file_id/move",
+            "params": [
+              {
+                "name": "file_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Move a file into a folder (or to the root if ``target_folder_id`` is None).\n\nSide effects when source/target folders are merge-enabled:\n- source-side: drop the file's slice from the source collection (parquet\n  rewrite + DatasetMember delete) so dashboards reflect the move\n  immediately.\n- target-side: re-arm the file's databases and dispatch a Temporal parse\n  so the rows land in the target collection.\n\nFilename collisions in the destination are auto-resolved with\n``foo (1).csv`` style suffixes"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

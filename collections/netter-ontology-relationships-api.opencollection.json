@@ -1,0 +1,102 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions ontology-relationships API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ontology-relationships",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/relationships"
+          },
+          "docs": "List all relationships for the company."
+        },
+        {
+          "info": {
+            "name": "Create Relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/relationships",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Manually create a relationship (and its inverse). Requires admin/owner."
+        },
+        {
+          "info": {
+            "name": "List Entity Relationships",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/relationships",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List relationships for one entity (both directions)."
+        },
+        {
+          "info": {
+            "name": "Update Relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/ontology/relationships/:relationship_id",
+            "params": [
+              {
+                "name": "relationship_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update relationship name, type, or description. Requires admin/owner."
+        },
+        {
+          "info": {
+            "name": "Delete Relationship",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/ontology/relationships/:relationship_id",
+            "params": [
+              {
+                "name": "relationship_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a relationship and its paired inverse. Requires admin/owner."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

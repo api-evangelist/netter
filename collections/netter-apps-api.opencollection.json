@@ -1,0 +1,488 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions apps API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "apps",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Apps",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/"
+          },
+          "docs": "List apps the caller can see (VIEWER+). Owners see everything."
+        },
+        {
+          "info": {
+            "name": "Create App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new app (draft).\n\nCompany-level gate (admin/owner) still applies — viewers cannot create\napps from nothing. The per-app ADMIN grant happens inside CreateApp."
+        },
+        {
+          "info": {
+            "name": "Get App",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single app by ID."
+        },
+        {
+          "info": {
+            "name": "Update App",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an app's name or description."
+        },
+        {
+          "info": {
+            "name": "Delete App",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Soft-delete an app."
+        },
+        {
+          "info": {
+            "name": "Regenerate App",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/regenerate",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Regenerate an app's bundle independently (without running finalize_steps)."
+        },
+        {
+          "info": {
+            "name": "Publish Draft",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/publish",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Promote the app's draft version to live."
+        },
+        {
+          "info": {
+            "name": "Discard Draft",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/draft",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Discard the app's draft version, reverting to the live version."
+        },
+        {
+          "info": {
+            "name": "Get App Chat",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/chat",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Return (or create) the chat session linked to this app."
+        },
+        {
+          "info": {
+            "name": "Favorite App",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/favorite",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Mark this app as a favourite for the current user (idempotent).\n\nPer-user state, but the caller still needs VIEWER on the resource —\ncompany membership alone would otherwise let any member toggle a\nfavourite on apps they cannot see, and use the 403-vs-404 response\nsplit to enumerate app IDs across the access boundary. The\npermission check runs **before** ``_load_app_or_404`` so a missing\ngrant collapses both \"doesn't exist\" and \"exists but inaccessible\"\ninto the same 403 for non-owners, matching"
+        },
+        {
+          "info": {
+            "name": "Unfavorite App",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/favorite",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unmark this app as a favourite for the current user (idempotent).\n\nSame VIEWER-before-load ordering as :func:`favorite_app` so the\nresponse code never leaks app existence across the access boundary."
+        },
+        {
+          "info": {
+            "name": "Get App Bundle",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/bundle.js",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Serve the app's JS bundle (proxied from S3)."
+        },
+        {
+          "info": {
+            "name": "List Versions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/versions",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List all versions for an app, newest first."
+        },
+        {
+          "info": {
+            "name": "Get Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/versions/:version_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a single version with full detail (including files).\n\nSource files / css / imports live in S3 (``v{N}/``) now, not on the row —\nwe read them back here so the response shape is unchanged for the FE."
+        },
+        {
+          "info": {
+            "name": "Delete Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/versions/:version_id",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Delete a single draft version (row + S3 folder). Live version is protected."
+        },
+        {
+          "info": {
+            "name": "Restore Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/versions/:version_id/restore",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Restore a previous version as the current active version."
+        },
+        {
+          "info": {
+            "name": "Get Version Bundle",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/versions/:version_id/bundle.js",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Serve a specific version's JS bundle (used to preview the draft)."
+        },
+        {
+          "info": {
+            "name": "Publish Version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/versions/:version_id/publish",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "version_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Publish a specific version (draft or a prior published version) → live."
+        },
+        {
+          "info": {
+            "name": "Run App Automation",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/automations/:automation_id/run",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "automation_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Run App Automation"
+        },
+        {
+          "info": {
+            "name": "List File Targets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/file-targets",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "List File Targets"
+        },
+        {
+          "info": {
+            "name": "Upload To File Target",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/file-targets/:binding_id/upload",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "binding_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload To File Target"
+        },
+        {
+          "info": {
+            "name": "Upload Entity File",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/entity-files/upload",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "multipart-form",
+              "data": []
+            }
+          },
+          "docs": "Upload Entity File"
+        },
+        {
+          "info": {
+            "name": "Download Entity File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/apps/:app_id/entity-files/:user_file_id/download",
+            "params": [
+              {
+                "name": "app_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "user_file_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Download Entity File"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

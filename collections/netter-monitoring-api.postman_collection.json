@@ -1,0 +1,184 @@
+{
+  "item": [
+    {
+      "id": "3a129b8d-4598-4b49-b41d-af50e1f3a99a",
+      "name": "monitoring",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0ff45cd0-2745-4e01-bc7b-1e3a5c93eeca",
+          "name": "Get Monitoring Overview",
+          "request": {
+            "name": "Get Monitoring Overview",
+            "description": {
+              "content": "Return a centralised monitoring overview for the company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "monitoring",
+                ""
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "226b42a8-8727-483c-880e-de4c5a0580e0",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "monitoring",
+                    ""
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"steps\": {\n    \"total\": 3946,\n    \"active\": 98,\n    \"draft\": 9146,\n    \"paused\": 2717,\n    \"archived\": 7297\n  },\n  \"dashboards\": {\n    \"total\": 9698,\n    \"ready\": 5726,\n    \"draft\": 715,\n    \"generating\": 5473,\n    \"error\": 6124\n  },\n  \"runs_last_7d\": {\n    \"total\": 896,\n    \"success\": 1540,\n    \"failed\": 250,\n    \"running\": 2330,\n    \"cancelled\": 9406\n  },\n  \"recent_runs\": [\n    {\n      \"id\": \"935d9131-ca49-6a44-4b2e-540e468510b6\",\n      \"run_id\": \"992d7c63-d7ec-6664-f920-ec12dd692b97\",\n      \"project_id\": \"606981b1-18d6-2da5-78f5-93ebe87d0e36\",\n      \"project_name\": \"string\",\n      \"root_step_title\": \"string\",\n      \"status\": \"string\",\n      \"trigger_source\": \"string\",\n      \"started_at\": \"1980-05-08T09:31:12.859Z\",\n      \"finished_at\": \"2008-03-11T00:11:54.040Z\",\n      \"error\": \"string\",\n      \"error_summary\": \"string\"\n    },\n    {\n      \"id\": \"52ab8b3a-b5a2-1998-c456-913eb1ef9ecf\",\n      \"run_id\": \"053867b4-0b4e-4402-ac79-7d0b2b45d9cc\",\n      \"project_id\": \"61a61722-9c85-6c03-ab6b-94b6d34de1be\",\n      \"project_name\": \"string\",\n      \"root_step_title\": \"string\",\n      \"status\": \"string\",\n      \"trigger_source\": \"string\",\n      \"started_at\": \"2003-10-22T12:58:23.805Z\",\n      \"finished_at\": \"2016-05-09T04:10:06.608Z\",\n      \"error\": \"string\",\n      \"error_summary\": \"string\"\n    }\n  ],\n  \"recent_errors\": [\n    {\n      \"id\": \"beca9e72-730d-c808-3555-f152e2a18462\",\n      \"run_id\": \"4066b14b-2951-e4a0-36d7-2056356d6aae\",\n      \"project_id\": \"25b6c2e8-85ae-f7a8-c04a-652dfcaa77d7\",\n      \"project_name\": \"string\",\n      \"root_step_title\": \"string\",\n      \"status\": \"string\",\n      \"started_at\": \"1994-01-23T16:12:58.374Z\",\n      \"finished_at\": \"1973-05-01T10:15:35.223Z\",\n      \"error\": \"string\",\n      \"error_summary\": \"string\",\n      \"trigger_source\": \"string\"\n    },\n    {\n      \"id\": \"1687e6f7-7ecf-55a8-3ac6-c7775fbbb649\",\n      \"run_id\": \"d91d8790-43a6-aef2-5a26-a0ac9584f14b\",\n      \"project_id\": \"1d9db574-ba98-24e2-047e-fdcdf571d006\",\n      \"project_name\": \"string\",\n      \"root_step_title\": \"string\",\n      \"status\": \"string\",\n      \"started_at\": \"2015-02-23T08:09:50.912Z\",\n      \"finished_at\": \"1992-08-08T12:17:35.599Z\",\n      \"error\": \"string\",\n      \"error_summary\": \"string\",\n      \"trigger_source\": \"string\"\n    }\n  ],\n  \"active_triggers\": [\n    {\n      \"step_id\": \"1032e8f7-d302-8a07-459e-7fc436abfe39\",\n      \"step_title\": \"string\",\n      \"project_id\": \"9057f0fe-80b3-e0f4-8821-147dd67d66b6\",\n      \"project_name\": \"string\",\n      \"trigger_type\": \"string\",\n      \"trigger_config\": {\n        \"key_0\": 9538\n      },\n      \"last_triggered_at\": \"1968-06-16T16:19:52.958Z\",\n      \"next_trigger_at\": \"1981-02-04T09:35:59.352Z\"\n    },\n    {\n      \"step_id\": \"08e280c9-8635-1231-92bd-ccbb0a6af606\",\n      \"step_title\": \"string\",\n      \"project_id\": \"e29ea8f0-95af-5924-3d97-593238670138\",\n      \"project_name\": \"string\",\n      \"trigger_type\": \"string\",\n      \"trigger_config\": {\n        \"key_0\": \"string\"\n      },\n      \"last_triggered_at\": \"2025-12-01T05:55:11.767Z\",\n      \"next_trigger_at\": \"2010-09-08T09:08:50.733Z\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf069eb3-c58c-4f19-bc22-54497c742506",
+          "name": "Get Monitoring Insights",
+          "request": {
+            "name": "Get Monitoring Insights",
+            "description": {
+              "content": "Return AI-native actionable insights for the company.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "monitoring",
+                "insights"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7490a44c-b0d9-4676-9b31-39383ebda0e3",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "monitoring",
+                    "insights"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"status_banner\": {\n    \"status\": \"string\",\n    \"headline\": \"string\",\n    \"summary\": \"string\",\n    \"health_score\": 8238\n  },\n  \"priority_actions\": [\n    {\n      \"id\": \"string\",\n      \"priority\": 1342,\n      \"title\": \"string\",\n      \"description\": \"string\",\n      \"impact\": \"string\",\n      \"category\": \"string\",\n      \"step_id\": \"2d251919-1dfb-db69-2859-5f670121a714\",\n      \"step_title\": \"string\",\n      \"project_id\": \"6906668f-fe84-3593-969c-9766fcfc725e\",\n      \"project_name\": \"string\"\n    },\n    {\n      \"id\": \"string\",\n      \"priority\": 6378,\n      \"title\": \"string\",\n      \"description\": \"string\",\n      \"impact\": \"string\",\n      \"category\": \"string\",\n      \"step_id\": \"44a8560b-d198-daf7-1a56-23834a166161\",\n      \"step_title\": \"string\",\n      \"project_id\": \"0fddc70c-2475-272a-60ae-ec31d52e6c63\",\n      \"project_name\": \"string\"\n    }\n  ],\n  \"smart_insights\": [\n    {\n      \"icon\": \"string\",\n      \"title\": \"string\",\n      \"description\": \"string\",\n      \"action_label\": \"string\"\n    },\n    {\n      \"icon\": \"string\",\n      \"title\": \"string\",\n      \"description\": \"string\",\n      \"action_label\": \"string\"\n    }\n  ],\n  \"activity_timeline\": [\n    {\n      \"timestamp\": \"1986-08-21T03:30:14.995Z\",\n      \"event_type\": \"string\",\n      \"title\": \"string\",\n      \"description\": \"string\"\n    },\n    {\n      \"timestamp\": \"1999-10-24T20:09:44.911Z\",\n      \"event_type\": \"string\",\n      \"title\": \"string\",\n      \"description\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "9a985b52-402d-4efc-bf5e-03b1b919d3fb",
+    "name": "DMI Backend actions monitoring API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

@@ -1,0 +1,1601 @@
+{
+  "item": [
+    {
+      "id": "0972e51c-6a6f-458b-8645-cd096100480b",
+      "name": "ontology-entities",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ef6dc34c-92dd-4798-b1b7-f8ba745f00b5",
+          "name": "List Entities",
+          "request": {
+            "name": "List Entities",
+            "description": {
+              "content": "List all entities the caller can see (VIEWER+). Owners see everything.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "fec35b69-8bd0-4513-bc03-0ba88cb6e49b",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"34a879a6-2b75-ca46-ba8e-176b08f9b959\",\n    \"company_id\": \"1e335058-7266-1920-8f57-8dfdad53200b\",\n    \"name\": \"string\",\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"database_id\": \"3f9cc48f-7b69-01c1-624e-a80e29ca55aa\",\n    \"key_column\": \"string\",\n    \"record_count\": 3510,\n    \"status\": \"string\",\n    \"created_at\": \"1974-07-06T09:56:23.271Z\",\n    \"updated_at\": \"2000-06-01T16:19:21.770Z\",\n    \"is_editable\": false,\n    \"is_file_backed\": false,\n    \"last_synced_at\": \"2017-06-14T01:23:40.877Z\",\n    \"source_row_count\": 0,\n    \"icon\": \"string\"\n  },\n  {\n    \"id\": \"2f116f84-f4bb-7ea1-1448-6d615bdc1e5e\",\n    \"company_id\": \"2f73f238-d7c0-932f-05af-b224e95fc71d\",\n    \"name\": \"string\",\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"database_id\": \"b3a1f975-a26c-6e7a-de92-6aef8b5953ab\",\n    \"key_column\": \"string\",\n    \"record_count\": 539,\n    \"status\": \"string\",\n    \"created_at\": \"1972-08-18T11:59:37.474Z\",\n    \"updated_at\": \"1960-09-24T18:05:40.084Z\",\n    \"is_editable\": false,\n    \"is_file_backed\": false,\n    \"last_synced_at\": \"1984-08-27T02:01:32.695Z\",\n    \"source_row_count\": 0,\n    \"icon\": \"string\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "737fc81e-7dda-4f99-99be-1ff6530f053b",
+          "name": "Create Managed Entity",
+          "request": {
+            "name": "Create Managed Entity",
+            "description": {
+              "content": "Create an entity with no source dataset (entity from nothing).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"key_column\": \"<string>\",\n  \"fields\": [\n    {\n      \"column_name\": \"<string>\",\n      \"display_name\": \"\",\n      \"data_type\": \"String\",\n      \"managed_default\": {},\n      \"rules\": {\n        \"allowed_values\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ],\n  \"display_name\": \"\",\n  \"description\": \"\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "94f7af04-5e33-43f4-9f31-1bc3773b9491",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"key_column\": \"<string>\",\n  \"fields\": [\n    {\n      \"column_name\": \"string\",\n      \"display_name\": \"\",\n      \"data_type\": \"String\",\n      \"managed_default\": {},\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ],\n  \"display_name\": \"\",\n  \"description\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ac56ba43-d66c-6604-b9b8-c39cbe4c7ac8\",\n  \"company_id\": \"944f129a-1e00-1bd2-16e0-d5a428777c64\",\n  \"name\": \"string\",\n  \"display_name\": \"string\",\n  \"description\": \"string\",\n  \"database_id\": \"022e47ad-bf1d-7b9a-a94a-f9ebf248a33b\",\n  \"key_column\": \"string\",\n  \"record_count\": 7879,\n  \"status\": \"string\",\n  \"created_at\": \"1997-07-23T22:36:53.505Z\",\n  \"updated_at\": \"2012-11-08T23:24:24.139Z\",\n  \"is_editable\": false,\n  \"is_file_backed\": false,\n  \"last_synced_at\": \"2007-08-01T22:53:11.458Z\",\n  \"source_row_count\": 0,\n  \"icon\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "17d44a04-324b-4003-a74c-50140d1dba84",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"key_column\": \"<string>\",\n  \"fields\": [\n    {\n      \"column_name\": \"string\",\n      \"display_name\": \"\",\n      \"data_type\": \"String\",\n      \"managed_default\": {},\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ],\n  \"display_name\": \"\",\n  \"description\": \"\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "40a4fc30-5359-46a2-b8d0-fb239769b3cd",
+          "name": "Get Entity Graph",
+          "request": {
+            "name": "Get Entity Graph",
+            "description": {
+              "content": "Company entity graph (nodes = entities, edges = relationships).\n\nPath is ``/entity-graph`` rather than ``/entities/graph`` so it does not\ncollide with ``GET /entities/{entity_id}`` (which would parse ``graph`` as a\nUUID). Permission-filtered to VIEWER+ accessible entities.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entity-graph"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7ba38ceb-9826-4bfd-bd8d-4ef956e77402",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entity-graph"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"nodes\": [\n    {\n      \"id\": \"5e7dd77f-ee59-f4cd-5c68-33d3ca4b9ae5\",\n      \"name\": \"string\",\n      \"display_name\": \"string\",\n      \"status\": \"string\",\n      \"record_count\": 5849,\n      \"key_column\": \"string\",\n      \"database_id\": \"7852ec6f-c378-fcf2-a447-cf912404e8d1\",\n      \"property_count\": 8965,\n      \"icon\": \"string\"\n    },\n    {\n      \"id\": \"4df54d4d-9038-7895-fe90-bee205e0a47a\",\n      \"name\": \"string\",\n      \"display_name\": \"string\",\n      \"status\": \"string\",\n      \"record_count\": 3510,\n      \"key_column\": \"string\",\n      \"database_id\": \"25415bb0-dbc3-8fc3-824d-e12a4c144174\",\n      \"property_count\": 2055,\n      \"icon\": \"string\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"id\": \"edeeeb91-3b47-6ffe-de86-fb886422f3c8\",\n      \"source_entity_id\": \"2dffe4c2-c253-f7de-5c47-d74f0839c220\",\n      \"target_entity_id\": \"237b204b-35cc-31a5-f7c9-a78edc68701c\",\n      \"name\": \"string\",\n      \"relationship_type\": \"string\",\n      \"cardinality\": \"string\"\n    },\n    {\n      \"id\": \"ef686837-c02e-e4c0-4bad-3327861511e5\",\n      \"source_entity_id\": \"84b37a80-83a8-30ca-2df3-c59096201b0d\",\n      \"target_entity_id\": \"32049613-00b3-908f-4d41-0ee95c12a086\",\n      \"name\": \"string\",\n      \"relationship_type\": \"string\",\n      \"cardinality\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e5f98dd5-ec19-4e7d-8b91-bba89dc11ac0",
+          "name": "Get Entity",
+          "request": {
+            "name": "Get Entity",
+            "description": {
+              "content": "Get entity detail with properties, relationships, and fed-by projects.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1c25721d-32b2-4975-af1e-136eec0f9f75",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ac56ba43-d66c-6604-b9b8-c39cbe4c7ac8\",\n  \"company_id\": \"944f129a-1e00-1bd2-16e0-d5a428777c64\",\n  \"name\": \"string\",\n  \"display_name\": \"string\",\n  \"description\": \"string\",\n  \"database_id\": \"022e47ad-bf1d-7b9a-a94a-f9ebf248a33b\",\n  \"key_column\": \"string\",\n  \"record_count\": 7879,\n  \"status\": \"string\",\n  \"created_at\": \"1997-07-23T22:36:53.505Z\",\n  \"updated_at\": \"2012-11-08T23:24:24.139Z\",\n  \"is_editable\": false,\n  \"is_file_backed\": false,\n  \"last_synced_at\": \"2007-08-01T22:53:11.458Z\",\n  \"source_row_count\": 0,\n  \"icon\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ab39923d-c366-4e85-9c4a-022f2aff6860",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8d783498-23f7-44ba-85e5-86203bff16db",
+          "name": "Update Entity",
+          "request": {
+            "name": "Update Entity",
+            "description": {
+              "content": "Update entity display_name or description.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"display_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c952f4fd-8fe1-4562-aea6-20c255188ebc",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"display_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ac56ba43-d66c-6604-b9b8-c39cbe4c7ac8\",\n  \"company_id\": \"944f129a-1e00-1bd2-16e0-d5a428777c64\",\n  \"name\": \"string\",\n  \"display_name\": \"string\",\n  \"description\": \"string\",\n  \"database_id\": \"022e47ad-bf1d-7b9a-a94a-f9ebf248a33b\",\n  \"key_column\": \"string\",\n  \"record_count\": 7879,\n  \"status\": \"string\",\n  \"created_at\": \"1997-07-23T22:36:53.505Z\",\n  \"updated_at\": \"2012-11-08T23:24:24.139Z\",\n  \"is_editable\": false,\n  \"is_file_backed\": false,\n  \"last_synced_at\": \"2007-08-01T22:53:11.458Z\",\n  \"source_row_count\": 0,\n  \"icon\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9d6ba2f2-0637-423d-99ab-36731c28e072",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"display_name\": \"<string>\",\n  \"description\": \"<string>\",\n  \"icon\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a4fd4c87-5ad6-4fe4-9d8e-2e7f44118710",
+          "name": "Archive Entity",
+          "request": {
+            "name": "Archive Entity",
+            "description": {
+              "content": "Archive an entity (soft-delete).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a37c98ba-737b-4f67-bc56-43491d1e6f33",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "c96b0f54-9d15-4dd9-8ad3-063118a89125",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1eb864c7-5f50-4023-8d13-377e5194466c",
+          "name": "List Properties",
+          "request": {
+            "name": "List Properties",
+            "description": {
+              "content": "List properties for an entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "133c9a2a-1d8d-4bd6-8009-e36c9a843cbb",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"84e695af-e0e2-1a01-b0b4-0f431c045b96\",\n    \"column_name\": \"string\",\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"data_type\": \"string\",\n    \"is_primary_key\": false,\n    \"order\": 335,\n    \"rules\": {\n      \"allowed_values\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required\": false,\n      \"format\": {\n        \"min\": 2234.3035432273805,\n        \"max\": 1519.8461158490827,\n        \"regex\": \"string\",\n        \"max_length\": 3557,\n        \"date_min\": \"string\",\n        \"date_max\": \"string\",\n        \"allowed_mime\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"max_size_bytes\": 5982\n      }\n    },\n    \"origin\": \"source\",\n    \"managed_default\": {},\n    \"file_folder_id\": \"a74a4d92-1bbd-39bb-9ee1-9d24bdf19f6b\"\n  },\n  {\n    \"id\": \"8915679d-d717-bee8-996d-2a409d922736\",\n    \"column_name\": \"string\",\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"data_type\": \"string\",\n    \"is_primary_key\": false,\n    \"order\": 722,\n    \"rules\": {\n      \"allowed_values\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required\": false,\n      \"format\": {\n        \"min\": 8615.765856001915,\n        \"max\": 2751.9194725753473,\n        \"regex\": \"string\",\n        \"max_length\": 9993,\n        \"date_min\": \"string\",\n        \"date_max\": \"string\",\n        \"allowed_mime\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"max_size_bytes\": 5980\n      }\n    },\n    \"origin\": \"source\",\n    \"managed_default\": {},\n    \"file_folder_id\": \"e6eeb94f-9c54-5828-04ff-d5564829de89\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "715d1c79-32ca-4a44-b72f-e6da75af148d",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "6eb6eaa5-b612-4dd2-89d5-e58156f273d1",
+          "name": "Update Properties",
+          "request": {
+            "name": "Update Properties",
+            "description": {
+              "content": "Bulk update property display names, descriptions, and order.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": [\n    {\n      \"id\": \"<uuid>\",\n      \"display_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"order\": \"<integer>\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"file_folder_id\": \"<uuid>\"\n    },\n    {\n      \"id\": \"<uuid>\",\n      \"display_name\": \"<string>\",\n      \"description\": \"<string>\",\n      \"order\": \"<integer>\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"file_folder_id\": \"<uuid>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de6738af-3e56-49ce-85fd-99dfe5feb778",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": [\n    {\n      \"id\": \"f6f52bd9-6b71-b056-a96b-24d539719d38\",\n      \"display_name\": \"string\",\n      \"description\": \"string\",\n      \"order\": 1147,\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"file_folder_id\": \"760a206f-0c01-eeba-fd92-303cb352c0c0\"\n    },\n    {\n      \"id\": \"fa037605-1b9c-7acb-978c-9f2749f7e493\",\n      \"display_name\": \"string\",\n      \"description\": \"string\",\n      \"order\": 8536,\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"file_folder_id\": \"2f0506c8-9f48-c801-a228-cc84a980e5db\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "[\n  {\n    \"id\": \"b9190f00-326c-e27c-be5b-949d1099df16\",\n    \"column_name\": \"string\",\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"data_type\": \"string\",\n    \"is_primary_key\": true,\n    \"order\": 6677,\n    \"rules\": {\n      \"allowed_values\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required\": false,\n      \"format\": {\n        \"min\": 7708.685025185123,\n        \"max\": 5971.89309967171,\n        \"regex\": \"string\",\n        \"max_length\": 7520,\n        \"date_min\": \"string\",\n        \"date_max\": \"string\",\n        \"allowed_mime\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"max_size_bytes\": 3184\n      }\n    },\n    \"origin\": \"source\",\n    \"managed_default\": {},\n    \"file_folder_id\": \"6a98dd5e-fcfe-0571-00f6-c9951e0880c8\"\n  },\n  {\n    \"id\": \"a6c8b6b4-4e35-0755-67b7-3890b6e6f016\",\n    \"column_name\": \"string\",\n    \"display_name\": \"string\",\n    \"description\": \"string\",\n    \"data_type\": \"string\",\n    \"is_primary_key\": true,\n    \"order\": 6225,\n    \"rules\": {\n      \"allowed_values\": [\n        \"string\",\n        \"string\"\n      ],\n      \"required\": false,\n      \"format\": {\n        \"min\": 8404.41590276733,\n        \"max\": 2745.303693540566,\n        \"regex\": \"string\",\n        \"max_length\": 6454,\n        \"date_min\": \"string\",\n        \"date_max\": \"string\",\n        \"allowed_mime\": [\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        ],\n        \"max_size_bytes\": 7141\n      }\n    },\n    \"origin\": \"source\",\n    \"managed_default\": {},\n    \"file_folder_id\": \"bd62343a-6822-84f2-d458-157a22d35dfa\"\n  }\n]",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a1a604b-45b4-450c-b8e1-5536d1c3f346",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": [\n    {\n      \"id\": \"f6f52bd9-6b71-b056-a96b-24d539719d38\",\n      \"display_name\": \"string\",\n      \"description\": \"string\",\n      \"order\": 1147,\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"file_folder_id\": \"760a206f-0c01-eeba-fd92-303cb352c0c0\"\n    },\n    {\n      \"id\": \"fa037605-1b9c-7acb-978c-9f2749f7e493\",\n      \"display_name\": \"string\",\n      \"description\": \"string\",\n      \"order\": 8536,\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      },\n      \"file_folder_id\": \"2f0506c8-9f48-c801-a228-cc84a980e5db\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d9bd00cc-e104-42c0-9c8f-1bee5821cbb0",
+          "name": "Create Managed Property",
+          "request": {
+            "name": "Create Managed Property",
+            "description": {
+              "content": "Add a managed (admin-defined) property to an entity.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id",
+                "properties"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"column_name\": \"<string>\",\n  \"display_name\": \"\",\n  \"data_type\": \"String\",\n  \"managed_default\": {},\n  \"rules\": {\n    \"allowed_values\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"required\": false,\n    \"format\": {\n      \"min\": \"<number>\",\n      \"max\": \"<number>\",\n      \"regex\": \"<string>\",\n      \"max_length\": \"<integer>\",\n      \"date_min\": \"<string>\",\n      \"date_max\": \"<string>\",\n      \"allowed_mime\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"max_size_bytes\": \"<integer>\"\n    }\n  },\n  \"file_folder_id\": \"<uuid>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "465dbb50-aa20-47bf-ad89-c1188615f402",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"column_name\": \"<string>\",\n  \"display_name\": \"\",\n  \"data_type\": \"String\",\n  \"managed_default\": {},\n  \"rules\": {\n    \"allowed_values\": [\n      \"string\",\n      \"string\"\n    ],\n    \"required\": false,\n    \"format\": {\n      \"min\": 8286.067368223656,\n      \"max\": 386.43640123309564,\n      \"regex\": \"string\",\n      \"max_length\": 6217,\n      \"date_min\": \"string\",\n      \"date_max\": \"string\",\n      \"allowed_mime\": [\n        \"string\",\n        \"string\"\n      ],\n      \"max_size_bytes\": 3759\n    }\n  },\n  \"file_folder_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"7ffa9e24-927d-7860-495b-e6c8e7c99e58\",\n  \"column_name\": \"string\",\n  \"display_name\": \"string\",\n  \"description\": \"string\",\n  \"data_type\": \"string\",\n  \"is_primary_key\": true,\n  \"order\": 9228,\n  \"rules\": {\n    \"allowed_values\": [\n      \"string\",\n      \"string\"\n    ],\n    \"required\": false,\n    \"format\": {\n      \"min\": 3785.7579537448983,\n      \"max\": 4607.683760103384,\n      \"regex\": \"string\",\n      \"max_length\": 9755,\n      \"date_min\": \"string\",\n      \"date_max\": \"string\",\n      \"allowed_mime\": [\n        \"string\",\n        \"string\"\n      ],\n      \"max_size_bytes\": 125\n    }\n  },\n  \"origin\": \"source\",\n  \"managed_default\": {},\n  \"file_folder_id\": \"c60954eb-b74d-30eb-d6bf-d8fbe0fc2aa5\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d299836-7168-431a-910f-124fbf892fd8",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"column_name\": \"<string>\",\n  \"display_name\": \"\",\n  \"data_type\": \"String\",\n  \"managed_default\": {},\n  \"rules\": {\n    \"allowed_values\": [\n      \"string\",\n      \"string\"\n    ],\n    \"required\": false,\n    \"format\": {\n      \"min\": 8286.067368223656,\n      \"max\": 386.43640123309564,\n      \"regex\": \"string\",\n      \"max_length\": 6217,\n      \"date_min\": \"string\",\n      \"date_max\": \"string\",\n      \"allowed_mime\": [\n        \"string\",\n        \"string\"\n      ],\n      \"max_size_bytes\": 3759\n    }\n  },\n  \"file_folder_id\": \"<uuid>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "fec38af8-a8d1-46b9-9251-ae519b2d9675",
+          "name": "Delete Managed Property",
+          "request": {
+            "name": "Delete Managed Property",
+            "description": {
+              "content": "Remove a managed property from an entity (source-origin properties are rejected).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id",
+                "properties",
+                ":property_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "property_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "e634807f-791b-41b7-b158-7098dd2ec225",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties",
+                    ":property_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "property_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "No Content",
+              "code": 204,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4cafe911-100f-4e68-b7f1-3bda0740cbc3",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties",
+                    ":property_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    },
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "property_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "294b023b-2c2d-4625-bb7e-397520db0dac",
+          "name": "Preview Field Rules",
+          "request": {
+            "name": "Preview Field Rules",
+            "description": {
+              "content": "Count existing rows that would violate the candidate field rules (no data is changed).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "api",
+                "v1",
+                "ontology",
+                "entities",
+                ":entity_id",
+                "properties",
+                "preview-rules"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<uuid>",
+                  "key": "entity_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"properties\": [\n    {\n      \"column_name\": \"<string>\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"column_name\": \"<string>\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"<string>\",\n          \"<string>\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1ac7e834-8528-4364-98a1-486981e762ac",
+              "name": "Successful Response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties",
+                    "preview-rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": [\n    {\n      \"column_name\": \"string\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"column_name\": \"string\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"results\": [\n    {\n      \"column_name\": \"string\",\n      \"violating_count\": 3968,\n      \"total_count\": 8488\n    },\n    {\n      \"column_name\": \"string\",\n      \"violating_count\": 3262,\n      \"total_count\": 7139\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7dd09c76-be0f-4153-ba78-36c5af15bf65",
+              "name": "Validation Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "v1",
+                    "ontology",
+                    "entities",
+                    ":entity_id",
+                    "properties",
+                    "preview-rules"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<uuid>",
+                      "key": "entity_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"properties\": [\n    {\n      \"column_name\": \"string\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    },\n    {\n      \"column_name\": \"string\",\n      \"rules\": {\n        \"allowed_values\": [\n          \"string\",\n          \"string\"\n        ],\n        \"required\": false,\n        \"format\": {\n          \"min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"regex\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_length\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_min\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"date_max\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"allowed_mime\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          },\n          \"max_size_bytes\": {\n            \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n          }\n        }\n      }\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"detail\": [\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    },\n    {\n      \"loc\": [\n        \"string\",\n        \"string\"\n      ],\n      \"msg\": \"string\",\n      \"type\": \"string\",\n      \"input\": {},\n      \"ctx\": {}\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "/",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "f95da25c-5355-495e-a4fe-5dc64e32de5c",
+    "name": "DMI Backend actions ontology-entities API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "",
+      "type": "text/plain"
+    }
+  }
+}

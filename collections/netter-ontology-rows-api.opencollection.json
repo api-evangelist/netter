@@ -1,0 +1,159 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "DMI Backend actions ontology-rows API",
+    "version": "0.1.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "ontology-rows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Rows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/rows",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List merged rows (source ⊕ overlay) for an entity, paginated.\n\nApplies row-policy RLS so non-owner users only see rows their policies\nallow — same enforcement as ``/records``."
+        },
+        {
+          "info": {
+            "name": "Insert Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/rows",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Insert a row — routed through the entity's default create Action."
+        },
+        {
+          "info": {
+            "name": "Get Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/rows/:row_key",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "row_key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Fetch a single merged row by key (source ⊕ overlay), RLS-applied.\n\nPowers \"open this row\" links (e.g. the action audit trail). 404 when the\nrow is tombstoned, RLS-hidden, or unknown."
+        },
+        {
+          "info": {
+            "name": "Patch Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/rows/:row_key",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "row_key",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Patch a row — routed through the entity's default modify Action."
+        },
+        {
+          "info": {
+            "name": "Delete Row",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/rows/:row_key",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "row_key",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Tombstone a row — routed through the entity's default delete Action."
+        },
+        {
+          "info": {
+            "name": "Sync Entity",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "{{baseUrl}}/api/v1/ontology/entities/:entity_id/sync",
+            "params": [
+              {
+                "name": "entity_id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Trigger a source sync for the entity.\n\nWrite-gated: sync triggers a DuckDB scan over S3, which is expensive\nenough that low-privilege viewers shouldn't be able to fire it in a\ntight loop.  Same write-role guard the other row endpoints use."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
