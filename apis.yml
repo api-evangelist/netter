@@ -58,6 +58,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Actions
+  tags_raw:
   - actions
   properties:
   - type: OpenAPI
@@ -72,6 +74,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - APIKeys
+  tags_raw:
   - api-keys
   properties:
   - type: OpenAPI
@@ -100,6 +104,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Application
+  tags_raw:
   - apps
   properties:
   - type: OpenAPI
@@ -128,6 +134,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Assistant
+  tags_raw:
   - assistant
   properties:
   - type: OpenAPI
@@ -142,6 +150,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Attributes
+  tags_raw:
   - attributes
   properties:
   - type: OpenAPI
@@ -156,6 +166,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Automations
+  tags_raw:
   - automations
   properties:
   - type: OpenAPI
@@ -170,6 +182,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Chats
+  tags_raw:
   - chats
   properties:
   - type: OpenAPI
@@ -184,6 +198,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Companies
+  tags_raw:
   - companies
   properties:
   - type: OpenAPI
@@ -240,6 +256,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Dashboards
+  tags_raw:
   - dashboards
   properties:
   - type: OpenAPI
@@ -254,6 +272,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Databases
+  tags_raw:
   - databases
   properties:
   - type: OpenAPI
@@ -268,6 +288,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - File Folders
+  tags_raw:
   - file-folders
   properties:
   - type: OpenAPI
@@ -282,6 +304,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - File
+  tags_raw:
   - files
   properties:
   - type: OpenAPI
@@ -296,6 +320,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Folders
+  tags_raw:
   - folders
   properties:
   - type: OpenAPI
@@ -310,6 +336,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Group
+  tags_raw:
   - groups
   properties:
   - type: OpenAPI
@@ -338,6 +366,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Integration
+  tags_raw:
   - integrations
   properties:
   - type: OpenAPI
@@ -352,6 +382,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Internal
+  tags_raw:
   - internal
   properties:
   - type: OpenAPI
@@ -394,6 +426,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Me
+  tags_raw:
   - me
   properties:
   - type: OpenAPI
@@ -408,6 +442,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Monitoring
+  tags_raw:
   - monitoring
   properties:
   - type: OpenAPI
@@ -422,6 +458,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Ontology
+  tags_raw:
   - ontology
   properties:
   - type: OpenAPI
@@ -548,6 +586,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Operators
+  tags_raw:
   - operators
   properties:
   - type: OpenAPI
@@ -562,6 +602,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Permissions
+  tags_raw:
   - permissions
   properties:
   - type: OpenAPI
@@ -590,6 +632,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Project
+  tags_raw:
   - projects
   properties:
   - type: OpenAPI
@@ -618,6 +662,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Run History
+  tags_raw:
   - run-history
   properties:
   - type: OpenAPI
@@ -646,6 +692,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Steps
+  tags_raw:
   - steps
   properties:
   - type: OpenAPI
