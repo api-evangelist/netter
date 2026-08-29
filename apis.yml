@@ -13,6 +13,18 @@ description: >-
   ntr_-prefixed bearer API key; enterprise controls include SAML 2.0 SSO and
   SCIM 2.0 provisioning.
 url: https://raw.githubusercontent.com/api-evangelist/netter/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -722,6 +734,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/netter-capability-edges.yml
+  name: Netter Business Capability Map
 - type: DomainSecurity
   url: security/netter-domain-security.yml
 - type: Website
