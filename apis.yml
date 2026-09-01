@@ -146,7 +146,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - assistant
+  - Assistant
   tags_raw:
   - assistant
   properties:
@@ -162,7 +162,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - attributes
+  - Attributes
   tags_raw:
   - attributes
   properties:
@@ -178,7 +178,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - automations
+  - Automations
   tags_raw:
   - automations
   properties:
@@ -300,7 +300,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - file-folders
+  - File Folders
   tags_raw:
   - file-folders
   properties:
@@ -332,7 +332,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - folders
+  - Folders
   tags_raw:
   - folders
   properties:
@@ -598,7 +598,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - operators
+  - Operators
   tags_raw:
   - operators
   properties:
@@ -674,7 +674,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - run-history
+  - Run History
   tags_raw:
   - run-history
   properties:
@@ -704,7 +704,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - steps
+  - Steps
   tags_raw:
   - steps
   properties:
