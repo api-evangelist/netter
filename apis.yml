@@ -178,7 +178,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - Automations
+  - Automation
   tags_raw:
   - automations
   properties:
@@ -240,6 +240,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Dashboard Data
+  tags_raw:
   - dashboard-data
   properties:
   - type: OpenAPI
@@ -284,7 +286,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - Databases
+  - Database
   tags_raw:
   - databases
   properties:
@@ -364,6 +366,8 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
+  - Infra
+  tags_raw:
   - infra
   properties:
   - type: OpenAPI
@@ -598,7 +602,7 @@ apis:
   humanURL: https://netter.ai/docs/api/overview.md
   baseURL: https://api.netter.ai
   tags:
-  - Operators
+  - Operator
   tags_raw:
   - operators
   properties:
