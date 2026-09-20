@@ -1,0 +1,57 @@
+slug: netter
+provider: Netter
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: dashboards
+  spec_file: netter-dashboards-api-openapi.yml
+  capability_id: BC-610.50
+  capability_id_l1: BC-610
+  capability_name: Analytics & BI Management
+  confidence: 0.8
+  evidence: POST /api/v1/dashboards/ Create Dashboard; POST /api/v1/dashboards/{dashboard_id}/regenerate
+    Regenerate Dashboard; DashboardRead
+  reason: Creating, updating and regenerating dashboards over centralised company data is analytics and
+    BI delivery. Some residual ambiguity about whether the edge belongs at L1 data management, hence 0.8.
+- tag: permissions
+  spec_file: netter-permissions-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: Grant Resource Permission, Revoke Resource Permission, Effective Access; schemas PermissionLevel,
+    GranteeType, AccessSource
+  reason: Grant/update/revoke of resource permissions to grantees plus effective-access resolution is
+    access management; mapped to Identity & Access Management, though it could also be read as tenant/product
+    authorisation plumbing.
+- tag: ontology
+  spec_file: netter-ontology-api-openapi.yml
+  capability_id: BC-610.40
+  capability_id_l1: BC-610
+  capability_name: Data Architecture Management
+  confidence: 0.7
+  evidence: GET /api/v1/ontology/graph 'Get Ontology Graph'; schemas OntologyGraphNode, OntologyGraphEdge,
+    CascadeDependency, OntologyDatabaseRead
+  reason: Managing the ontology graph, its databases and cascade dependencies is logical data-model/architecture
+    stewardship of the company's data assets.
+- tag: ontology-entities
+  spec_file: netter-ontology-entities-api-openapi.yml
+  capability_id: BC-610.40
+  capability_id_l1: BC-610
+  capability_name: Data Architecture Management
+  confidence: 0.7
+  evidence: Create Managed Entity, List Properties, Update Properties, Get Entity Graph; schemas FieldRules,
+    FieldFormat, EntityGraphEdge
+  reason: Operations define and maintain entity types, their properties and field rules in the ontology
+    — i.e. modelling the logical data structure, which is data architecture management rather than any
+    business-domain capability.
