@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions steps API
+  title: DMI Backend Steps API
   version: 0.1.0
 tags:
-- name: steps
+- name: Steps
 paths:
   /api/v1/steps/:
     get:
       tags:
-      - steps
+      - Steps
       summary: List Steps
       description: List steps, optionally filtered by project.
       operationId: list_steps_api_v1_steps__get
@@ -40,7 +40,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
-      - steps
+      - Steps
       summary: Create Step
       operationId: create_step_api_v1_steps__post
       parameters:
@@ -73,7 +73,7 @@ paths:
   /api/v1/steps/{step_id}:
     get:
       tags:
-      - steps
+      - Steps
       summary: Get Step
       operationId: get_step_api_v1_steps__step_id__get
       parameters:
@@ -99,7 +99,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - steps
+      - Steps
       summary: Update Step
       operationId: update_step_api_v1_steps__step_id__patch
       parameters:
@@ -131,7 +131,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - steps
+      - Steps
       summary: Delete Step
       operationId: delete_step_api_v1_steps__step_id__delete
       parameters:
@@ -154,7 +154,7 @@ paths:
   /api/v1/steps/{step_id}/code:
     get:
       tags:
-      - steps
+      - Steps
       summary: Get Step Code
       description: Serve step code from S3.
       operationId: get_step_code_api_v1_steps__step_id__code_get
@@ -183,7 +183,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     put:
       tags:
-      - steps
+      - Steps
       summary: Update Step Code
       description: Verbatim-save a custom_code step's Python source to S3.
       operationId: update_step_code_api_v1_steps__step_id__code_put
@@ -219,7 +219,7 @@ paths:
   /api/v1/steps/{step_id}/suppress:
     post:
       tags:
-      - steps
+      - Steps
       summary: Suppress Step
       description: Soft-delete a step. Deactivates its trigger if any.
       operationId: suppress_step_api_v1_steps__step_id__suppress_post
@@ -247,7 +247,7 @@ paths:
   /api/v1/steps/project/{project_id}/batch:
     put:
       tags:
-      - steps
+      - Steps
       summary: Batch Replace Steps
       description: Replace all steps in a project (deploy-time).
       operationId: batch_replace_steps_api_v1_steps_project__project_id__batch_put
@@ -284,7 +284,7 @@ paths:
   /api/v1/steps/project/{project_id}/validate:
     post:
       tags:
-      - steps
+      - Steps
       summary: Validate Project Dag
       description: Validate the current step DAG for a project.
       operationId: validate_project_dag_api_v1_steps_project__project_id__validate_post
@@ -314,7 +314,7 @@ paths:
   /api/v1/steps/{step_id}/swap-candidates:
     get:
       tags:
-      - steps
+      - Steps
       summary: Get Swap Candidates
       operationId: get_swap_candidates_api_v1_steps__step_id__swap_candidates_get
       parameters:
@@ -341,7 +341,7 @@ paths:
   /api/v1/steps/{step_id}/swap-input:
     post:
       tags:
-      - steps
+      - Steps
       summary: Post Swap Input
       operationId: post_swap_input_api_v1_steps__step_id__swap_input_post
       parameters:
@@ -374,7 +374,7 @@ paths:
   /api/v1/steps/{step_id}/trigger:
     post:
       tags:
-      - steps
+      - Steps
       summary: Create Trigger
       operationId: create_trigger_api_v1_steps__step_id__trigger_post
       parameters:
@@ -406,7 +406,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - steps
+      - Steps
       summary: Update Trigger
       operationId: update_trigger_api_v1_steps__step_id__trigger_patch
       parameters:
@@ -438,7 +438,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - steps
+      - Steps
       summary: Delete Trigger
       operationId: delete_trigger_api_v1_steps__step_id__trigger_delete
       parameters:
@@ -461,9 +461,16 @@ paths:
   /api/v1/steps/project/{project_id}/run:
     post:
       tags:
-      - steps
+      - Steps
       summary: Trigger Run
-      description: "Trigger a new run for a project.\n\n- root_step_id=None → run all active steps (Run All).\n- root_step_id=<id> → refresh that output: runs its ancestor closure back to roots.\n  The target must be a ``database`` step."
+      description: 'Trigger a new run for a project.
+
+
+        - root_step_id=None → run all active steps (Run All).
+
+        - root_step_id= → refresh that output: runs its ancestor closure back to roots.
+
+        The target must be a ``database`` step.'
       operationId: trigger_run_api_v1_steps_project__project_id__run_post
       parameters:
       - name: project_id
@@ -495,7 +502,7 @@ paths:
   /api/v1/steps/project/{project_id}/runs:
     get:
       tags:
-      - steps
+      - Steps
       summary: List Runs
       description: List recent runs for a project.
       operationId: list_runs_api_v1_steps_project__project_id__runs_get
@@ -533,7 +540,7 @@ paths:
   /api/v1/steps/run/{run_id}:
     get:
       tags:
-      - steps
+      - Steps
       summary: Get Run
       description: 'Get run details including step runs.
 
@@ -570,7 +577,7 @@ paths:
   /api/v1/steps/run/{run_id}/cancel:
     post:
       tags:
-      - steps
+      - Steps
       summary: Cancel Run
       description: Cancel a running DAG execution.
       operationId: cancel_run_api_v1_steps_run__run_id__cancel_post
@@ -600,7 +607,7 @@ paths:
   /api/v1/steps/{step_id}/auto-fix:
     post:
       tags:
-      - steps
+      - Steps
       summary: Auto Fix Step
       description: 'Dispatch an auto-fix job for a failed step.
 
@@ -632,7 +639,7 @@ paths:
   /api/v1/projects/{project_id}/changes:
     get:
       tags:
-      - steps
+      - Steps
       summary: List Changes
       operationId: list_changes_api_v1_projects__project_id__changes_get
       parameters:
@@ -708,7 +715,7 @@ paths:
   /api/v1/projects/{project_id}/changes/goto:
     post:
       tags:
-      - steps
+      - Steps
       summary: Goto Change
       description: 'Move the project''s timeline head to ``body.event_id``.
 
@@ -757,218 +764,37 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CodeType:
-      type: string
-      enum:
-      - python
-      - sql
-      title: CodeType
-      description: Runtime language for the step code.
-    StepBatchReplace:
-      properties:
-        steps:
-          items:
-            $ref: '#/components/schemas/StepBatchItem'
-          type: array
-          title: Steps
-      type: object
-      required:
-      - steps
-      title: StepBatchReplace
-      description: Replace all steps in a project (used at deploy time).
-    TriggerRead:
+    StepRead:
       properties:
         id:
           type: string
           format: uuid
           title: Id
-        step_id:
+        project_id:
           type: string
           format: uuid
-          title: Step Id
-        trigger_type:
-          $ref: '#/components/schemas/TriggerType'
-        trigger_config:
-          additionalProperties: true
-          type: object
-          title: Trigger Config
-        is_active:
-          type: boolean
-          title: Is Active
-        last_triggered_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Triggered At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - step_id
-      - trigger_type
-      - trigger_config
-      - is_active
-      - last_triggered_at
-      - created_at
-      title: TriggerRead
-      description: Trigger response.
-    TriggerType:
-      type: string
-      enum:
-      - on_click
-      - schedule
-      title: TriggerType
-      description: 'How a root step can be triggered.
-
-
-        EVENT (polling) was deprecated in commit c523d2be (2026-05-02) and
-
-        deleted entirely in Phase 5: cross-dataset reactive updates use the
-
-        cascade model (database_dep) instead. ON_CLICK is implicit (every
-
-        dataset can be refreshed manually via the UI, no row needed) and is
-
-        only kept here for the rejection branch in CreateTrigger.'
-    Severity:
-      type: string
-      enum:
-      - compatible
-      - partial
-      - risky
-      - no_match
-      title: Severity
-    TriggerCreate:
-      properties:
-        trigger_type:
-          $ref: '#/components/schemas/TriggerType'
-        trigger_config:
-          additionalProperties: true
-          type: object
-          title: Trigger Config
-          default: {}
-      type: object
-      required:
-      - trigger_type
-      title: TriggerCreate
-      description: Attach a trigger to a root step.
-    StepRunRead:
-      properties:
-        id:
+          title: Project Id
+        company_id:
           type: string
           format: uuid
-          title: Id
-        run_id:
+          title: Company Id
+        user_id:
           type: string
           format: uuid
-          title: Run Id
-        step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Step Id
-        status:
-          type: string
-          title: Status
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        logs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logs
-        started_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        rows_processed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Processed
-        output_row_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Output Row Count
-        rows_new:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows New
-        rows_changed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Changed
-        rows_removed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Removed
-        ai_rows_cached:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Ai Rows Cached
-        ai_rows_processed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Ai Rows Processed
-      type: object
-      required:
-      - id
-      - run_id
-      - step_id
-      - status
-      - error
-      - logs
-      - started_at
-      - finished_at
-      title: StepRunRead
-      description: StepRun response.
-    StepUpdate:
-      properties:
+          title: User Id
         slug:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Slug
         title:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Title
         description:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Description
         step_type:
-          anyOf:
-          - $ref: '#/components/schemas/StepType'
-          - type: 'null'
+          $ref: '#/components/schemas/StepType'
         code_type:
-          anyOf:
-          - $ref: '#/components/schemas/CodeType'
-          - type: 'null'
+          $ref: '#/components/schemas/CodeType'
         sink_target:
           anyOf:
           - $ref: '#/components/schemas/SinkTarget'
@@ -980,28 +806,29 @@ components:
           - type: 'null'
           title: Provider Id
         parent_step_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid
-            type: array
-          - type: 'null'
+          items:
+            type: string
+            format: uuid
+          type: array
           title: Parent Step Ids
+        order:
+          type: integer
+          title: Order
+        code_url:
+          type: string
+          title: Code Url
         in_format:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: In Format
         out_format:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Out Format
-        status:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Status
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Referenced Database Ids
         input_schema:
           anyOf:
           - items:
@@ -1021,9 +848,67 @@ components:
             type: object
           - type: 'null'
           title: Operator Config
+        extra_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Metadata
+        entity_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Entity Id
+        status:
+          type: string
+          title: Status
+          default: active
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+        trigger:
+          anyOf:
+          - $ref: '#/components/schemas/TriggerRead'
+          - type: 'null'
       type: object
-      title: StepUpdate
-      description: Patch a step (all fields optional).
+      required:
+      - id
+      - project_id
+      - company_id
+      - user_id
+      - slug
+      - title
+      - description
+      - step_type
+      - code_type
+      - sink_target
+      - provider_id
+      - parent_step_ids
+      - order
+      - code_url
+      - in_format
+      - out_format
+      - referenced_database_ids
+      - input_schema
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: StepRead
+      description: Step response.
     SwapColumnDiff:
       properties:
         matching:
@@ -1053,323 +938,14 @@ components:
       - extra_in_candidate
       - retyped
       title: SwapColumnDiff
-    RunCreate:
-      properties:
-        root_step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Root Step Id
-        force_full:
-          type: boolean
-          title: Force Full
-          default: false
-      type: object
-      title: RunCreate
-      description: 'Trigger a new run.
-
-
-        ``root_step_id`` is the target output (a database step).
-
-        Null ``root_step_id`` means Run All — run every active step in the project.
-
-
-        ``force_full`` bypasses the AI Lambda''s content-addressed cache / the
-
-        custom Lambda''s api_action ledger for this run only — used for manual
-
-        replays after schema changes or bug fixes. Cascade-created runs leave
-
-        this False (see spec §7d — force_full does not propagate through
-
-        cascade).'
-    StepCodeUpdate:
-      properties:
-        code:
-          type: string
-          title: Code
-      type: object
-      required:
-      - code
-      title: StepCodeUpdate
-      description: Verbatim replacement of a custom_code step's Python source.
-    TriggerUpdate:
-      properties:
-        trigger_type:
-          anyOf:
-          - $ref: '#/components/schemas/TriggerType'
-          - type: 'null'
-        trigger_config:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Trigger Config
-      type: object
-      title: TriggerUpdate
-      description: Patch a trigger.
-    SwapCandidate:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        type:
-          type: string
-          enum:
-          - database
-          - user_file
-          title: Type
-        owner_project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Owner Project Id
-        owner_project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Owner Project Name
-        is_shared:
-          type: boolean
-          title: Is Shared
-        similarity_score:
-          type: number
-          title: Similarity Score
-        severity:
-          $ref: '#/components/schemas/Severity'
-        diff:
-          $ref: '#/components/schemas/SwapColumnDiff'
-      type: object
-      required:
-      - id
-      - name
-      - type
-      - owner_project_id
-      - owner_project_name
-      - is_shared
-      - similarity_score
-      - severity
-      - diff
-      title: SwapCandidate
-    StepCreate:
-      properties:
-        slug:
-          type: string
-          title: Slug
-        title:
-          type: string
-          title: Title
-          default: ''
-        description:
-          type: string
-          title: Description
-          default: ''
-        step_type:
-          $ref: '#/components/schemas/StepType'
-        code_type:
-          $ref: '#/components/schemas/CodeType'
-          default: python
-        sink_target:
-          anyOf:
-          - $ref: '#/components/schemas/SinkTarget'
-          - type: 'null'
-        provider_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Provider Id
-        parent_step_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Parent Step Ids
-          default: []
-        in_format:
-          type: string
-          title: In Format
-          default: ''
-        out_format:
-          type: string
-          title: Out Format
-          default: ''
-        input_schema:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Input Schema
-        operator_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Operator Type
-        operator_config:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Operator Config
-      type: object
-      required:
-      - slug
-      - step_type
-      title: StepCreate
-      description: Create a new step in a project DAG.
-    StepBatchItem:
-      properties:
-        slug:
-          type: string
-          title: Slug
-        title:
-          type: string
-          title: Title
-          default: ''
-        description:
-          type: string
-          title: Description
-          default: ''
-        step_type:
-          $ref: '#/components/schemas/StepType'
-        code_type:
-          $ref: '#/components/schemas/CodeType'
-          default: python
-        sink_target:
-          anyOf:
-          - $ref: '#/components/schemas/SinkTarget'
-          - type: 'null'
-        provider_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Provider Id
-        parent_slugs:
-          items:
-            type: string
-          type: array
-          title: Parent Slugs
-          default: []
-        in_format:
-          type: string
-          title: In Format
-          default: ''
-        out_format:
-          type: string
-          title: Out Format
-          default: ''
-        code_url:
-          type: string
-          title: Code Url
-          default: ''
-        referenced_database_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Referenced Database Ids
-          default: []
-        input_schema:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Input Schema
-        operator_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Operator Type
-        operator_config:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Operator Config
-      type: object
-      required:
-      - slug
-      - step_type
-      title: StepBatchItem
-      description: One step in a batch replace.
-    SwapCurrentSource:
-      properties:
-        id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Id
-        name:
-          type: string
-          title: Name
-        type:
-          type: string
-          enum:
-          - database
-          - user_file
-          title: Type
-        columns:
-          items:
-            $ref: '#/components/schemas/SwapColumn'
-          type: array
-          title: Columns
-      type: object
-      required:
-      - id
-      - name
-      - type
-      - columns
-      title: SwapCurrentSource
-    ChangesListResponse:
-      properties:
-        events:
-          items:
-            $ref: '#/components/schemas/DAGChangeEventRead'
-          type: array
-          title: Events
-        head_event_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Head Event Id
-      type: object
-      required:
-      - events
-      title: ChangesListResponse
-    SwapInputResponse:
-      properties:
-        step_id:
-          type: string
-          format: uuid
-          title: Step Id
-        status:
-          type: string
-          enum:
-          - ok
-          - no_op
-          title: Status
-        message:
-          type: string
-          title: Message
-      type: object
-      required:
-      - step_id
-      - status
-      - message
-      title: SwapInputResponse
+    Severity:
+      type: string
+      enum:
+      - compatible
+      - partial
+      - risky
+      - no_match
+      title: Severity
     app__steps__schemas__RunRead:
       properties:
         id:
@@ -1538,61 +1114,69 @@ components:
       - before
       - after
       title: DAGChangeEventRead
-    GotoRequest:
+    RunCreate:
       properties:
-        event_id:
+        root_step_id:
           anyOf:
           - type: string
             format: uuid
           - type: 'null'
-          title: Event Id
+          title: Root Step Id
+        force_full:
+          type: boolean
+          title: Force Full
+          default: false
       type: object
-      title: GotoRequest
-      description: 'Body for ``POST /{project_id}/changes/goto`` — browser-style timeline navigation.
+      title: RunCreate
+      description: 'Trigger a new run.
 
 
-        ``event_id=None`` rewinds to the initial state (before any recorded events).'
-    SwapInputRequest:
+        ``root_step_id`` is the target output (a database step).
+
+        Null ``root_step_id`` means Run All — run every active step in the project.
+
+
+        ``force_full`` bypasses the AI Lambda''s content-addressed cache / the
+
+        custom Lambda''s api_action ledger for this run only — used for manual
+
+        replays after schema changes or bug fixes. Cascade-created runs leave
+
+        this False (see spec §7d — force_full does not propagate through
+
+        cascade).'
+    SwapCandidateList:
       properties:
-        target_id:
-          type: string
-          format: uuid
-          title: Target Id
+        current_source:
+          $ref: '#/components/schemas/SwapCurrentSource'
+        candidates:
+          items:
+            $ref: '#/components/schemas/SwapCandidate'
+          type: array
+          title: Candidates
       type: object
       required:
-      - target_id
-      title: SwapInputRequest
-    StepRead:
+      - current_source
+      - candidates
+      title: SwapCandidateList
+    StepCreate:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
         slug:
           type: string
           title: Slug
         title:
           type: string
           title: Title
+          default: ''
         description:
           type: string
           title: Description
+          default: ''
         step_type:
           $ref: '#/components/schemas/StepType'
         code_type:
           $ref: '#/components/schemas/CodeType'
+          default: python
         sink_target:
           anyOf:
           - $ref: '#/components/schemas/SinkTarget'
@@ -1609,24 +1193,15 @@ components:
             format: uuid
           type: array
           title: Parent Step Ids
-        order:
-          type: integer
-          title: Order
-        code_url:
-          type: string
-          title: Code Url
+          default: []
         in_format:
           type: string
           title: In Format
+          default: ''
         out_format:
           type: string
           title: Out Format
-        referenced_database_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Referenced Database Ids
+          default: ''
         input_schema:
           anyOf:
           - items:
@@ -1646,67 +1221,107 @@ components:
             type: object
           - type: 'null'
           title: Operator Config
-        extra_metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra Metadata
-        entity_id:
+      type: object
+      required:
+      - slug
+      - step_type
+      title: StepCreate
+      description: Create a new step in a project DAG.
+    SinkTarget:
+      type: string
+      enum:
+      - database
+      title: SinkTarget
+      description: Where a data_sink step writes its output.
+    StepBatchReplace:
+      properties:
+        steps:
+          items:
+            $ref: '#/components/schemas/StepBatchItem'
+          type: array
+          title: Steps
+      type: object
+      required:
+      - steps
+      title: StepBatchReplace
+      description: Replace all steps in a project (used at deploy time).
+    StepType:
+      type: string
+      enum:
+      - source
+      - data_read
+      - process
+      - data_sink
+      - database
+      - dashboard
+      title: StepType
+      description: The role a step plays in the project DAG.
+    TriggerRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        trigger_type:
+          $ref: '#/components/schemas/TriggerType'
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+        is_active:
+          type: boolean
+          title: Is Active
+        last_triggered_at:
           anyOf:
           - type: string
-            format: uuid
+            format: date-time
           - type: 'null'
-          title: Entity Id
-        status:
-          type: string
-          title: Status
-          default: active
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
+          title: Last Triggered At
         created_at:
           type: string
           format: date-time
           title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-        database_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Database Name
-        trigger:
-          anyOf:
-          - $ref: '#/components/schemas/TriggerRead'
-          - type: 'null'
       type: object
       required:
       - id
-      - project_id
-      - company_id
-      - user_id
-      - slug
-      - title
-      - description
-      - step_type
-      - code_type
-      - sink_target
-      - provider_id
-      - parent_step_ids
-      - order
-      - code_url
-      - in_format
-      - out_format
-      - referenced_database_ids
-      - input_schema
-      - is_suppressed
+      - step_id
+      - trigger_type
+      - trigger_config
+      - is_active
+      - last_triggered_at
       - created_at
-      - updated_at
-      title: StepRead
-      description: Step response.
+      title: TriggerRead
+      description: Trigger response.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChangesListResponse:
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/DAGChangeEventRead'
+          type: array
+          title: Events
+        head_event_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Head Event Id
+      type: object
+      required:
+      - events
+      title: ChangesListResponse
     SwapRetyped:
       properties:
         name:
@@ -1724,12 +1339,349 @@ components:
       - current_type
       - candidate_type
       title: SwapRetyped
-    SinkTarget:
+    StepRunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        logs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logs
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Processed
+        output_row_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Row Count
+        rows_new:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows New
+        rows_changed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Changed
+        rows_removed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Removed
+        ai_rows_cached:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Cached
+        ai_rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Processed
+      type: object
+      required:
+      - id
+      - run_id
+      - step_id
+      - status
+      - error
+      - logs
+      - started_at
+      - finished_at
+      title: StepRunRead
+      description: StepRun response.
+    StepCodeUpdate:
+      properties:
+        code:
+          type: string
+          title: Code
+      type: object
+      required:
+      - code
+      title: StepCodeUpdate
+      description: Verbatim replacement of a custom_code step's Python source.
+    TriggerType:
       type: string
       enum:
-      - database
-      title: SinkTarget
-      description: Where a data_sink step writes its output.
+      - on_click
+      - schedule
+      title: TriggerType
+      description: 'How a root step can be triggered.
+
+
+        EVENT (polling) was deprecated in commit c523d2be (2026-05-02) and
+
+        deleted entirely in Phase 5: cross-dataset reactive updates use the
+
+        cascade model (database_dep) instead. ON_CLICK is implicit (every
+
+        dataset can be refreshed manually via the UI, no row needed) and is
+
+        only kept here for the rejection branch in CreateTrigger.'
+    StepBatchItem:
+      properties:
+        slug:
+          type: string
+          title: Slug
+        title:
+          type: string
+          title: Title
+          default: ''
+        description:
+          type: string
+          title: Description
+          default: ''
+        step_type:
+          $ref: '#/components/schemas/StepType'
+        code_type:
+          $ref: '#/components/schemas/CodeType'
+          default: python
+        sink_target:
+          anyOf:
+          - $ref: '#/components/schemas/SinkTarget'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        parent_slugs:
+          items:
+            type: string
+          type: array
+          title: Parent Slugs
+          default: []
+        in_format:
+          type: string
+          title: In Format
+          default: ''
+        out_format:
+          type: string
+          title: Out Format
+          default: ''
+        code_url:
+          type: string
+          title: Code Url
+          default: ''
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Referenced Database Ids
+          default: []
+        input_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Input Schema
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+      type: object
+      required:
+      - slug
+      - step_type
+      title: StepBatchItem
+      description: One step in a batch replace.
+    SwapInputResponse:
+      properties:
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        status:
+          type: string
+          enum:
+          - ok
+          - no_op
+          title: Status
+        message:
+          type: string
+          title: Message
+      type: object
+      required:
+      - step_id
+      - status
+      - message
+      title: SwapInputResponse
+    SwapCandidate:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          enum:
+          - database
+          - user_file
+          title: Type
+        owner_project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Owner Project Id
+        owner_project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Owner Project Name
+        is_shared:
+          type: boolean
+          title: Is Shared
+        similarity_score:
+          type: number
+          title: Similarity Score
+        severity:
+          $ref: '#/components/schemas/Severity'
+        diff:
+          $ref: '#/components/schemas/SwapColumnDiff'
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - owner_project_id
+      - owner_project_name
+      - is_shared
+      - similarity_score
+      - severity
+      - diff
+      title: SwapCandidate
+    StepUpdate:
+      properties:
+        slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Slug
+        title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Title
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        step_type:
+          anyOf:
+          - $ref: '#/components/schemas/StepType'
+          - type: 'null'
+        code_type:
+          anyOf:
+          - $ref: '#/components/schemas/CodeType'
+          - type: 'null'
+        sink_target:
+          anyOf:
+          - $ref: '#/components/schemas/SinkTarget'
+          - type: 'null'
+        provider_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Provider Id
+        parent_step_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Parent Step Ids
+        in_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: In Format
+        out_format:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Out Format
+        status:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Status
+        input_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Input Schema
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+      type: object
+      title: StepUpdate
+      description: Patch a step (all fields optional).
     ValidationError:
       properties:
         loc:
@@ -1756,17 +1708,95 @@ components:
       - msg
       - type
       title: ValidationError
-    StepType:
+    SwapInputRequest:
+      properties:
+        target_id:
+          type: string
+          format: uuid
+          title: Target Id
+      type: object
+      required:
+      - target_id
+      title: SwapInputRequest
+    CodeType:
       type: string
       enum:
-      - source
-      - data_read
-      - process
-      - data_sink
-      - database
-      - dashboard
-      title: StepType
-      description: The role a step plays in the project DAG.
+      - python
+      - sql
+      title: CodeType
+      description: Runtime language for the step code.
+    TriggerCreate:
+      properties:
+        trigger_type:
+          $ref: '#/components/schemas/TriggerType'
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+          default: {}
+      type: object
+      required:
+      - trigger_type
+      title: TriggerCreate
+      description: Attach a trigger to a root step.
+    GotoRequest:
+      properties:
+        event_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Event Id
+      type: object
+      title: GotoRequest
+      description: 'Body for ``POST /{project_id}/changes/goto`` — browser-style timeline navigation.
+
+
+        ``event_id=None`` rewinds to the initial state (before any recorded events).'
+    TriggerUpdate:
+      properties:
+        trigger_type:
+          anyOf:
+          - $ref: '#/components/schemas/TriggerType'
+          - type: 'null'
+        trigger_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Trigger Config
+      type: object
+      title: TriggerUpdate
+      description: Patch a trigger.
+    SwapCurrentSource:
+      properties:
+        id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Id
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          enum:
+          - database
+          - user_file
+          title: Type
+        columns:
+          items:
+            $ref: '#/components/schemas/SwapColumn'
+          type: array
+          title: Columns
+      type: object
+      required:
+      - id
+      - name
+      - type
+      - columns
+      title: SwapCurrentSource
     SwapColumn:
       properties:
         name:
@@ -1780,26 +1810,3 @@ components:
       required:
       - name
       title: SwapColumn
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SwapCandidateList:
-      properties:
-        current_source:
-          $ref: '#/components/schemas/SwapCurrentSource'
-        candidates:
-          items:
-            $ref: '#/components/schemas/SwapCandidate'
-          type: array
-          title: Candidates
-      type: object
-      required:
-      - current_source
-      - candidates
-      title: SwapCandidateList

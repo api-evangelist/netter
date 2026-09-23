@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions integrations API
+  title: DMI Backend Integrations API
   version: 0.1.0
 tags:
-- name: integrations
+- name: Integrations
 paths:
   /api/v1/integrations/providers:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Providers
       description: List available providers. Optionally filter by provider_type.
       operationId: list_providers_api_v1_integrations_providers_get
@@ -40,7 +40,7 @@ paths:
   /api/v1/integrations/:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Integrations
       description: List integrations the caller can see (owners see all).
       operationId: list_integrations_api_v1_integrations__get
@@ -56,7 +56,7 @@ paths:
                 title: Response List Integrations Api V1 Integrations  Get
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Create Integration
       description: 'Register or update an integration for the company (upsert by provider).
 
@@ -98,7 +98,7 @@ paths:
   /api/v1/integrations/session-token:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Nango Session Token
       description: 'Fetch a short-lived session token from Nango for the Connect UI.
 
@@ -148,7 +148,7 @@ paths:
   /api/v1/integrations/{integration_id}:
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Update Integration
       description: Update an integration's status or connection details.
       operationId: update_integration_api_v1_integrations__integration_id__patch
@@ -191,7 +191,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - integrations
+      - Integrations
       summary: Delete Integration
       description: Remove an integration and its Nango connection.
       operationId: delete_integration_api_v1_integrations__integration_id__delete
@@ -215,7 +215,7 @@ paths:
   /api/v1/integrations/providers/{slug}/crawler-schema:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Crawler Schema
       description: 'Return the wizard schema for a provider''s crawler (public read).
 
@@ -247,7 +247,7 @@ paths:
   /api/v1/integrations/providers/{slug}/actions:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: List Provider Actions
       description: Typed actions available for a provider's provider_action workflow node.
       operationId: list_provider_actions_api_v1_integrations_providers__slug__actions_get
@@ -277,7 +277,7 @@ paths:
   /api/v1/integrations/{integration_id}/scope-options:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Scope Options
       description: 'Live scope discovery for a specific table.
 
@@ -319,7 +319,7 @@ paths:
   /api/v1/integrations/{integration_id}/snowflake/databases:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Snowflake Databases
       description: '``SHOW DATABASES`` against the customer''s Snowflake account.'
       operationId: get_snowflake_databases_api_v1_integrations__integration_id__snowflake_databases_get
@@ -350,9 +350,9 @@ paths:
   /api/v1/integrations/{integration_id}/snowflake/schemas:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Snowflake Schemas
-      description: '``SHOW SCHEMAS IN DATABASE <database>``. ``INFORMATION_SCHEMA``
+      description: '``SHOW SCHEMAS IN DATABASE ``. ``INFORMATION_SCHEMA``
 
         is filtered out by the underlying discovery function.'
       operationId: get_snowflake_schemas_api_v1_integrations__integration_id__snowflake_schemas_get
@@ -389,9 +389,9 @@ paths:
   /api/v1/integrations/{integration_id}/snowflake/tables:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Snowflake Tables
-      description: '``SHOW TABLES IN SCHEMA <database>.<schema>``.'
+      description: '``SHOW TABLES IN SCHEMA .``.'
       operationId: get_snowflake_tables_api_v1_integrations__integration_id__snowflake_tables_get
       parameters:
       - name: integration_id
@@ -432,9 +432,11 @@ paths:
   /api/v1/integrations/{integration_id}/snowflake/describe:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Describe Snowflake Table
-      description: '``DESCRIBE TABLE <database>.<schema>.<table>`` mapped to
+      description: '``DESCRIBE TABLE ..
+
+        `` mapped to
 
         Polars-style types — used to populate ``columns`` in the wizard
 
@@ -485,7 +487,7 @@ paths:
   /api/v1/integrations/{integration_id}/databricks/warehouses:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Warehouses
       description: '``GET /api/2.0/sql/warehouses`` against the customer''s workspace.'
       operationId: get_databricks_warehouses_api_v1_integrations__integration_id__databricks_warehouses_get
@@ -516,7 +518,7 @@ paths:
   /api/v1/integrations/{integration_id}/databricks/catalogs:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Catalogs
       description: '``GET /api/2.1/unity-catalog/catalogs`` — list customer catalogs
 
@@ -549,9 +551,9 @@ paths:
   /api/v1/integrations/{integration_id}/databricks/schemas:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Schemas
-      description: '``GET /api/2.1/unity-catalog/schemas?catalog_name=<catalog>``.
+      description: '``GET /api/2.1/unity-catalog/schemas?catalog_name=``.
 
         ``information_schema`` is filtered out by the underlying discovery
 
@@ -590,7 +592,7 @@ paths:
   /api/v1/integrations/{integration_id}/databricks/tables:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Databricks Tables
       description: '``GET /api/2.1/unity-catalog/tables?catalog_name=<>&schema_name=<>``.'
       operationId: get_databricks_tables_api_v1_integrations__integration_id__databricks_tables_get
@@ -633,7 +635,7 @@ paths:
   /api/v1/integrations/{integration_id}/databricks/describe:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Describe Databricks Table
       description: '``GET /api/2.1/unity-catalog/tables/{catalog.schema.table}`` mapped to
 
@@ -686,7 +688,7 @@ paths:
   /api/v1/integrations/{integration_id}/crawler-config:
     get:
       tags:
-      - integrations
+      - Integrations
       summary: Get Crawler Config
       description: Return the effective crawler config for an integration (for the edit modal).
       operationId: get_crawler_config_api_v1_integrations__integration_id__crawler_config_get
@@ -713,7 +715,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - integrations
+      - Integrations
       summary: Patch Crawler Config
       description: Apply a crawler config patch and signal the running workflow.
       operationId: patch_crawler_config_api_v1_integrations__integration_id__crawler_config_patch
@@ -747,7 +749,7 @@ paths:
   /api/v1/integrations/{integration_id}/refresh-crawl:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Refresh Integration Crawl
       description: 'Wake the crawler workflow''s polling loop immediately ("Refresh now").
 
@@ -782,7 +784,7 @@ paths:
   /api/v1/integrations/webhook:
     post:
       tags:
-      - integrations
+      - Integrations
       summary: Nango Webhook
       description: 'Handle webhooks from Nango (connection.created / connection.updated).
 
@@ -800,210 +802,6 @@ paths:
                 title: Response Nango Webhook Api V1 Integrations Webhook Post
 components:
   schemas:
-    DatabricksWarehouseItem:
-      properties:
-        id:
-          type: string
-          title: Id
-        label:
-          type: string
-          title: Label
-        hint:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hint
-      type: object
-      required:
-      - id
-      - label
-      title: DatabricksWarehouseItem
-      description: 'One SQL warehouse from ``GET /api/2.0/sql/warehouses``.
-
-
-        ``id`` is the value the wizard writes to
-
-        ``DatabricksTableConfig.warehouse_id``. ``hint`` carries state +
-
-        cluster size so the user can pick the right warehouse without
-
-        leaving the wizard.'
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ProviderActionRead:
-      properties:
-        key:
-          type: string
-          title: Key
-        display_name:
-          type: string
-          title: Display Name
-        description:
-          type: string
-          title: Description
-        params_json_schema:
-          additionalProperties: true
-          type: object
-          title: Params Json Schema
-      type: object
-      required:
-      - key
-      - display_name
-      - description
-      - params_json_schema
-      title: ProviderActionRead
-    CrawlerSchemaRead:
-      properties:
-        tables:
-          items:
-            $ref: '#/components/schemas/CrawlerTableSchema'
-          type: array
-          title: Tables
-        poll_interval_options_seconds:
-          items:
-            type: integer
-          type: array
-          title: Poll Interval Options Seconds
-        min_poll_interval_seconds:
-          type: integer
-          title: Min Poll Interval Seconds
-        default_poll_interval_seconds:
-          type: integer
-          title: Default Poll Interval Seconds
-        max_backfill_window_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Backfill Window Days
-        default_backfill_window_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Default Backfill Window Days
-      type: object
-      required:
-      - tables
-      - poll_interval_options_seconds
-      - min_poll_interval_seconds
-      - default_poll_interval_seconds
-      - max_backfill_window_days
-      - default_backfill_window_days
-      title: CrawlerSchemaRead
-    CrawlerConfigPatchBody:
-      properties:
-        poll_interval_seconds:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Poll Interval Seconds
-        backfill_window_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Backfill Window Days
-        selected_tables:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Selected Tables
-        scope_filters:
-          anyOf:
-          - additionalProperties:
-              additionalProperties: true
-              type: object
-            type: object
-          - type: 'null'
-          title: Scope Filters
-        crawler_table_configs:
-          anyOf:
-          - additionalProperties:
-              additionalProperties: true
-              type: object
-            type: object
-          - type: 'null'
-          title: Crawler Table Configs
-        purge_removed:
-          type: boolean
-          title: Purge Removed
-          default: false
-      type: object
-      title: CrawlerConfigPatchBody
-    DatabricksColumnSchema:
-      properties:
-        name:
-          type: string
-          title: Name
-        polars_type:
-          type: string
-          title: Polars Type
-      type: object
-      required:
-      - name
-      - polars_type
-      title: DatabricksColumnSchema
-      description: 'One column from Unity Catalog mapped to a Polars-style type.
-
-
-        The wizard echoes this list back in the ``crawler_table_configs``
-
-        PATCH so the lifecycle layer can populate ``Database.schema_info``
-
-        without a fresh round-trip.'
-    CrawlerConfigPatchResponse:
-      properties:
-        config:
-          $ref: '#/components/schemas/CrawlerConfigRead'
-        pending_actions:
-          items:
-            type: string
-          type: array
-          title: Pending Actions
-        warnings:
-          items:
-            type: string
-          type: array
-          title: Warnings
-      type: object
-      required:
-      - config
-      - pending_actions
-      - warnings
-      title: CrawlerConfigPatchResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     IntegrationCreate:
       properties:
         provider_id:
@@ -1025,137 +823,36 @@ components:
       required:
       - provider_id
       title: IntegrationCreate
-    CrawlerScopeOption:
-      properties:
-        id:
-          type: string
-          title: Id
-        label:
-          type: string
-          title: Label
-        hint:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hint
-      type: object
-      required:
-      - id
-      - label
-      title: CrawlerScopeOption
-    SnowflakeDiscoveryItem:
-      properties:
-        id:
-          type: string
-          title: Id
-        label:
-          type: string
-          title: Label
-        hint:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Hint
-      type: object
-      required:
-      - id
-      - label
-      title: SnowflakeDiscoveryItem
-      description: 'Item returned by SHOW DATABASES / SHOW SCHEMAS / SHOW TABLES.
-
-
-        ``id`` is the namespaced selector the wizard later passes back —
-
-        e.g. ``"ANALYTICS"`` for a database, ``"ANALYTICS.PUBLIC"`` for a
-
-        schema, ``"ANALYTICS.PUBLIC.ORDERS"`` for a table. ``hint`` holds
-
-        optional metadata (row count, comment) for UI tooltips.'
-    CrawlerTableSchema:
+    DatabricksColumnSchema:
       properties:
         name:
           type: string
           title: Name
-        description:
+        polars_type:
           type: string
-          title: Description
-        scope_schema:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Scope Schema
-        scope_key_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Scope Key Label
-        supports_purge:
-          type: boolean
-          title: Supports Purge
-          default: false
+          title: Polars Type
       type: object
       required:
       - name
-      - description
-      title: CrawlerTableSchema
-    ProviderRead:
+      - polars_type
+      title: DatabricksColumnSchema
+      description: 'One column from Unity Catalog mapped to a Polars-style type.
+
+
+        The wizard echoes this list back in the ``crawler_table_configs``
+
+        PATCH so the lifecycle layer can populate ``Database.schema_info``
+
+        without a fresh round-trip.'
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        display_name:
-          type: string
-          title: Display Name
-        icon:
-          type: string
-          title: Icon
-        description:
-          type: string
-          title: Description
-        category:
-          type: string
-          title: Category
-        provider_type:
-          type: string
-          title: Provider Type
-          default: integration
-        domain:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Domain
-        nango_provider_config_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Nango Provider Config Key
-        nango_webhook_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Nango Webhook Url
-        credential_schema:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Credential Schema
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - id
-      - name
-      - display_name
-      - icon
-      - description
-      - category
-      title: ProviderRead
+      title: HTTPValidationError
     CrawlerConfigRead:
       properties:
         poll_interval_seconds:
@@ -1239,6 +936,265 @@ components:
         schema, ``"analytics.sales.orders"`` for a table. ``hint`` holds
 
         optional metadata (table type, comment) for UI tooltips.'
+    CrawlerSchemaRead:
+      properties:
+        tables:
+          items:
+            $ref: '#/components/schemas/CrawlerTableSchema'
+          type: array
+          title: Tables
+        poll_interval_options_seconds:
+          items:
+            type: integer
+          type: array
+          title: Poll Interval Options Seconds
+        min_poll_interval_seconds:
+          type: integer
+          title: Min Poll Interval Seconds
+        default_poll_interval_seconds:
+          type: integer
+          title: Default Poll Interval Seconds
+        max_backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Backfill Window Days
+        default_backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Default Backfill Window Days
+      type: object
+      required:
+      - tables
+      - poll_interval_options_seconds
+      - min_poll_interval_seconds
+      - default_poll_interval_seconds
+      - max_backfill_window_days
+      - default_backfill_window_days
+      title: CrawlerSchemaRead
+    DatabricksWarehouseItem:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: DatabricksWarehouseItem
+      description: 'One SQL warehouse from ``GET /api/2.0/sql/warehouses``.
+
+
+        ``id`` is the value the wizard writes to
+
+        ``DatabricksTableConfig.warehouse_id``. ``hint`` carries state +
+
+        cluster size so the user can pick the right warehouse without
+
+        leaving the wizard.'
+    ProviderRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        display_name:
+          type: string
+          title: Display Name
+        icon:
+          type: string
+          title: Icon
+        description:
+          type: string
+          title: Description
+        category:
+          type: string
+          title: Category
+        provider_type:
+          type: string
+          title: Provider Type
+          default: integration
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+        nango_provider_config_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Provider Config Key
+        nango_webhook_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Webhook Url
+        credential_schema:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Credential Schema
+      type: object
+      required:
+      - id
+      - name
+      - display_name
+      - icon
+      - description
+      - category
+      title: ProviderRead
+    ProviderActionRead:
+      properties:
+        key:
+          type: string
+          title: Key
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        params_json_schema:
+          additionalProperties: true
+          type: object
+          title: Params Json Schema
+      type: object
+      required:
+      - key
+      - display_name
+      - description
+      - params_json_schema
+      title: ProviderActionRead
+    SnowflakeDiscoveryItem:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: SnowflakeDiscoveryItem
+      description: 'Item returned by SHOW DATABASES / SHOW SCHEMAS / SHOW TABLES.
+
+
+        ``id`` is the namespaced selector the wizard later passes back —
+
+        e.g. ``"ANALYTICS"`` for a database, ``"ANALYTICS.PUBLIC"`` for a
+
+        schema, ``"ANALYTICS.PUBLIC.ORDERS"`` for a table. ``hint`` holds
+
+        optional metadata (row count, comment) for UI tooltips.'
+    CrawlerConfigPatchBody:
+      properties:
+        poll_interval_seconds:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Poll Interval Seconds
+        backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Backfill Window Days
+        selected_tables:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Selected Tables
+        scope_filters:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Scope Filters
+        crawler_table_configs:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Crawler Table Configs
+        purge_removed:
+          type: boolean
+          title: Purge Removed
+          default: false
+      type: object
+      title: CrawlerConfigPatchBody
+    CrawlerScopeOption:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: CrawlerScopeOption
+    CrawlerTableSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        scope_schema:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Scope Schema
+        scope_key_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Scope Key Label
+        supports_purge:
+          type: boolean
+          title: Supports Purge
+          default: false
+      type: object
+      required:
+      - name
+      - description
+      title: CrawlerTableSchema
     IntegrationRead:
       properties:
         id:
@@ -1290,6 +1246,52 @@ components:
       - connected_at
       - created_at
       title: IntegrationRead
+    CrawlerConfigPatchResponse:
+      properties:
+        config:
+          $ref: '#/components/schemas/CrawlerConfigRead'
+        pending_actions:
+          items:
+            type: string
+          type: array
+          title: Pending Actions
+        warnings:
+          items:
+            type: string
+          type: array
+          title: Warnings
+      type: object
+      required:
+      - config
+      - pending_actions
+      - warnings
+      title: CrawlerConfigPatchResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     SnowflakeColumnSchema:
       properties:
         name:

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions row-policies API
+  title: DMI Backend Row Policies API
   version: 0.1.0
 tags:
 - name: row-policies
@@ -140,6 +140,56 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    RlsAudienceType:
+      type: string
+      enum:
+      - everyone
+      - group
+      - user
+      title: RlsAudienceType
+      description: Values for the ``audience_type`` column (stored as plain VARCHAR).
+    RowAccessPolicyUpdate:
+      properties:
+        operator:
+          anyOf:
+          - $ref: '#/components/schemas/RlsOperator'
+          - type: 'null'
+        values:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Values
+        attribute_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Attribute Key
+      type: object
+      title: RowAccessPolicyUpdate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RlsOperator:
+      type: string
+      enum:
+      - in
+      - not_in
+      - eq
+      - neq
+      - gte
+      - lte
+      - gt
+      - lt
+      title: RlsOperator
+      description: Supported comparison operators for row-level security rules.
     RowAccessPolicyRead:
       properties:
         id:
@@ -201,82 +251,13 @@ components:
       - created_at
       - updated_at
       title: RowAccessPolicyRead
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    RowAccessPolicyUpdate:
-      properties:
-        operator:
-          anyOf:
-          - $ref: '#/components/schemas/RlsOperator'
-          - type: 'null'
-        values:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Values
-        attribute_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Attribute Key
-      type: object
-      title: RowAccessPolicyUpdate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    RlsOperator:
+    RlsValueSource:
       type: string
       enum:
-      - in
-      - not_in
-      - eq
-      - neq
-      - gte
-      - lte
-      - gt
-      - lt
-      title: RlsOperator
-      description: Supported comparison operators for row-level security rules.
-    RlsAudienceType:
-      type: string
-      enum:
-      - everyone
-      - group
-      - user
-      title: RlsAudienceType
-      description: Values for the ``audience_type`` column (stored as plain VARCHAR).
+      - literal
+      - user_attribute
+      title: RlsValueSource
+      description: Values for the ``value_source`` column (stored as plain VARCHAR).
     RowAccessPolicyCreate:
       properties:
         column_name:
@@ -312,10 +293,29 @@ components:
       required:
       - column_name
       title: RowAccessPolicyCreate
-    RlsValueSource:
-      type: string
-      enum:
-      - literal
-      - user_attribute
-      title: RlsValueSource
-      description: Values for the ``value_source`` column (stored as plain VARCHAR).
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError

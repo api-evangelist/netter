@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions files API
+  title: DMI Backend Files API
   version: 0.1.0
 tags:
-- name: files
+- name: Files
 paths:
   /api/v1/files/magic-links:
     get:
       tags:
-      - files
+      - Files
       summary: List Magic Links
       description: List all magic links for the company (any member).
       operationId: list_magic_links_api_v1_files_magic_links_get
@@ -24,7 +24,7 @@ paths:
                 title: Response List Magic Links Api V1 Files Magic Links Get
     post:
       tags:
-      - files
+      - Files
       summary: Create Magic Link
       description: Create a new magic upload link. Any company member may create one.
       operationId: create_magic_link_api_v1_files_magic_links_post
@@ -50,7 +50,7 @@ paths:
   /api/v1/files/magic-links/{link_id}:
     patch:
       tags:
-      - files
+      - Files
       summary: Update Magic Link
       description: Update label and/or expiry of a magic link (creator or company owner).
       operationId: update_magic_link_api_v1_files_magic_links__link_id__patch
@@ -83,7 +83,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - files
+      - Files
       summary: Delete Magic Link
       description: Revoke (soft-delete) a magic link (creator or company owner).
       operationId: delete_magic_link_api_v1_files_magic_links__link_id__delete
@@ -107,7 +107,7 @@ paths:
   /api/v1/files/upload/{token}/meta:
     get:
       tags:
-      - files
+      - Files
       summary: Get Magic Link Meta
       description: Return public metadata about a magic link (label, folder prefix, expiry).
       operationId: get_magic_link_meta_api_v1_files_upload__token__meta_get
@@ -134,7 +134,7 @@ paths:
   /api/v1/files/upload/{token}:
     post:
       tags:
-      - files
+      - Files
       summary: Magic Upload
       description: 'Upload a file using a magic link token. No account required.
 
@@ -170,9 +170,35 @@ paths:
   /api/v1/files/upload:
     post:
       tags:
-      - files
+      - Files
       summary: Upload File
-      description: "Upload a CSV, JSON, or Excel file.\n\nAccepts either a Supabase JWT or an API key (``ntr_…``) in the\n``Authorization: Bearer`` header.\n\nThe optional ``folder`` form field places the file in that folder\n(found-or-created on the fly). It takes precedence over any path prefix\nembedded in the filename. Without it, the folder is still derived from a\n``/``-separated filename prefix; no folder means the file lands at root.\n\nUsage (API key)::\n\n    curl -X POST https://api.example.com/api/v1/files/upload \\\n        -H \"Authorization: Bearer ntr_...\" \\\n        -F \"file=@data.csv\" \\\n        -F \"folder=invoices/2024\""
+      description: 'Upload a CSV, JSON, or Excel file.
+
+
+        Accepts either a Supabase JWT or an API key (``ntr_…``) in the
+
+        ``Authorization: Bearer`` header.
+
+
+        The optional ``folder`` form field places the file in that folder
+
+        (found-or-created on the fly). It takes precedence over any path prefix
+
+        embedded in the filename. Without it, the folder is still derived from a
+
+        ``/``-separated filename prefix; no folder means the file lands at root.
+
+
+        Usage (API key)::
+
+
+        curl -X POST https://api.example.com/api/v1/files/upload \
+
+        -H "Authorization: Bearer ntr_..." \
+
+        -F "file=@data.csv" \
+
+        -F "folder=invoices/2024"'
       operationId: upload_file_api_v1_files_upload_post
       requestBody:
         content:
@@ -196,7 +222,7 @@ paths:
   /api/v1/files/{user_file_id}/commit:
     post:
       tags:
-      - files
+      - Files
       summary: Commit User File
       description: Finalize a pending upload with chosen sheets + skip-rows.
       operationId: commit_user_file_api_v1_files__user_file_id__commit_post
@@ -230,7 +256,7 @@ paths:
   /api/v1/files/{user_file_id}/parse-config:
     get:
       tags:
-      - files
+      - Files
       summary: Get Parse Config
       description: Return analyzer output + current Database state for the cog modal.
       operationId: get_parse_config_api_v1_files__user_file_id__parse_config_get
@@ -257,9 +283,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - files
+      - Files
       summary: Patch Parse Config
-      description: "Diff the request against current Databases and apply add/update/remove.\n\n* Sheet in request, no current Database → create + dispatch parse.\n* Sheet in request, Database exists, ``header_row_index`` differs →\n  update + dispatch parse.\n* Sheet in request, Database exists, unchanged → no-op.\n* Sheet not in request, Database exists → soft-suppress."
+      description: 'Diff the request against current Databases and apply add/update/remove.
+
+
+        * Sheet in request, no current Database → create + dispatch parse.
+
+        * Sheet in request, Database exists, ``header_row_index`` differs →
+
+        update + dispatch parse.
+
+        * Sheet in request, Database exists, unchanged → no-op.
+
+        * Sheet not in request, Database exists → soft-suppress.'
       operationId: patch_parse_config_api_v1_files__user_file_id__parse_config_patch
       parameters:
       - name: user_file_id
@@ -291,7 +328,7 @@ paths:
   /api/v1/files/:
     get:
       tags:
-      - files
+      - Files
       summary: List User Files
       description: 'List uploaded files in the company the caller can see.
 
@@ -338,7 +375,7 @@ paths:
   /api/v1/files/search:
     get:
       tags:
-      - files
+      - Files
       summary: Search Files
       description: 'Search files and folders by name across the whole company.
 
@@ -382,7 +419,7 @@ paths:
   /api/v1/files/{file_id}:
     get:
       tags:
-      - files
+      - Files
       summary: Get User File
       description: Get metadata for a single file.
       operationId: get_user_file_api_v1_files__file_id__get
@@ -409,7 +446,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - files
+      - Files
       summary: Delete User File
       description: Delete a file (record + S3 object) and cascade to file-backed databases.
       operationId: delete_user_file_api_v1_files__file_id__delete
@@ -432,7 +469,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - files
+      - Files
       summary: Rename User File
       description: Rename a file and cascade to non-user-overridden file-backed databases.
       operationId: rename_user_file_api_v1_files__file_id__patch
@@ -466,7 +503,7 @@ paths:
   /api/v1/files/{file_id}/download:
     get:
       tags:
-      - files
+      - Files
       summary: Download User File
       description: Download the raw file content.
       operationId: download_user_file_api_v1_files__file_id__download_get
@@ -493,9 +530,27 @@ paths:
   /api/v1/files/{file_id}/move:
     post:
       tags:
-      - files
+      - Files
       summary: Move User File Endpoint
-      description: "Move a file into a folder (or to the root if ``target_folder_id`` is None).\n\nSide effects when source/target folders are merge-enabled:\n- source-side: drop the file's slice from the source collection (parquet\n  rewrite + DatasetMember delete) so dashboards reflect the move\n  immediately.\n- target-side: re-arm the file's databases and dispatch a Temporal parse\n  so the rows land in the target collection.\n\nFilename collisions in the destination are auto-resolved with\n``foo (1).csv`` style suffixes."
+      description: 'Move a file into a folder (or to the root if ``target_folder_id`` is None).
+
+
+        Side effects when source/target folders are merge-enabled:
+
+        - source-side: drop the file''s slice from the source collection (parquet
+
+        rewrite + DatasetMember delete) so dashboards reflect the move
+
+        immediately.
+
+        - target-side: re-arm the file''s databases and dispatch a Temporal parse
+
+        so the rows land in the target collection.
+
+
+        Filename collisions in the destination are auto-resolved with
+
+        ``foo (1).csv`` style suffixes.'
       operationId: move_user_file_endpoint_api_v1_files__file_id__move_post
       parameters:
       - name: file_id
@@ -526,64 +581,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    FileSearchResponse:
-      properties:
-        folders:
-          items:
-            $ref: '#/components/schemas/FileFolderSearchResult'
-          type: array
-          title: Folders
-        files:
-          items:
-            $ref: '#/components/schemas/UserFileSearchResult'
-          type: array
-          title: Files
-      type: object
-      title: FileSearchResponse
-      description: Company-wide file/folder name-search results.
-    FileFolderSearchResult:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
-        parent_folder_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parent Folder Id
-        merge_enabled:
-          type: boolean
-          title: Merge Enabled
-        schema_mode:
-          type: string
-          title: Schema Mode
-        merge_database_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Merge Database Id
-        parent_path:
-          type: string
-          title: Parent Path
-          default: ''
-      type: object
-      required:
-      - id
-      - name
-      - merge_enabled
-      - schema_mode
-      title: FileFolderSearchResult
-      description: 'A folder search hit — folder identity plus the path of its parent chain.
-
-
-        Deliberately does NOT inherit ``FileFolderRead``: ``member_count`` /
-
-        ``has_children`` are derived per-folder (extra queries) and search doesn''t
-
-        need them, so returning them here would just fabricate ``0`` / ``false``.'
     ParseConfigSheet:
       properties:
         name:
@@ -620,6 +617,26 @@ components:
       type: object
       title: ParseConfigSheet
       description: Per-sheet info for the cog modal — analyzer output + current Database.
+    CommitSheet:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        header_row_index:
+          type: integer
+          minimum: 0.0
+          title: Header Row Index
+          default: 0
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+      type: object
+      title: CommitSheet
+      description: One entry in the commit / patch-parse-config request body.
     MagicLinkMeta:
       properties:
         company_name:
@@ -673,21 +690,6 @@ components:
         The full Database row is filled in asynchronously by the parse workflow.
 
         Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
-    Body_magic_upload_api_v1_files_upload__token__post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        uploader_name:
-          type: string
-          maxLength: 200
-          title: Uploader Name
-          default: ''
-      type: object
-      required:
-      - file
-      title: Body_magic_upload_api_v1_files_upload__token__post
     MagicLinkRead:
       properties:
         id:
@@ -736,17 +738,21 @@ components:
       - is_active
       - created_at
       title: MagicLinkRead
-    UserFileRename:
+    FileSearchResponse:
       properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
+        folders:
+          items:
+            $ref: '#/components/schemas/FileFolderSearchResult'
+          type: array
+          title: Folders
+        files:
+          items:
+            $ref: '#/components/schemas/UserFileSearchResult'
+          type: array
+          title: Files
       type: object
-      required:
-      - name
-      title: UserFileRename
-      description: Request payload for ``PATCH /files/{id}``.
+      title: FileSearchResponse
+      description: Company-wide file/folder name-search results.
     UserFileSearchResult:
       properties:
         id:
@@ -804,25 +810,57 @@ components:
       - parse_state
       title: UserFileSearchResult
       description: A file search hit — a UserFileRead plus the path of its containing folder.
-    MagicLinkUpdate:
+    ParseConfigDatabase:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        header_row_index:
+          type: integer
+          title: Header Row Index
+        refresh_status:
+          type: string
+          title: Refresh Status
+      type: object
+      required:
+      - id
+      - name
+      - header_row_index
+      - refresh_status
+      title: ParseConfigDatabase
+    MagicLinkCreate:
       properties:
         label:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
           title: Label
+          default: ''
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+          default: ''
         expires_in_hours:
-          anyOf:
-          - type: integer
-          - type: 'null'
+          type: integer
           title: Expires In Hours
+          default: 72
         is_permanent:
-          anyOf:
-          - type: boolean
-          - type: 'null'
+          type: boolean
           title: Is Permanent
+          default: false
       type: object
-      title: MagicLinkUpdate
+      title: MagicLinkCreate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     UserFileRead:
       properties:
         id:
@@ -875,6 +913,56 @@ components:
       - created_at
       - parse_state
       title: UserFileRead
+    Body_upload_file_api_v1_files_upload_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        folder:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Folder
+      type: object
+      required:
+      - file
+      title: Body_upload_file_api_v1_files_upload_post
+    ParseConfigResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        state:
+          type: string
+          title: State
+        sheets:
+          items:
+            $ref: '#/components/schemas/ParseConfigSheet'
+          type: array
+          title: Sheets
+      type: object
+      required:
+      - id
+      - state
+      - sheets
+      title: ParseConfigResponse
+    Body_magic_upload_api_v1_files_upload__token__post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        uploader_name:
+          type: string
+          maxLength: 200
+          title: Uploader Name
+          default: ''
+      type: object
+      required:
+      - file
+      title: Body_magic_upload_api_v1_files_upload__token__post
     SheetAnalysis:
       properties:
         name:
@@ -916,6 +1004,32 @@ components:
         first ~10 raw rows (pre-skip) so the frontend can re-render the preview
 
         client-side as the user changes the skip-rows input.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     UserFileUploadResponse:
       properties:
         id:
@@ -961,26 +1075,101 @@ components:
       - size_bytes
       - created_at
       title: UserFileUploadResponse
-    CommitSheet:
+    UserFileMove:
+      properties:
+        target_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Folder Id
+      type: object
+      title: UserFileMove
+      description: POST /files/{id}/move payload — destination folder (None = root).
+    FileFolderSearchResult:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Folder Id
+        merge_enabled:
+          type: boolean
+          title: Merge Enabled
+        schema_mode:
+          type: string
+          title: Schema Mode
+        merge_database_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Database Id
+        parent_path:
+          type: string
+          title: Parent Path
+          default: ''
+      type: object
+      required:
+      - id
+      - name
+      - merge_enabled
+      - schema_mode
+      title: FileFolderSearchResult
+      description: 'A folder search hit — folder identity plus the path of its parent chain.
+
+
+        Deliberately does NOT inherit ``FileFolderRead``: ``member_count`` /
+
+        ``has_children`` are derived per-folder (extra queries) and search doesn''t
+
+        need them, so returning them here would just fabricate ``0`` / ``false``.'
+    CommitRequest:
+      properties:
+        sheets:
+          items:
+            $ref: '#/components/schemas/CommitSheet'
+          type: array
+          title: Sheets
+      type: object
+      required:
+      - sheets
+      title: CommitRequest
+    UserFileRename:
       properties:
         name:
-          anyOf:
-          - type: string
-          - type: 'null'
+          type: string
+          minLength: 1
           title: Name
-        header_row_index:
-          type: integer
-          minimum: 0.0
-          title: Header Row Index
-          default: 0
-        database_name:
+      type: object
+      required:
+      - name
+      title: UserFileRename
+      description: Request payload for ``PATCH /files/{id}``.
+    MagicLinkUpdate:
+      properties:
+        label:
           anyOf:
           - type: string
           - type: 'null'
-          title: Database Name
+          title: Label
+        expires_in_hours:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expires In Hours
+        is_permanent:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Permanent
       type: object
-      title: CommitSheet
-      description: One entry in the commit / patch-parse-config request body.
+      title: MagicLinkUpdate
     MagicLinkCreated:
       properties:
         id:
@@ -1034,137 +1223,3 @@ components:
       - upload_url
       title: MagicLinkCreated
       description: Returned on creation — includes the full upload URL hint.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CommitRequest:
-      properties:
-        sheets:
-          items:
-            $ref: '#/components/schemas/CommitSheet'
-          type: array
-          title: Sheets
-      type: object
-      required:
-      - sheets
-      title: CommitRequest
-    ParseConfigDatabase:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        header_row_index:
-          type: integer
-          title: Header Row Index
-        refresh_status:
-          type: string
-          title: Refresh Status
-      type: object
-      required:
-      - id
-      - name
-      - header_row_index
-      - refresh_status
-      title: ParseConfigDatabase
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    MagicLinkCreate:
-      properties:
-        label:
-          type: string
-          title: Label
-          default: ''
-        folder_prefix:
-          type: string
-          title: Folder Prefix
-          default: ''
-        expires_in_hours:
-          type: integer
-          title: Expires In Hours
-          default: 72
-        is_permanent:
-          type: boolean
-          title: Is Permanent
-          default: false
-      type: object
-      title: MagicLinkCreate
-    UserFileMove:
-      properties:
-        target_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Folder Id
-      type: object
-      title: UserFileMove
-      description: POST /files/{id}/move payload — destination folder (None = root).
-    ParseConfigResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        state:
-          type: string
-          title: State
-        sheets:
-          items:
-            $ref: '#/components/schemas/ParseConfigSheet'
-          type: array
-          title: Sheets
-      type: object
-      required:
-      - id
-      - state
-      - sheets
-      title: ParseConfigResponse
-    Body_upload_file_api_v1_files_upload_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        folder:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Folder
-      type: object
-      required:
-      - file
-      title: Body_upload_file_api_v1_files_upload_post

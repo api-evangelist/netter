@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions dashboard-chat API
+  title: DMI Backend Dashboard Chat API
   version: 0.1.0
 tags:
 - name: dashboard-chat

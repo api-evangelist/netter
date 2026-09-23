@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions folders API
+  title: DMI Backend Folders API
   version: 0.1.0
 tags:
-- name: folders
+- name: Folders
 paths:
   /api/v1/folders/:
     get:
       tags:
-      - folders
+      - Folders
       summary: List Folders
       description: 'List all folders for the current company (flat list, clients build tree from parent_folder_id).
 
@@ -27,7 +27,7 @@ paths:
                 title: Response List Folders Api V1 Folders  Get
     post:
       tags:
-      - folders
+      - Folders
       summary: Create Folder
       description: Create a new folder (optionally nested under a parent).
       operationId: create_folder_api_v1_folders__post
@@ -53,7 +53,7 @@ paths:
   /api/v1/folders/{folder_id}:
     patch:
       tags:
-      - folders
+      - Folders
       summary: Update Folder
       description: Rename a folder.
       operationId: update_folder_api_v1_folders__folder_id__patch
@@ -86,7 +86,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - folders
+      - Folders
       summary: Delete Folder
       description: 'Delete a folder.
 
@@ -117,7 +117,7 @@ paths:
   /api/v1/folders/{folder_id}/move:
     patch:
       tags:
-      - folders
+      - Folders
       summary: Move Folder
       description: 'Move a folder to a new parent (or to root if parent_folder_id is null).
 
@@ -153,20 +153,17 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    FolderUpdate:
+    HTTPValidationError:
       properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: FolderUpdate
-    FolderCreate:
+      title: HTTPValidationError
+    FolderMove:
       properties:
-        name:
-          type: string
-          title: Name
         parent_folder_id:
           anyOf:
           - type: string
@@ -174,9 +171,7 @@ components:
           - type: 'null'
           title: Parent Folder Id
       type: object
-      required:
-      - name
-      title: FolderCreate
+      title: FolderMove
     FolderRead:
       properties:
         id:
@@ -218,6 +213,15 @@ components:
       - created_at
       - updated_at
       title: FolderRead
+    FolderUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: FolderUpdate
     ValidationError:
       properties:
         loc:
@@ -244,17 +248,11 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
+    FolderCreate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FolderMove:
-      properties:
+        name:
+          type: string
+          title: Name
         parent_folder_id:
           anyOf:
           - type: string
@@ -262,4 +260,6 @@ components:
           - type: 'null'
           title: Parent Folder Id
       type: object
-      title: FolderMove
+      required:
+      - name
+      title: FolderCreate

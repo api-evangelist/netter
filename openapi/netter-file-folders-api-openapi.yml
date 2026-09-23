@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions file-folders API
+  title: DMI Backend File Folders API
   version: 0.1.0
 tags:
-- name: file-folders
+- name: File Folders
 paths:
   /api/v1/file-folders:
     get:
       tags:
-      - file-folders
+      - File Folders
       summary: List File Folders
       description: 'List FileFolders. Default = direct children of ``parent_folder_id``.
 
@@ -58,7 +58,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     post:
       tags:
-      - file-folders
+      - File Folders
       summary: Create File Folder Endpoint
       description: 'Create a new FileFolder, optionally nested under ``parent_folder_id``.
 
@@ -91,7 +91,7 @@ paths:
   /api/v1/file-folders/{folder_id}:
     get:
       tags:
-      - file-folders
+      - File Folders
       summary: Get File Folder
       description: Get a single folder's metadata (used by the explorer header / breadcrumbs).
       operationId: get_file_folder_api_v1_file_folders__folder_id__get
@@ -118,7 +118,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - file-folders
+      - File Folders
       summary: Delete File Folder Endpoint
       description: Cascade-delete a folder. Non-empty/merge folders require type-to-confirm.
       operationId: delete_file_folder_endpoint_api_v1_file_folders__folder_id__delete
@@ -147,7 +147,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - file-folders
+      - File Folders
       summary: Update File Folder
       description: 'Rename and/or toggle merge and/or update write-semantics (incl. the
 
@@ -220,7 +220,7 @@ paths:
   /api/v1/file-folders/{folder_id}/breadcrumbs:
     get:
       tags:
-      - file-folders
+      - File Folders
       summary: Get Folder Breadcrumbs
       description: 'Return the breadcrumb path from root → folder (inclusive).
 
@@ -256,7 +256,7 @@ paths:
   /api/v1/file-folders/{folder_id}/members:
     get:
       tags:
-      - file-folders
+      - File Folders
       summary: List Folder Members
       description: 'List the contributing files (with per-file ``merge_error``) of a folder''s
 
@@ -289,7 +289,7 @@ paths:
   /api/v1/file-folders/{folder_id}/batches:
     get:
       tags:
-      - file-folders
+      - File Folders
       summary: List Folder Batches
       description: 'List batch groups (by ``batch_key``) for a folder''s ``full_delivery``
 
@@ -324,7 +324,7 @@ paths:
   /api/v1/file-folders/{folder_id}/batches/{batch_key}:force-merge:
     post:
       tags:
-      - file-folders
+      - File Folders
       summary: Force Merge Batch
       description: 'Escape hatch for a stuck batch (e.g. timed out at 9/10 files): seal
 
@@ -371,7 +371,7 @@ paths:
   /api/v1/file-folders/{folder_id}/batches/{batch_key}:discard:
     post:
       tags:
-      - file-folders
+      - File Folders
       summary: Discard Batch Endpoint
       description: 'Delete every member row of ``batch_key`` (collection parquet untouched).
 
@@ -424,7 +424,7 @@ paths:
   /api/v1/file-folders/{folder_id}/delete-preview:
     get:
       tags:
-      - file-folders
+      - File Folders
       summary: Preview Delete Folder
       description: Cascade-delete preview. Drives the type-to-confirm dialog on the UI.
       operationId: preview_delete_folder_api_v1_file_folders__folder_id__delete_preview_get
@@ -452,7 +452,7 @@ paths:
   /api/v1/file-folders/{folder_id}/group-key:test:
     post:
       tags:
-      - file-folders
+      - File Folders
       summary: Test Group Key
       description: 'Dry-run a candidate ``batch_key_pattern`` regex against the folder''s
 
@@ -496,7 +496,7 @@ paths:
   /api/v1/file-folders/{folder_id}/move:
     post:
       tags:
-      - file-folders
+      - File Folders
       summary: Move File Folder Endpoint
       description: 'Re-parent a folder. ``target_parent_id=None`` moves to the root.
 
@@ -534,6 +534,107 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FileFolderDeletePreview:
+      properties:
+        folder_count:
+          type: integer
+          title: Folder Count
+        file_count:
+          type: integer
+          title: File Count
+        has_merge:
+          type: boolean
+          title: Has Merge
+      type: object
+      required:
+      - folder_count
+      - file_count
+      - has_merge
+      title: FileFolderDeletePreview
+      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.
+    FileFolderBreadcrumb:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: FileFolderBreadcrumb
+      description: One node on the breadcrumb path returned by the explorer endpoint.
+    FileFolderDelete:
+      properties:
+        confirm_with_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Confirm With Name
+      type: object
+      title: FileFolderDelete
+      description: 'DELETE /file-folders/{id} payload — the type-to-confirm guard.
+
+
+        The frontend renders ``"Type the folder name to confirm"`` and only sends
+
+        ``confirm_with_name`` once the typed value matches; the backend re-checks
+
+        so the gate can''t be bypassed by a hand-rolled client.'
+    BatchSummary:
+      properties:
+        batch_key:
+          type: string
+          title: Batch Key
+        count:
+          type: integer
+          title: Count
+        size:
+          type: integer
+          title: Size
+        status:
+          type: string
+          title: Status
+        oldest_created_at:
+          type: string
+          title: Oldest Created At
+      type: object
+      required:
+      - batch_key
+      - count
+      - size
+      - status
+      - oldest_created_at
+      title: BatchSummary
+      description: 'One batch group (by ``batch_key``) in a folder''s ingestion pipeline,
+
+        with its read-time computed lifecycle status.'
+    FileFolderCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
+      type: object
+      required:
+      - name
+      title: FileFolderCreate
     DatasetMemberRead:
       properties:
         source_filename:
@@ -580,34 +681,6 @@ components:
       - last_refreshed_at
       title: DatasetMemberRead
       description: One contributing file in a merge-enabled folder's collection dataset.
-    BatchSummary:
-      properties:
-        batch_key:
-          type: string
-          title: Batch Key
-        count:
-          type: integer
-          title: Count
-        size:
-          type: integer
-          title: Size
-        status:
-          type: string
-          title: Status
-        oldest_created_at:
-          type: string
-          title: Oldest Created At
-      type: object
-      required:
-      - batch_key
-      - count
-      - size
-      - status
-      - oldest_created_at
-      title: BatchSummary
-      description: 'One batch group (by ``batch_key``) in a folder''s ingestion pipeline,
-
-        with its read-time computed lifecycle status.'
     ValidationError:
       properties:
         loc:
@@ -634,124 +707,18 @@ components:
       - msg
       - type
       title: ValidationError
-    FileFolderMove:
+    GroupKeyTestRequest:
       properties:
-        target_parent_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Parent Id
-      type: object
-      title: FileFolderMove
-      description: POST /file-folders/{id}/move payload.
-    FileFolderUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-            minLength: 1
-          - type: 'null'
-          title: Name
-        merge_enabled:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Merge Enabled
-        write_semantics:
-          anyOf:
-          - type: string
-            enum:
-            - append
-            - replace_overlap
-            - replace_all
-            - full_delivery
-          - type: 'null'
-          title: Write Semantics
-        coverage_columns:
-          anyOf:
-          - items:
-              type: string
-            type: array
-            minItems: 1
-          - type: 'null'
-          title: Coverage Columns
-        coverage_granularity:
-          anyOf:
-          - type: string
-            enum:
-            - exact
-            - day
-            - month
-            - quarter
-            - year
-          - type: 'null'
-          title: Coverage Granularity
-        batch_key_pattern:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Batch Key Pattern
-        batch_size:
-          anyOf:
-          - type: integer
-            minimum: 1.0
-          - type: 'null'
-          title: Batch Size
-        batch_timeout_hours:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Batch Timeout Hours
-      type: object
-      title: FileFolderUpdate
-      description: 'PATCH payload — every field is optional so the same endpoint covers
-
-        rename and merge toggle (mutually exclusive at most use sites; a single
-
-        request that sets both is honoured in declaration order: rename first,
-
-        then merge toggle, so a rename of a soon-to-be-merge folder picks up the
-
-        new collection name without an extra round-trip).'
-    FileFolderBreadcrumb:
-      properties:
-        id:
+        pattern:
           type: string
-          title: Id
-        name:
-          type: string
-          title: Name
+          title: Pattern
       type: object
       required:
-      - id
-      - name
-      title: FileFolderBreadcrumb
-      description: One node on the breadcrumb path returned by the explorer endpoint.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FileFolderCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-        parent_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Parent Folder Id
-      type: object
-      required:
-      - name
-      title: FileFolderCreate
+      - pattern
+      title: GroupKeyTestRequest
+      description: 'POST /file-folders/{id}/group-key:test payload — a candidate
+
+        ``batch_key_pattern`` regex to dry-run (not yet saved).'
     FileFolderRead:
       properties:
         id:
@@ -827,50 +794,83 @@ components:
       - schema_mode
       - merge_database_id
       title: FileFolderRead
-    GroupKeyTestRequest:
+    FileFolderUpdate:
       properties:
-        pattern:
-          type: string
-          title: Pattern
-      type: object
-      required:
-      - pattern
-      title: GroupKeyTestRequest
-      description: 'POST /file-folders/{id}/group-key:test payload — a candidate
-
-        ``batch_key_pattern`` regex to dry-run (not yet saved).'
-    FileFolderDeletePreview:
-      properties:
-        folder_count:
-          type: integer
-          title: Folder Count
-        file_count:
-          type: integer
-          title: File Count
-        has_merge:
-          type: boolean
-          title: Has Merge
-      type: object
-      required:
-      - folder_count
-      - file_count
-      - has_merge
-      title: FileFolderDeletePreview
-      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.
-    FileFolderDelete:
-      properties:
-        confirm_with_name:
+        name:
+          anyOf:
+          - type: string
+            minLength: 1
+          - type: 'null'
+          title: Name
+        merge_enabled:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Merge Enabled
+        write_semantics:
+          anyOf:
+          - type: string
+            enum:
+            - append
+            - replace_overlap
+            - replace_all
+            - full_delivery
+          - type: 'null'
+          title: Write Semantics
+        coverage_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+            minItems: 1
+          - type: 'null'
+          title: Coverage Columns
+        coverage_granularity:
+          anyOf:
+          - type: string
+            enum:
+            - exact
+            - day
+            - month
+            - quarter
+            - year
+          - type: 'null'
+          title: Coverage Granularity
+        batch_key_pattern:
           anyOf:
           - type: string
           - type: 'null'
-          title: Confirm With Name
+          title: Batch Key Pattern
+        batch_size:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Batch Size
+        batch_timeout_hours:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Batch Timeout Hours
       type: object
-      title: FileFolderDelete
-      description: 'DELETE /file-folders/{id} payload — the type-to-confirm guard.
+      title: FileFolderUpdate
+      description: 'PATCH payload — every field is optional so the same endpoint covers
 
+        rename and merge toggle (mutually exclusive at most use sites; a single
 
-        The frontend renders ``"Type the folder name to confirm"`` and only sends
+        request that sets both is honoured in declaration order: rename first,
 
-        ``confirm_with_name`` once the typed value matches; the backend re-checks
+        then merge toggle, so a rename of a soon-to-be-merge folder picks up the
 
-        so the gate can''t be bypassed by a hand-rolled client.'
+        new collection name without an extra round-trip).'
+    FileFolderMove:
+      properties:
+        target_parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Parent Id
+      type: object
+      title: FileFolderMove
+      description: POST /file-folders/{id}/move payload.

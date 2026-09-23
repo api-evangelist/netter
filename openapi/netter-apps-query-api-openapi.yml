@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions apps-query API
+  title: DMI Backend Apps Query API
   version: 0.1.0
 tags:
 - name: apps-query
@@ -84,6 +84,26 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppQueryBatchResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AppQueryBatchItemResult'
+          type: array
+          title: Results
+      type: object
+      required:
+      - results
+      title: AppQueryBatchResponse
     AppQueryResponse:
       properties:
         columns:
@@ -110,80 +130,6 @@ components:
       - total_rows
       - truncated
       title: AppQueryResponse
-    AppQueryBatchResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AppQueryBatchItemResult'
-          type: array
-          title: Results
-      type: object
-      required:
-      - results
-      title: AppQueryBatchResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    AppQueryBatchRequest:
-      properties:
-        queries:
-          items:
-            $ref: '#/components/schemas/AppQueryBatchItem'
-          type: array
-          maxItems: 50
-          minItems: 1
-          title: Queries
-      additionalProperties: false
-      type: object
-      required:
-      - queries
-      title: AppQueryBatchRequest
-      description: 'Body for POST /api/v1/apps/{app_id}/query/batch.
-
-
-        Runs every query against the app''s bound entities on a SINGLE shared
-
-        DuckDB connection: the source⊕overlay merge is materialized once and
-
-        reused across all queries, instead of N parallel single-query requests
-
-        each re-materializing the same entities on their own pooled connection.
-
-        Per-query errors are isolated — a failing query returns its ``error``
-
-        field without aborting the rest of the batch.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     AppQueryBatchItemResult:
       properties:
         id:
@@ -257,6 +203,60 @@ components:
         back on the matching result so the client maps results without relying on
 
         order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
+    AppQueryBatchRequest:
+      properties:
+        queries:
+          items:
+            $ref: '#/components/schemas/AppQueryBatchItem'
+          type: array
+          maxItems: 50
+          minItems: 1
+          title: Queries
+      additionalProperties: false
+      type: object
+      required:
+      - queries
+      title: AppQueryBatchRequest
+      description: 'Body for POST /api/v1/apps/{app_id}/query/batch.
+
+
+        Runs every query against the app''s bound entities on a SINGLE shared
+
+        DuckDB connection: the source⊕overlay merge is materialized once and
+
+        reused across all queries, instead of N parallel single-query requests
+
+        each re-materializing the same entities on their own pooled connection.
+
+        Per-query errors are isolated — a failing query returns its ``error``
+
+        field without aborting the rest of the batch.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AppQueryRequest:
       properties:
         sql:

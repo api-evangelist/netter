@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions lego-architect API
+  title: DMI Backend Lego Architect API
   version: 0.1.0
 tags:
 - name: lego-architect
@@ -257,32 +257,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -292,28 +266,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    EdgeRequest:
-      properties:
-        parent_slug:
-          type: string
-          title: Parent Slug
-        child_slug:
-          type: string
-          title: Child Slug
-      type: object
-      required:
-      - parent_slug
-      - child_slug
-      title: EdgeRequest
-    LegoTurnResponse:
-      properties:
-        status:
-          type: string
-          title: Status
-      type: object
-      required:
-      - status
-      title: LegoTurnResponse
     LegoMessageRequest:
       properties:
         content:
@@ -340,6 +292,25 @@ components:
       required:
       - content
       title: LegoMessageRequest
+    UpdateStepRequest:
+      properties:
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+      type: object
+      required:
+      - config
+      title: UpdateStepRequest
+    LegoTurnResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: LegoTurnResponse
     AddStepRequest:
       properties:
         step_type:
@@ -376,13 +347,42 @@ components:
       - operator
       - slug
       title: AddStepRequest
-    UpdateStepRequest:
+    ValidationError:
       properties:
-        config:
-          additionalProperties: true
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
           type: object
-          title: Config
+          title: Context
       type: object
       required:
-      - config
-      title: UpdateStepRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EdgeRequest:
+      properties:
+        parent_slug:
+          type: string
+          title: Parent Slug
+        child_slug:
+          type: string
+          title: Child Slug
+      type: object
+      required:
+      - parent_slug
+      - child_slug
+      title: EdgeRequest

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions ontology-promotion API
+  title: DMI Backend Ontology Promotion API
   version: 0.1.0
 tags:
 - name: ontology-promotion
@@ -102,78 +102,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ClearBody:
+    HTTPValidationError:
       properties:
-        confirm:
-          type: string
-          title: Confirm
-          description: Must be the literal phrase 'clear all overlays'
-      type: object
-      required:
-      - confirm
-      title: ClearBody
-    ValidationError:
-      properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    EntityRelationshipBrief:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        target_entity_id:
-          type: string
-          format: uuid
-          title: Target Entity Id
-        target_entity_name:
-          type: string
-          title: Target Entity Name
-        target_entity_display_name:
-          type: string
-          title: Target Entity Display Name
-        relationship_type:
-          type: string
-          title: Relationship Type
-        cardinality:
-          type: string
-          title: Cardinality
-      type: object
-      required:
-      - id
-      - name
-      - target_entity_id
-      - target_entity_name
-      - target_entity_display_name
-      - relationship_type
-      - cardinality
-      title: EntityRelationshipBrief
-      description: Relationship summary in entity detail.
+      title: HTTPValidationError
     app__ontology__schemas__EntityRead:
       properties:
         id:
@@ -270,6 +207,78 @@ components:
       - updated_at
       title: EntityRead
       description: Full entity for GET endpoints.
+    FedByProject:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - project_id
+      - project_name
+      title: FedByProject
+      description: Which project feeds this entity.
+    FieldFormat:
+      properties:
+        min:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min
+        max:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max
+        regex:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Regex
+        max_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Length
+        date_min:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Min
+        date_max:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Max
+        allowed_mime:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Mime
+        max_size_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Size Bytes
+      type: object
+      title: FieldFormat
+      description: Type-specific value constraints. All optional; only set what applies.
+    ClearBody:
+      properties:
+        confirm:
+          type: string
+          title: Confirm
+          description: Must be the literal phrase 'clear all overlays'
+      type: object
+      required:
+      - confirm
+      title: ClearBody
     EntityPropertyRead:
       properties:
         id:
@@ -350,77 +359,6 @@ components:
       required:
       - name
       title: PromoteBody
-    FieldFormat:
-      properties:
-        min:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Min
-        max:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Max
-        regex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Regex
-        max_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Length
-        date_min:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date Min
-        date_max:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date Max
-        allowed_mime:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Allowed Mime
-        max_size_bytes:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Size Bytes
-      type: object
-      title: FieldFormat
-      description: Type-specific value constraints. All optional; only set what applies.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FedByProject:
-      properties:
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
-      type: object
-      required:
-      - project_id
-      - project_name
-      title: FedByProject
-      description: Which project feeds this entity.
     FieldRules:
       properties:
         allowed_values:
@@ -441,6 +379,68 @@ components:
       type: object
       title: FieldRules
       description: Declared value rules for one entity field. Empty instance = no rules.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EntityRelationshipBrief:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        target_entity_id:
+          type: string
+          format: uuid
+          title: Target Entity Id
+        target_entity_name:
+          type: string
+          title: Target Entity Name
+        target_entity_display_name:
+          type: string
+          title: Target Entity Display Name
+        relationship_type:
+          type: string
+          title: Relationship Type
+        cardinality:
+          type: string
+          title: Cardinality
+      type: object
+      required:
+      - id
+      - name
+      - target_entity_id
+      - target_entity_name
+      - target_entity_display_name
+      - relationship_type
+      - cardinality
+      title: EntityRelationshipBrief
+      description: Relationship summary in entity detail.
     ClearResponse:
       properties:
         deleted:

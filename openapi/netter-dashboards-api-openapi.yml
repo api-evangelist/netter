@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions dashboards API
+  title: DMI Backend Dashboards API
   version: 0.1.0
 tags:
-- name: dashboards
+- name: Dashboards
 paths:
   /api/v1/dashboards/:
     post:
       tags:
-      - dashboards
+      - Dashboards
       summary: Create Dashboard
       description: Create a new dashboard (EDITOR on the project; creator gets ADMIN).
       operationId: create_dashboard_api_v1_dashboards__post
@@ -33,7 +33,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - dashboards
+      - Dashboards
       summary: List Dashboards
       description: List dashboards, optionally filtered by project (respects permissions).
       operationId: list_dashboards_api_v1_dashboards__get
@@ -73,7 +73,7 @@ paths:
   /api/v1/dashboards/{dashboard_id}:
     get:
       tags:
-      - dashboards
+      - Dashboards
       summary: Get Dashboard
       description: Get a single dashboard by ID.
       operationId: get_dashboard_api_v1_dashboards__dashboard_id__get
@@ -100,7 +100,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - dashboards
+      - Dashboards
       summary: Update Dashboard
       description: Update a dashboard's name or description.
       operationId: update_dashboard_api_v1_dashboards__dashboard_id__patch
@@ -133,7 +133,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - dashboards
+      - Dashboards
       summary: Delete Dashboard
       description: Hard-delete a dashboard. FK CASCADE deletes associated chats.
       operationId: delete_dashboard_api_v1_dashboards__dashboard_id__delete
@@ -157,7 +157,7 @@ paths:
   /api/v1/dashboards/{dashboard_id}/chat:
     get:
       tags:
-      - dashboards
+      - Dashboards
       summary: Get Or Create Dashboard Chat
       description: Return the existing dashboard chat or create one.
       operationId: get_or_create_dashboard_chat_api_v1_dashboards__dashboard_id__chat_get
@@ -185,7 +185,7 @@ paths:
   /api/v1/dashboards/{dashboard_id}/suppress:
     post:
       tags:
-      - dashboards
+      - Dashboards
       summary: Suppress Dashboard
       description: Soft-delete a dashboard and cascade suppress its chats.
       operationId: suppress_dashboard_api_v1_dashboards__dashboard_id__suppress_post
@@ -213,7 +213,7 @@ paths:
   /api/v1/dashboards/{dashboard_id}/dependencies:
     get:
       tags:
-      - dashboards
+      - Dashboards
       summary: Get Dashboard Dependencies
       description: Legacy endpoint — always returns empty list (pipeline model retired).
       operationId: get_dashboard_dependencies_api_v1_dashboards__dashboard_id__dependencies_get
@@ -244,7 +244,7 @@ paths:
   /api/v1/dashboards/{dashboard_id}/bundle.js:
     get:
       tags:
-      - dashboards
+      - Dashboards
       summary: Get Dashboard Bundle
       description: Serve the dashboard's JS bundle (proxied from S3).
       operationId: get_dashboard_bundle_api_v1_dashboards__dashboard_id__bundle_js_get
@@ -271,7 +271,7 @@ paths:
   /api/v1/dashboards/{dashboard_id}/regenerate:
     post:
       tags:
-      - dashboards
+      - Dashboards
       summary: Regenerate Dashboard
       description: Regenerate a dashboard independently (without running finalize_steps).
       operationId: regenerate_dashboard_api_v1_dashboards__dashboard_id__regenerate_post
@@ -301,6 +301,115 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DashboardUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      title: DashboardUpdate
+    ChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    DashboardCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        name:
+          type: string
+          title: Name
+          default: New Dashboard
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      required:
+      - project_id
+      title: DashboardCreate
     ValidationError:
       properties:
         loc:
@@ -416,112 +525,3 @@ components:
       - created_at
       - updated_at
       title: DashboardRead
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DashboardCreate:
-      properties:
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        name:
-          type: string
-          title: Name
-          default: New Dashboard
-        description:
-          type: string
-          title: Description
-          default: ''
-      type: object
-      required:
-      - project_id
-      title: DashboardCreate
-    DashboardUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      title: DashboardUpdate
-    ChatRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        dashboard_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Dashboard Id
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        chat_type:
-          type: string
-          title: Chat Type
-        title:
-          type: string
-          title: Title
-        status:
-          $ref: '#/components/schemas/ChatStatus'
-        generation_token:
-          type: integer
-          title: Generation Token
-          default: 0
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - company_id
-      - user_id
-      - dashboard_id
-      - chat_type
-      - title
-      - status
-      - is_suppressed
-      - created_at
-      - updated_at
-      title: ChatRead

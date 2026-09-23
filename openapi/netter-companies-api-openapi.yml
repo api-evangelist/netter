@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions companies API
+  title: DMI Backend Companies API
   version: 0.1.0
 tags:
-- name: companies
+- name: Companies
 paths:
   /api/v1/companies:
     get:
       tags:
-      - companies
+      - Companies
       summary: List My Companies
       description: List every company the caller belongs to — the one cross-tenant read.
       operationId: list_my_companies_api_v1_companies_get
@@ -21,7 +21,7 @@ paths:
                 $ref: '#/components/schemas/CompanyListResponse'
     post:
       tags:
-      - companies
+      - Companies
       summary: Create Company
       description: Create a new company — caller becomes owner + default company.
       operationId: create_company_api_v1_companies_post
@@ -47,7 +47,7 @@ paths:
   /api/v1/companies/accept-invitation:
     post:
       tags:
-      - companies
+      - Companies
       summary: Accept Invitation
       description: Consume a pending invitation token and join its company.
       operationId: accept_invitation_api_v1_companies_accept_invitation_post
@@ -73,7 +73,7 @@ paths:
   /api/v1/companies/invitations/validate:
     get:
       tags:
-      - companies
+      - Companies
       summary: Validate Invitation
       description: 'Resolve a pending invitation token for the accept page.
 
@@ -109,7 +109,7 @@ paths:
   /api/v1/companies/{company_id}/switch:
     post:
       tags:
-      - companies
+      - Companies
       summary: Switch Default Company
       description: Set the caller's default company — cross-tenant by design.
       operationId: switch_default_company_api_v1_companies__company_id__switch_post
@@ -140,7 +140,7 @@ paths:
   /api/v1/companies/{company_id}:
     get:
       tags:
-      - companies
+      - Companies
       summary: Get Company
       description: Fetch the company referenced by the current scope.
       operationId: get_company_api_v1_companies__company_id__get
@@ -167,7 +167,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - companies
+      - Companies
       summary: Update Company
       description: Rename the company — admins/owners only (operation enforces role).
       operationId: update_company_api_v1_companies__company_id__patch
@@ -201,7 +201,7 @@ paths:
   /api/v1/companies/{company_id}/invite:
     post:
       tags:
-      - companies
+      - Companies
       summary: Invite Member
       description: 'Invite a user. Returns a member summary when the email matches
 
@@ -242,7 +242,7 @@ paths:
   /api/v1/companies/{company_id}/members/{member_user_id}:
     delete:
       tags:
-      - companies
+      - Companies
       summary: Remove Member
       description: Remove a member; members may only remove themselves.
       operationId: remove_member_api_v1_companies__company_id__members__member_user_id__delete
@@ -279,7 +279,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - companies
+      - Companies
       summary: Update Member Role
       description: Change a member's role. Owners only (operation enforces role).
       operationId: update_member_role_api_v1_companies__company_id__members__member_user_id__patch
@@ -320,7 +320,7 @@ paths:
   /api/v1/companies/{company_id}/members:
     get:
       tags:
-      - companies
+      - Companies
       summary: List Members
       description: List every member of a company. Caller must be a member.
       operationId: list_members_api_v1_companies__company_id__members_get
@@ -351,7 +351,7 @@ paths:
   /api/v1/companies/{company_id}/invitations:
     get:
       tags:
-      - companies
+      - Companies
       summary: List Invitations
       description: List pending invitations. Caller must be an owner or admin.
       operationId: list_invitations_api_v1_companies__company_id__invitations_get
@@ -382,7 +382,7 @@ paths:
   /api/v1/companies/{company_id}/invitations/{invitation_id}:
     delete:
       tags:
-      - companies
+      - Companies
       summary: Cancel Invitation
       description: Revoke a pending invitation. Owners + admins only.
       operationId: cancel_invitation_api_v1_companies__company_id__invitations__invitation_id__delete
@@ -419,6 +419,95 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CompanyMemberSummary:
+      properties:
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+      type: object
+      required:
+      - company_id
+      - user_id
+      - role
+      - joined_at
+      title: CompanyMemberSummary
+      description: 'Lightweight member view — no auth.users join.
+
+
+        Used by :class:`AcceptInvitation` to report the newly-inserted member
+
+        without reaching into ``auth.users`` for the email.'
+    CompanyMemberRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+        has_signed_in:
+          type: boolean
+          title: Has Signed In
+      type: object
+      required:
+      - user_id
+      - email
+      - role
+      - joined_at
+      - has_signed_in
+      title: CompanyMemberRead
+    CompanyMemberRoleUpdate:
+      properties:
+        role:
+          type: string
+          enum:
+          - owner
+          - admin
+          - member
+          title: Role
+      type: object
+      required:
+      - role
+      title: CompanyMemberRoleUpdate
+      description: Request body for changing an existing member's role (owner-only).
+    CompanyCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: CompanyCreate
     CompanyInvite:
       properties:
         email:
@@ -432,6 +521,42 @@ components:
       required:
       - email
       title: CompanyInvite
+    CompanyListResponse:
+      properties:
+        companies:
+          items:
+            $ref: '#/components/schemas/CompanyRead'
+          type: array
+          title: Companies
+        default_company_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Default Company Id
+      type: object
+      required:
+      - companies
+      - default_company_id
+      title: CompanyListResponse
+    CompanyUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: CompanyUpdate
+    InvitationAccept:
+      properties:
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: InvitationAccept
     ValidationError:
       properties:
         loc:
@@ -495,127 +620,6 @@ components:
       - status
       - created_at
       title: CompanyInvitationRead
-    CompanyMemberSummary:
-      properties:
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        role:
-          type: string
-          title: Role
-        joined_at:
-          type: string
-          format: date-time
-          title: Joined At
-      type: object
-      required:
-      - company_id
-      - user_id
-      - role
-      - joined_at
-      title: CompanyMemberSummary
-      description: 'Lightweight member view — no auth.users join.
-
-
-        Used by :class:`AcceptInvitation` to report the newly-inserted member
-
-        without reaching into ``auth.users`` for the email.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CompanyMemberRead:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        email:
-          type: string
-          title: Email
-        role:
-          type: string
-          title: Role
-        joined_at:
-          type: string
-          format: date-time
-          title: Joined At
-        has_signed_in:
-          type: boolean
-          title: Has Signed In
-      type: object
-      required:
-      - user_id
-      - email
-      - role
-      - joined_at
-      - has_signed_in
-      title: CompanyMemberRead
-    CompanyRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        role:
-          type: string
-          title: Role
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - name
-      - role
-      - created_at
-      title: CompanyRead
-    InvitationAccept:
-      properties:
-        token:
-          type: string
-          title: Token
-      type: object
-      required:
-      - token
-      title: InvitationAccept
-    CompanyCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - name
-      title: CompanyCreate
-    CompanyMemberRoleUpdate:
-      properties:
-        role:
-          type: string
-          enum:
-          - owner
-          - admin
-          - member
-          title: Role
-      type: object
-      required:
-      - role
-      title: CompanyMemberRoleUpdate
-      description: Request body for changing an existing member's role (owner-only).
     CompanyInvitationValidateRead:
       properties:
         email:
@@ -641,30 +645,26 @@ components:
         the accept page can show who the invite is for before the invitee
 
         creates their account. Deliberately minimal — no ids, no inviter.'
-    CompanyListResponse:
+    CompanyRead:
       properties:
-        companies:
-          items:
-            $ref: '#/components/schemas/CompanyRead'
-          type: array
-          title: Companies
-        default_company_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Default Company Id
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        role:
+          type: string
+          title: Role
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
       type: object
       required:
-      - companies
-      - default_company_id
-      title: CompanyListResponse
-    CompanyUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-      type: object
-      title: CompanyUpdate
+      - id
+      - name
+      - role
+      - created_at
+      title: CompanyRead

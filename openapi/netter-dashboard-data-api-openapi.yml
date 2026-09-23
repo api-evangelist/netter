@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions dashboard-data API
+  title: DMI Backend Dashboard Data API
   version: 0.1.0
 tags:
-- name: dashboard-data
+- name: Dashboard Data
 paths:
   /api/v1/dashboard-data/{dashboard_id}/pipelines:
     get:
       tags:
-      - dashboard-data
+      - Dashboard Data
       summary: Get Dashboard Pipelines Deprecated
       description: Deprecated — pipeline tables were dropped. Returns [].
       operationId: get_dashboard_pipelines_deprecated_api_v1_dashboard_data__dashboard_id__pipelines_get
@@ -40,7 +40,7 @@ paths:
   /api/v1/dashboard-data/{dashboard_id}/runs:
     get:
       tags:
-      - dashboard-data
+      - Dashboard Data
       summary: Get Dashboard Runs Deprecated
       description: Deprecated — pipeline_run table was dropped. Returns [].
       operationId: get_dashboard_runs_deprecated_api_v1_dashboard_data__dashboard_id__runs_get
@@ -103,7 +103,7 @@ paths:
   /api/v1/dashboard-data/{dashboard_id}/pipelines/{pipeline_id}/runs:
     post:
       tags:
-      - dashboard-data
+      - Dashboard Data
       summary: Trigger Dashboard Pipeline Run Deprecated
       description: 'Deprecated — pipeline model is gone. Accepts the POST silently (202)
 
@@ -146,7 +146,7 @@ paths:
   /api/v1/dashboard-data/{dashboard_id}/tables:
     get:
       tags:
-      - dashboard-data
+      - Dashboard Data
       summary: Get Dashboard Tables
       description: Return catalog of project databases + side tables with schemas.
       operationId: get_dashboard_tables_api_v1_dashboard_data__dashboard_id__tables_get
@@ -178,7 +178,7 @@ paths:
   /api/v1/dashboard-data/{dashboard_id}/query:
     post:
       tags:
-      - dashboard-data
+      - Dashboard Data
       summary: Query Dashboard Data
       description: Execute DuckDB SQL across all project databases + side tables.
       operationId: query_dashboard_data_api_v1_dashboard_data__dashboard_id__query_post
@@ -214,32 +214,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -278,6 +252,58 @@ components:
       required:
       - sql
       title: DashboardQueryRequest
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     PaginatedQueryResponse:
       properties:
         columns:
@@ -312,29 +338,3 @@ components:
       - total_rows
       - total_pages
       title: PaginatedQueryResponse
-    DataQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: DataQueryResponse

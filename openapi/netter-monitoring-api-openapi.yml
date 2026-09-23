@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions monitoring API
+  title: DMI Backend Monitoring API
   version: 0.1.0
 tags:
-- name: monitoring
+- name: Monitoring
 paths:
   /api/v1/monitoring/:
     get:
       tags:
-      - monitoring
+      - Monitoring
       summary: Get Monitoring Overview
       description: Return a centralised monitoring overview for the company.
       operationId: get_monitoring_overview_api_v1_monitoring__get
@@ -22,7 +22,7 @@ paths:
   /api/v1/monitoring/insights:
     get:
       tags:
-      - monitoring
+      - Monitoring
       summary: Get Monitoring Insights
       description: Return AI-native actionable insights for the company.
       operationId: get_monitoring_insights_api_v1_monitoring_insights_get
@@ -35,6 +35,138 @@ paths:
                 $ref: '#/components/schemas/MonitoringInsights'
 components:
   schemas:
+    ActivityEvent:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        event_type:
+          type: string
+          title: Event Type
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+      - timestamp
+      - event_type
+      - title
+      - description
+      title: ActivityEvent
+    StatusBanner:
+      properties:
+        status:
+          type: string
+          title: Status
+        headline:
+          type: string
+          title: Headline
+        summary:
+          type: string
+          title: Summary
+        health_score:
+          type: integer
+          title: Health Score
+      type: object
+      required:
+      - status
+      - headline
+      - summary
+      - health_score
+      title: StatusBanner
+    DashboardStats:
+      properties:
+        total:
+          type: integer
+          title: Total
+        ready:
+          type: integer
+          title: Ready
+        draft:
+          type: integer
+          title: Draft
+        generating:
+          type: integer
+          title: Generating
+        error:
+          type: integer
+          title: Error
+      type: object
+      required:
+      - total
+      - ready
+      - draft
+      - generating
+      - error
+      title: DashboardStats
+    RecentRun:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+        root_step_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Root Step Title
+        status:
+          type: string
+          title: Status
+        trigger_source:
+          type: string
+          title: Trigger Source
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+      type: object
+      required:
+      - id
+      - run_id
+      - project_id
+      - project_name
+      - root_step_title
+      - status
+      - trigger_source
+      - started_at
+      - finished_at
+      - error
+      - error_summary
+      title: RecentRun
     MonitoringInsights:
       properties:
         status_banner:
@@ -61,6 +193,31 @@ components:
       - smart_insights
       - activity_timeline
       title: MonitoringInsights
+    StepStats:
+      properties:
+        total:
+          type: integer
+          title: Total
+        active:
+          type: integer
+          title: Active
+        draft:
+          type: integer
+          title: Draft
+        paused:
+          type: integer
+          title: Paused
+        archived:
+          type: integer
+          title: Archived
+      type: object
+      required:
+      - total
+      - active
+      - draft
+      - paused
+      - archived
+      title: StepStats
     MonitoringOverview:
       properties:
         steps:
@@ -157,78 +314,28 @@ components:
       - error_summary
       - trigger_source
       title: RecentError
-    ActivityEvent:
+    SmartInsight:
       properties:
-        timestamp:
+        icon:
           type: string
-          format: date-time
-          title: Timestamp
-        event_type:
-          type: string
-          title: Event Type
+          title: Icon
         title:
           type: string
           title: Title
         description:
           type: string
           title: Description
+        action_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action Label
       type: object
       required:
-      - timestamp
-      - event_type
+      - icon
       - title
       - description
-      title: ActivityEvent
-    DashboardStats:
-      properties:
-        total:
-          type: integer
-          title: Total
-        ready:
-          type: integer
-          title: Ready
-        draft:
-          type: integer
-          title: Draft
-        generating:
-          type: integer
-          title: Generating
-        error:
-          type: integer
-          title: Error
-      type: object
-      required:
-      - total
-      - ready
-      - draft
-      - generating
-      - error
-      title: DashboardStats
-    StepStats:
-      properties:
-        total:
-          type: integer
-          title: Total
-        active:
-          type: integer
-          title: Active
-        draft:
-          type: integer
-          title: Draft
-        paused:
-          type: integer
-          title: Paused
-        archived:
-          type: integer
-          title: Archived
-      type: object
-      required:
-      - total
-      - active
-      - draft
-      - paused
-      - archived
-      title: StepStats
+      title: SmartInsight
     RunStats:
       properties:
         total:
@@ -254,6 +361,56 @@ components:
       - running
       - cancelled
       title: RunStats
+    ActiveTrigger:
+      properties:
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        step_title:
+          type: string
+          title: Step Title
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+        trigger_type:
+          type: string
+          title: Trigger Type
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+        last_triggered_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Triggered At
+        next_trigger_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Next Trigger At
+      type: object
+      required:
+      - step_id
+      - step_title
+      - project_id
+      - project_name
+      - trigger_type
+      - trigger_config
+      - last_triggered_at
+      - next_trigger_at
+      title: ActiveTrigger
     PriorityAction:
       properties:
         id:
@@ -309,160 +466,3 @@ components:
       - project_id
       - project_name
       title: PriorityAction
-    SmartInsight:
-      properties:
-        icon:
-          type: string
-          title: Icon
-        title:
-          type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-        action_label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Action Label
-      type: object
-      required:
-      - icon
-      - title
-      - description
-      title: SmartInsight
-    StatusBanner:
-      properties:
-        status:
-          type: string
-          title: Status
-        headline:
-          type: string
-          title: Headline
-        summary:
-          type: string
-          title: Summary
-        health_score:
-          type: integer
-          title: Health Score
-      type: object
-      required:
-      - status
-      - headline
-      - summary
-      - health_score
-      title: StatusBanner
-    ActiveTrigger:
-      properties:
-        step_id:
-          type: string
-          format: uuid
-          title: Step Id
-        step_title:
-          type: string
-          title: Step Title
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Project Name
-        trigger_type:
-          type: string
-          title: Trigger Type
-        trigger_config:
-          additionalProperties: true
-          type: object
-          title: Trigger Config
-        last_triggered_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Triggered At
-        next_trigger_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Next Trigger At
-      type: object
-      required:
-      - step_id
-      - step_title
-      - project_id
-      - project_name
-      - trigger_type
-      - trigger_config
-      - last_triggered_at
-      - next_trigger_at
-      title: ActiveTrigger
-    RecentRun:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        run_id:
-          type: string
-          format: uuid
-          title: Run Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Project Name
-        root_step_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Root Step Title
-        status:
-          type: string
-          title: Status
-        trigger_source:
-          type: string
-          title: Trigger Source
-        started_at:
-          type: string
-          format: date-time
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        error_summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Summary
-      type: object
-      required:
-      - id
-      - run_id
-      - project_id
-      - project_name
-      - root_step_title
-      - status
-      - trigger_source
-      - started_at
-      - finished_at
-      - error
-      - error_summary
-      title: RecentRun

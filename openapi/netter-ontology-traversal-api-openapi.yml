@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions ontology-traversal API
+  title: DMI Backend Ontology Traversal API
   version: 0.1.0
 tags:
 - name: ontology-traversal
@@ -38,6 +38,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     RelatedEntity:
       properties:
         entity_id:
@@ -77,15 +86,6 @@ components:
       - direction
       title: RelatedEntity
       description: An entity in the connected subgraph.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ValidationError:
       properties:
         loc:

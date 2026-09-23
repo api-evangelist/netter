@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions assistant API
+  title: DMI Backend Assistant API
   version: 0.1.0
 tags:
-- name: assistant
+- name: Assistant
 paths:
   /api/v1/assistant/chats:
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Create Assistant Chat
       description: Start a new assistant chat (one row per 'New chat' click).
       operationId: create_assistant_chat_api_v1_assistant_chats_post
@@ -22,7 +22,7 @@ paths:
   /api/v1/assistant/chats/{chat_id}/message:
     post:
       tags:
-      - assistant
+      - Assistant
       summary: Assistant Chat Message
       description: Send a message to the assistant — dispatches an agent turn.
       operationId: assistant_chat_message_api_v1_assistant_chats__chat_id__message_post
@@ -55,38 +55,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
     HTTPValidationError:
       properties:
         detail:
@@ -96,54 +64,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    AssistantMessageRequest:
-      properties:
-        content:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Content
-        tagged_entities:
-          items:
-            $ref: '#/components/schemas/TaggedEntity'
-          type: array
-          maxItems: 10
-          title: Tagged Entities
-        referenced_database_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          maxItems: 10
-          title: Referenced Database Ids
-        attachments:
-          items:
-            additionalProperties:
-              type: string
-            type: object
-          type: array
-          maxItems: 10
-          title: Attachments
-      type: object
-      required:
-      - content
-      title: AssistantMessageRequest
-    TaggedEntity:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: TaggedEntity
     AssistantTurnResponse:
       properties:
         status:
@@ -215,3 +135,83 @@ components:
       - created_at
       - updated_at
       title: ChatRead
+    TaggedEntity:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: TaggedEntity
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AssistantMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Content
+        tagged_entities:
+          items:
+            $ref: '#/components/schemas/TaggedEntity'
+          type: array
+          maxItems: 10
+          title: Tagged Entities
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          maxItems: 10
+          title: Referenced Database Ids
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          maxItems: 10
+          title: Attachments
+      type: object
+      required:
+      - content
+      title: AssistantMessageRequest

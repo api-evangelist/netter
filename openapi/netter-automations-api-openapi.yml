@@ -1,14 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions automations API
+  title: DMI Backend Automations API
   version: 0.1.0
 tags:
-- name: automations
+- name: Automations
 paths:
   /api/v1/automations:
     post:
       tags:
-      - automations
+      - Automations
       summary: Create Automation
       operationId: create_automation_api_v1_automations_post
       requestBody:
@@ -36,7 +36,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     get:
       tags:
-      - automations
+      - Automations
       summary: List Automations
       operationId: list_automations_api_v1_automations_get
       parameters:
@@ -74,7 +74,7 @@ paths:
   /api/v1/automations/{automation_id}:
     get:
       tags:
-      - automations
+      - Automations
       summary: Get Automation
       operationId: get_automation_api_v1_automations__automation_id__get
       parameters:
@@ -100,7 +100,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     patch:
       tags:
-      - automations
+      - Automations
       summary: Update Automation
       operationId: update_automation_api_v1_automations__automation_id__patch
       parameters:
@@ -129,7 +129,7 @@ paths:
   /api/v1/automations/{automation_id}/favorite:
     put:
       tags:
-      - automations
+      - Automations
       summary: Favorite Automation
       description: Pin the workflow to the top of the caller's list. Idempotent; viewer+.
       operationId: favorite_automation_api_v1_automations__automation_id__favorite_put
@@ -156,7 +156,7 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
     delete:
       tags:
-      - automations
+      - Automations
       summary: Unfavorite Automation
       description: Remove the workflow from the caller's favorites. Idempotent; viewer+.
       operationId: unfavorite_automation_api_v1_automations__automation_id__favorite_delete
@@ -184,7 +184,7 @@ paths:
   /api/v1/automations/{automation_id}/nodes/{slug}/config:
     put:
       tags:
-      - automations
+      - Automations
       summary: Update Node Config
       description: 'Replace a node''s ``config`` dict in place. Requires EDITOR on the automation.
 
@@ -225,7 +225,7 @@ paths:
   /api/v1/automations/{automation_id}/suppress:
     post:
       tags:
-      - automations
+      - Automations
       summary: Suppress Automation
       operationId: suppress_automation_api_v1_automations__automation_id__suppress_post
       parameters:
@@ -248,7 +248,7 @@ paths:
   /api/v1/automations/{automation_id}/unsuppress:
     post:
       tags:
-      - automations
+      - Automations
       summary: Unsuppress Automation
       description: 'Restore a suppressed automation. If the row was ACTIVE before suppress
 
@@ -280,7 +280,7 @@ paths:
   /api/v1/automations/{automation_id}/activate:
     post:
       tags:
-      - automations
+      - Automations
       summary: Activate Automation
       operationId: activate_automation_api_v1_automations__automation_id__activate_post
       parameters:
@@ -303,7 +303,7 @@ paths:
   /api/v1/automations/{automation_id}/deactivate:
     post:
       tags:
-      - automations
+      - Automations
       summary: Deactivate Automation
       operationId: deactivate_automation_api_v1_automations__automation_id__deactivate_post
       parameters:
@@ -326,7 +326,7 @@ paths:
   /api/v1/automations/{automation_id}/run:
     post:
       tags:
-      - automations
+      - Automations
       summary: Run Automation Now
       operationId: run_automation_now_api_v1_automations__automation_id__run_post
       parameters:
@@ -361,7 +361,7 @@ paths:
   /api/v1/automations/{automation_id}/runs:
     get:
       tags:
-      - automations
+      - Automations
       summary: List Automation Runs
       operationId: list_automation_runs_api_v1_automations__automation_id__runs_get
       parameters:
@@ -398,7 +398,7 @@ paths:
   /api/v1/automations/{automation_id}/runs/{run_id}:
     get:
       tags:
-      - automations
+      - Automations
       summary: Get Automation Run
       operationId: get_automation_run_api_v1_automations__automation_id__runs__run_id__get
       parameters:
@@ -431,159 +431,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    NodeRunStatus:
-      type: string
-      enum:
-      - success
-      - partial_success
-      - failed
-      - skipped
-      title: NodeRunStatus
-      description: Status of a single node execution within a run.
-    RunNowResponse:
-      properties:
-        run_id:
-          type: string
-          format: uuid
-          title: Run Id
-      type: object
-      required:
-      - run_id
-      title: RunNowResponse
-    NodeCreate:
-      properties:
-        slug:
-          type: string
-          title: Slug
-        kind:
-          $ref: '#/components/schemas/NodeKind'
-        config:
-          additionalProperties: true
-          type: object
-          title: Config
-        position_x:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Position X
-        position_y:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Position Y
-      type: object
-      required:
-      - slug
-      - kind
-      title: NodeCreate
-    NodeRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        slug:
-          type: string
-          title: Slug
-        kind:
-          $ref: '#/components/schemas/NodeKind'
-        config:
-          additionalProperties: true
-          type: object
-          title: Config
-        position_x:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Position X
-        position_y:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Position Y
-      type: object
-      required:
-      - id
-      - slug
-      - kind
-      - config
-      - position_x
-      - position_y
-      title: NodeRead
-    AutomationUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        nodes:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/NodeCreate'
-            type: array
-          - type: 'null'
-          title: Nodes
-        edges:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/EdgeCreate'
-            type: array
-          - type: 'null'
-          title: Edges
-      type: object
-      title: AutomationUpdate
-    PermissionLevel:
-      type: string
-      enum:
-      - viewer
-      - editor
-      - admin
-      title: PermissionLevel
-      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
-    RunDetailRead:
-      properties:
-        run:
-          $ref: '#/components/schemas/app__automations__schemas__RunRead'
-        node_runs:
-          items:
-            $ref: '#/components/schemas/NodeRunRead'
-          type: array
-          title: Node Runs
-      type: object
-      required:
-      - run
-      - node_runs
-      title: RunDetailRead
-    EdgeRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        from_node_id:
-          type: string
-          format: uuid
-          title: From Node Id
-        to_node_id:
-          type: string
-          format: uuid
-          title: To Node Id
-        port:
-          type: string
-          title: Port
-      type: object
-      required:
-      - id
-      - from_node_id
-      - to_node_id
-      - port
-      title: EdgeRead
     RunStatus:
       type: string
       enum:
@@ -593,26 +440,75 @@ components:
       - failed
       title: RunStatus
       description: Status of an automation run (one fire).
-    NodeConfigUpdate:
+    AutomationRunRequest:
       properties:
-        config:
+        input:
           additionalProperties: true
           type: object
-          title: Config
+          title: Input
+      type: object
+      title: AutomationRunRequest
+      description: 'Optional body for ``POST /automations/{id}/run`` ("Run now").
+
+
+        ``input`` carries the values for a ``trigger.app_invocation`` input schema (the
+
+        same shape the app-button endpoint accepts). Defaults to empty so schedule- and
+
+        event-triggered automations can still be fired with no body.'
+    app__automations__schemas__RunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        automation_id:
+          type: string
+          format: uuid
+          title: Automation Id
+        triggered_by:
+          type: string
+          title: Triggered By
+        triggered_by_user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Triggered By User Id
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        started_at:
+          type: string
+          title: Started At
+        ended_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Ended At
+        item_count_total:
+          type: integer
+          title: Item Count Total
+        item_count_failed:
+          type: integer
+          title: Item Count Failed
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
       type: object
       required:
-      - config
-      title: NodeConfigUpdate
-      description: 'Direct edit of a node''s ``config`` payload — bypasses the architect chat.
-
-
-        The new dict replaces the existing config wholesale (no shallow merge); validation
-
-        runs through ``validate_automation_dag(require_reachable=False)`` so an incomplete
-
-        body during editing is fine, but kind-specific config schema, dup-slug, port, and
-
-        cycle checks still apply.'
+      - id
+      - automation_id
+      - triggered_by
+      - triggered_by_user_id
+      - status
+      - started_at
+      - ended_at
+      - item_count_total
+      - item_count_failed
+      - error_summary
+      title: RunRead
     NodeRunRead:
       properties:
         id:
@@ -668,6 +564,78 @@ components:
       - output_sample
       - error_sample
       title: NodeRunRead
+    RunNowResponse:
+      properties:
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+      type: object
+      required:
+      - run_id
+      title: RunNowResponse
+    AutomationUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        nodes:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/NodeCreate'
+            type: array
+          - type: 'null'
+          title: Nodes
+        edges:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/EdgeCreate'
+            type: array
+          - type: 'null'
+          title: Edges
+      type: object
+      title: AutomationUpdate
+    NodeRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        slug:
+          type: string
+          title: Slug
+        kind:
+          $ref: '#/components/schemas/NodeKind'
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+        position_x:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position X
+        position_y:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position Y
+      type: object
+      required:
+      - id
+      - slug
+      - kind
+      - config
+      - position_x
+      - position_y
+      title: NodeRead
     AutomationRead:
       properties:
         id:
@@ -739,6 +707,90 @@ components:
       - nodes
       - edges
       title: AutomationRead
+    EdgeCreate:
+      properties:
+        from_slug:
+          type: string
+          title: From Slug
+        to_slug:
+          type: string
+          title: To Slug
+        port:
+          type: string
+          title: Port
+          default: default
+      type: object
+      required:
+      - from_slug
+      - to_slug
+      title: EdgeCreate
+    PermissionLevel:
+      type: string
+      enum:
+      - viewer
+      - editor
+      - admin
+      title: PermissionLevel
+      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
+    AutomationStatus:
+      type: string
+      enum:
+      - draft
+      - active
+      - paused
+      - archived
+      title: AutomationStatus
+      description: Top-level status of an automation.
+    RunDetailRead:
+      properties:
+        run:
+          $ref: '#/components/schemas/app__automations__schemas__RunRead'
+        node_runs:
+          items:
+            $ref: '#/components/schemas/NodeRunRead'
+          type: array
+          title: Node Runs
+      type: object
+      required:
+      - run
+      - node_runs
+      title: RunDetailRead
+    NodeRunStatus:
+      type: string
+      enum:
+      - success
+      - partial_success
+      - failed
+      - skipped
+      title: NodeRunStatus
+      description: Status of a single node execution within a run.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    NodeKind:
+      type: string
+      enum:
+      - trigger.schedule
+      - trigger.entity_change
+      - trigger.app_invocation
+      - fetch_entities
+      - query
+      - update_entity_row
+      - create_entity_row
+      - if
+      - aggregate_to_one
+      - ai_step
+      - send_email
+      - http_request
+      - provider_action
+      title: NodeKind
+      description: All v1 node kinds. Triggers + body nodes share one enum + one table.
     ValidationError:
       properties:
         loc:
@@ -765,6 +817,56 @@ components:
       - msg
       - type
       title: ValidationError
+    EdgeRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        from_node_id:
+          type: string
+          format: uuid
+          title: From Node Id
+        to_node_id:
+          type: string
+          format: uuid
+          title: To Node Id
+        port:
+          type: string
+          title: Port
+      type: object
+      required:
+      - id
+      - from_node_id
+      - to_node_id
+      - port
+      title: EdgeRead
+    NodeCreate:
+      properties:
+        slug:
+          type: string
+          title: Slug
+        kind:
+          $ref: '#/components/schemas/NodeKind'
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+        position_x:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position X
+        position_y:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Position Y
+      type: object
+      required:
+      - slug
+      - kind
+      title: NodeCreate
     AutomationCreate:
       properties:
         name:
@@ -791,125 +893,23 @@ components:
       - nodes
       - edges
       title: AutomationCreate
-    HTTPValidationError:
+    NodeConfigUpdate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    EdgeCreate:
-      properties:
-        from_slug:
-          type: string
-          title: From Slug
-        to_slug:
-          type: string
-          title: To Slug
-        port:
-          type: string
-          title: Port
-          default: default
-      type: object
-      required:
-      - from_slug
-      - to_slug
-      title: EdgeCreate
-    app__automations__schemas__RunRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        automation_id:
-          type: string
-          format: uuid
-          title: Automation Id
-        triggered_by:
-          type: string
-          title: Triggered By
-        triggered_by_user_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Triggered By User Id
-        status:
-          $ref: '#/components/schemas/RunStatus'
-        started_at:
-          type: string
-          title: Started At
-        ended_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Ended At
-        item_count_total:
-          type: integer
-          title: Item Count Total
-        item_count_failed:
-          type: integer
-          title: Item Count Failed
-        error_summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Summary
-      type: object
-      required:
-      - id
-      - automation_id
-      - triggered_by
-      - triggered_by_user_id
-      - status
-      - started_at
-      - ended_at
-      - item_count_total
-      - item_count_failed
-      - error_summary
-      title: RunRead
-    AutomationStatus:
-      type: string
-      enum:
-      - draft
-      - active
-      - paused
-      - archived
-      title: AutomationStatus
-      description: Top-level status of an automation.
-    AutomationRunRequest:
-      properties:
-        input:
+        config:
           additionalProperties: true
           type: object
-          title: Input
+          title: Config
       type: object
-      title: AutomationRunRequest
-      description: 'Optional body for ``POST /automations/{id}/run`` ("Run now").
+      required:
+      - config
+      title: NodeConfigUpdate
+      description: 'Direct edit of a node''s ``config`` payload — bypasses the architect chat.
 
 
-        ``input`` carries the values for a ``trigger.app_invocation`` input schema (the
+        The new dict replaces the existing config wholesale (no shallow merge); validation
 
-        same shape the app-button endpoint accepts). Defaults to empty so schedule- and
+        runs through ``validate_automation_dag(require_reachable=False)`` so an incomplete
 
-        event-triggered automations can still be fired with no body.'
-    NodeKind:
-      type: string
-      enum:
-      - trigger.schedule
-      - trigger.entity_change
-      - trigger.app_invocation
-      - fetch_entities
-      - query
-      - update_entity_row
-      - create_entity_row
-      - if
-      - aggregate_to_one
-      - ai_step
-      - send_email
-      - http_request
-      - provider_action
-      title: NodeKind
-      description: All v1 node kinds. Triggers + body nodes share one enum + one table.
+        body during editing is fine, but kind-specific config schema, dup-slug, port, and
+
+        cycle checks still apply.'

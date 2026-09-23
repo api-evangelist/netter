@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions step-output API
+  title: DMI Backend Step Output API
   version: 0.1.0
 tags:
 - name: step-output
@@ -87,6 +87,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     DataQueryResponse:
       properties:
         columns:
@@ -113,41 +122,6 @@ components:
       - total_rows
       - truncated
       title: DataQueryResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     StepRunSummary:
       properties:
         status:
@@ -169,19 +143,6 @@ components:
       required:
       - status
       title: StepRunSummary
-    StepOutputSchemaField:
-      properties:
-        name:
-          type: string
-          title: Name
-        type:
-          type: string
-          title: Type
-      type: object
-      required:
-      - name
-      - type
-      title: StepOutputSchemaField
     StepOutputResponse:
       properties:
         format:
@@ -257,3 +218,42 @@ components:
       required:
       - sql
       title: StepOutputQueryRequest
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    StepOutputSchemaField:
+      properties:
+        name:
+          type: string
+          title: Name
+        type:
+          type: string
+          title: Type
+      type: object
+      required:
+      - name
+      - type
+      title: StepOutputSchemaField

@@ -1,6 +1,6 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: DMI Backend actions ontology-rows API
+  title: DMI Backend Ontology Rows API
   version: 0.1.0
 tags:
 - name: ontology-rows
@@ -207,7 +207,7 @@ paths:
 
         enough that low-privilege viewers shouldn''t be able to fire it in a
 
-        tight loop.  Same write-role guard the other row endpoints use.'
+        tight loop. Same write-role guard the other row endpoints use.'
       operationId: sync_entity_api_v1_ontology_entities__entity_id__sync_post
       parameters:
       - name: entity_id
@@ -232,32 +232,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -296,6 +270,79 @@ components:
       - total_source
       - total_overlay_only
       title: EntityRowList
+    EntityRowInsert:
+      properties:
+        values:
+          additionalProperties: true
+          type: object
+          title: Values
+          description: Column → value for the new row. Must be a subset of entity columns.
+      type: object
+      required:
+      - values
+      title: EntityRowInsert
+    EntityRowPatch:
+      properties:
+        patch:
+          additionalProperties: true
+          type: object
+          title: Patch
+          description: Column → new value. Sparse — only changed columns.
+      type: object
+      required:
+      - patch
+      title: EntityRowPatch
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EntitySyncStatus:
+      properties:
+        last_synced_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Synced At
+        source_row_count:
+          type: integer
+          title: Source Row Count
+        overlay_count:
+          type: integer
+          title: Overlay Count
+        state:
+          type: string
+          title: State
+          description: '''idle'' | ''syncing'' | ''error'''
+      type: object
+      required:
+      - last_synced_at
+      - source_row_count
+      - overlay_count
+      - state
+      title: EntitySyncStatus
     EntityRowRead:
       properties:
         row_key:
@@ -342,50 +389,3 @@ components:
       - values
       title: EntityRowRead
       description: One merged row (source ⊕ overlay).
-    EntityRowPatch:
-      properties:
-        patch:
-          additionalProperties: true
-          type: object
-          title: Patch
-          description: Column → new value. Sparse — only changed columns.
-      type: object
-      required:
-      - patch
-      title: EntityRowPatch
-    EntityRowInsert:
-      properties:
-        values:
-          additionalProperties: true
-          type: object
-          title: Values
-          description: Column → value for the new row. Must be a subset of entity columns.
-      type: object
-      required:
-      - values
-      title: EntityRowInsert
-    EntitySyncStatus:
-      properties:
-        last_synced_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Synced At
-        source_row_count:
-          type: integer
-          title: Source Row Count
-        overlay_count:
-          type: integer
-          title: Overlay Count
-        state:
-          type: string
-          title: State
-          description: '''idle'' | ''syncing'' | ''error'''
-      type: object
-      required:
-      - last_synced_at
-      - source_row_count
-      - overlay_count
-      - state
-      title: EntitySyncStatus
