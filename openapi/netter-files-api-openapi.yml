@@ -581,62 +581,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ParseConfigSheet:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        analyzer_header_row_index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Analyzer Header Row Index
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        preview_rows:
-          items:
-            items:
-              type: string
-            type: array
-          type: array
-          title: Preview Rows
-        fail_reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Fail Reason
-        current_database:
-          anyOf:
-          - $ref: '#/components/schemas/ParseConfigDatabase'
-          - type: 'null'
-      type: object
-      title: ParseConfigSheet
-      description: Per-sheet info for the cog modal — analyzer output + current Database.
-    CommitSheet:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        header_row_index:
-          type: integer
-          minimum: 0.0
-          title: Header Row Index
-          default: 0
-        database_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Database Name
-      type: object
-      title: CommitSheet
-      description: One entry in the commit / patch-parse-config request body.
     MagicLinkMeta:
       properties:
         company_name:
@@ -666,30 +610,17 @@ components:
       - is_active
       title: MagicLinkMeta
       description: Public view of a magic link — no token field.
-    DatabaseStub:
+    UserFileMove:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        refresh_status:
-          type: string
-          title: Refresh Status
+        target_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Folder Id
       type: object
-      required:
-      - id
-      - name
-      - refresh_status
-      title: DatabaseStub
-      description: 'Minimal Database summary returned alongside a UserFile on upload.
-
-
-        The full Database row is filled in asynchronously by the parse workflow.
-
-        Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
+      title: UserFileMove
+      description: POST /files/{id}/move payload — destination folder (None = root).
     MagicLinkRead:
       properties:
         id:
@@ -738,6 +669,89 @@ components:
       - is_active
       - created_at
       title: MagicLinkRead
+    MagicLinkCreate:
+      properties:
+        label:
+          type: string
+          title: Label
+          default: ''
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+          default: ''
+        expires_in_hours:
+          type: integer
+          title: Expires In Hours
+          default: 72
+        is_permanent:
+          type: boolean
+          title: Is Permanent
+          default: false
+      type: object
+      title: MagicLinkCreate
+    CommitRequest:
+      properties:
+        sheets:
+          items:
+            $ref: '#/components/schemas/CommitSheet'
+          type: array
+          title: Sheets
+      type: object
+      required:
+      - sheets
+      title: CommitRequest
+    UserFileRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
+        name:
+          type: string
+          title: Name
+        file_type:
+          type: string
+          title: File Type
+        size_bytes:
+          type: integer
+          title: Size Bytes
+        meta:
+          additionalProperties: true
+          type: object
+          title: Meta
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        parse_state:
+          type: string
+          title: Parse State
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - name
+      - file_type
+      - size_bytes
+      - meta
+      - created_at
+      - parse_state
+      title: UserFileRead
     FileSearchResponse:
       properties:
         folders:
@@ -753,6 +767,168 @@ components:
       type: object
       title: FileSearchResponse
       description: Company-wide file/folder name-search results.
+    SheetAnalysis:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        header_row_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Header Row Index
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        preview_rows:
+          items:
+            items:
+              type: string
+            type: array
+          type: array
+          title: Preview Rows
+        fail_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fail Reason
+      type: object
+      title: SheetAnalysis
+      description: 'Per-sheet analyzer output served by the upload wizard.
+
+
+        For CSV the wizard returns exactly one entry with ``name=None``. For
+
+        xlsx/xlsm, one entry per sheet in workbook order. ``preview_rows`` holds the
+
+        first ~10 raw rows (pre-skip) so the frontend can re-render the preview
+
+        client-side as the user changes the skip-rows input.'
+    ParseConfigResponse:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        state:
+          type: string
+          title: State
+        sheets:
+          items:
+            $ref: '#/components/schemas/ParseConfigSheet'
+          type: array
+          title: Sheets
+      type: object
+      required:
+      - id
+      - state
+      - sheets
+      title: ParseConfigResponse
+    CommitSheet:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        header_row_index:
+          type: integer
+          minimum: 0.0
+          title: Header Row Index
+          default: 0
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+      type: object
+      title: CommitSheet
+      description: One entry in the commit / patch-parse-config request body.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MagicLinkCreated:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        created_by:
+          type: string
+          format: uuid
+          title: Created By
+        token:
+          type: string
+          title: Token
+        label:
+          type: string
+          title: Label
+        folder_prefix:
+          type: string
+          title: Folder Prefix
+        expires_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Expires At
+        is_active:
+          type: boolean
+          title: Is Active
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        upload_url:
+          type: string
+          title: Upload Url
+      type: object
+      required:
+      - id
+      - company_id
+      - created_by
+      - token
+      - label
+      - folder_prefix
+      - expires_at
+      - is_active
+      - created_at
+      - upload_url
+      title: MagicLinkCreated
+      description: Returned on creation — includes the full upload URL hint.
+    MagicLinkUpdate:
+      properties:
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        expires_in_hours:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Expires In Hours
+        is_permanent:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Permanent
+      type: object
+      title: MagicLinkUpdate
     UserFileSearchResult:
       properties:
         id:
@@ -810,171 +986,29 @@ components:
       - parse_state
       title: UserFileSearchResult
       description: A file search hit — a UserFileRead plus the path of its containing folder.
-    ParseConfigDatabase:
+    UserFileRename:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
         name:
           type: string
+          minLength: 1
           title: Name
-        header_row_index:
-          type: integer
-          title: Header Row Index
-        refresh_status:
-          type: string
-          title: Refresh Status
       type: object
       required:
-      - id
       - name
-      - header_row_index
-      - refresh_status
-      title: ParseConfigDatabase
-    MagicLinkCreate:
-      properties:
-        label:
-          type: string
-          title: Label
-          default: ''
-        folder_prefix:
-          type: string
-          title: Folder Prefix
-          default: ''
-        expires_in_hours:
-          type: integer
-          title: Expires In Hours
-          default: 72
-        is_permanent:
-          type: boolean
-          title: Is Permanent
-          default: false
-      type: object
-      title: MagicLinkCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UserFileRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Folder Id
-        name:
-          type: string
-          title: Name
-        file_type:
-          type: string
-          title: File Type
-        size_bytes:
-          type: integer
-          title: Size Bytes
-        meta:
-          additionalProperties: true
-          type: object
-          title: Meta
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        parse_state:
-          type: string
-          title: Parse State
-      type: object
-      required:
-      - id
-      - company_id
-      - user_id
-      - name
-      - file_type
-      - size_bytes
-      - meta
-      - created_at
-      - parse_state
-      title: UserFileRead
-    Body_upload_file_api_v1_files_upload_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        folder:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Folder
-      type: object
-      required:
-      - file
-      title: Body_upload_file_api_v1_files_upload_post
-    ParseConfigResponse:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        state:
-          type: string
-          title: State
-        sheets:
-          items:
-            $ref: '#/components/schemas/ParseConfigSheet'
-          type: array
-          title: Sheets
-      type: object
-      required:
-      - id
-      - state
-      - sheets
-      title: ParseConfigResponse
-    Body_magic_upload_api_v1_files_upload__token__post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        uploader_name:
-          type: string
-          maxLength: 200
-          title: Uploader Name
-          default: ''
-      type: object
-      required:
-      - file
-      title: Body_magic_upload_api_v1_files_upload__token__post
-    SheetAnalysis:
+      title: UserFileRename
+      description: Request payload for ``PATCH /files/{id}``.
+    ParseConfigSheet:
       properties:
         name:
           anyOf:
           - type: string
           - type: 'null'
           title: Name
-        header_row_index:
+        analyzer_header_row_index:
           anyOf:
           - type: integer
           - type: 'null'
-          title: Header Row Index
+          title: Analyzer Header Row Index
         columns:
           items:
             type: string
@@ -992,18 +1026,13 @@ components:
           - type: string
           - type: 'null'
           title: Fail Reason
+        current_database:
+          anyOf:
+          - $ref: '#/components/schemas/ParseConfigDatabase'
+          - type: 'null'
       type: object
-      title: SheetAnalysis
-      description: 'Per-sheet analyzer output served by the upload wizard.
-
-
-        For CSV the wizard returns exactly one entry with ``name=None``. For
-
-        xlsx/xlsm, one entry per sheet in workbook order. ``preview_rows`` holds the
-
-        first ~10 raw rows (pre-skip) so the frontend can re-render the preview
-
-        client-side as the user changes the skip-rows input.'
+      title: ParseConfigSheet
+      description: Per-sheet info for the cog modal — analyzer output + current Database.
     ValidationError:
       properties:
         loc:
@@ -1030,6 +1059,28 @@ components:
       - msg
       - type
       title: ValidationError
+    ParseConfigDatabase:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        header_row_index:
+          type: integer
+          title: Header Row Index
+        refresh_status:
+          type: string
+          title: Refresh Status
+      type: object
+      required:
+      - id
+      - name
+      - header_row_index
+      - refresh_status
+      title: ParseConfigDatabase
     UserFileUploadResponse:
       properties:
         id:
@@ -1075,17 +1126,60 @@ components:
       - size_bytes
       - created_at
       title: UserFileUploadResponse
-    UserFileMove:
+    Body_upload_file_api_v1_files_upload_post:
       properties:
-        target_folder_id:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        folder:
           anyOf:
           - type: string
-            format: uuid
           - type: 'null'
-          title: Target Folder Id
+          title: Folder
       type: object
-      title: UserFileMove
-      description: POST /files/{id}/move payload — destination folder (None = root).
+      required:
+      - file
+      title: Body_upload_file_api_v1_files_upload_post
+    DatabaseStub:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        refresh_status:
+          type: string
+          title: Refresh Status
+      type: object
+      required:
+      - id
+      - name
+      - refresh_status
+      title: DatabaseStub
+      description: 'Minimal Database summary returned alongside a UserFile on upload.
+
+
+        The full Database row is filled in asynchronously by the parse workflow.
+
+        Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
+    Body_magic_upload_api_v1_files_upload__token__post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        uploader_name:
+          type: string
+          maxLength: 200
+          title: Uploader Name
+          default: ''
+      type: object
+      required:
+      - file
+      title: Body_magic_upload_api_v1_files_upload__token__post
     FileFolderSearchResult:
       properties:
         id:
@@ -1129,97 +1223,3 @@ components:
         ``has_children`` are derived per-folder (extra queries) and search doesn''t
 
         need them, so returning them here would just fabricate ``0`` / ``false``.'
-    CommitRequest:
-      properties:
-        sheets:
-          items:
-            $ref: '#/components/schemas/CommitSheet'
-          type: array
-          title: Sheets
-      type: object
-      required:
-      - sheets
-      title: CommitRequest
-    UserFileRename:
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: UserFileRename
-      description: Request payload for ``PATCH /files/{id}``.
-    MagicLinkUpdate:
-      properties:
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-        expires_in_hours:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Expires In Hours
-        is_permanent:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Permanent
-      type: object
-      title: MagicLinkUpdate
-    MagicLinkCreated:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        created_by:
-          type: string
-          format: uuid
-          title: Created By
-        token:
-          type: string
-          title: Token
-        label:
-          type: string
-          title: Label
-        folder_prefix:
-          type: string
-          title: Folder Prefix
-        expires_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Expires At
-        is_active:
-          type: boolean
-          title: Is Active
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        upload_url:
-          type: string
-          title: Upload Url
-      type: object
-      required:
-      - id
-      - company_id
-      - created_by
-      - token
-      - label
-      - folder_prefix
-      - expires_at
-      - is_active
-      - created_at
-      - upload_url
-      title: MagicLinkCreated
-      description: Returned on creation — includes the full upload URL hint.

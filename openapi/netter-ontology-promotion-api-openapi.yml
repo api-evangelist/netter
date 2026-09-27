@@ -102,15 +102,16 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    ClearBody:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        confirm:
+          type: string
+          title: Confirm
+          description: Must be the literal phrase 'clear all overlays'
       type: object
-      title: HTTPValidationError
+      required:
+      - confirm
+      title: ClearBody
     app__ontology__schemas__EntityRead:
       properties:
         id:
@@ -207,6 +208,105 @@ components:
       - updated_at
       title: EntityRead
       description: Full entity for GET endpoints.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ClearResponse:
+      properties:
+        deleted:
+          type: integer
+          title: Deleted
+      type: object
+      required:
+      - deleted
+      title: ClearResponse
+    PromoteBody:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: Entity slug
+        description:
+          type: string
+          title: Description
+          default: ''
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        key_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Key Columns
+          description: Single-element list naming the column whose values become the entity's row identity. Required for file-backed Databases (CSV uploads) whose key_columns is empty; ignored otherwise.
+      type: object
+      required:
+      - name
+      title: PromoteBody
+    EntityRelationshipBrief:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        target_entity_id:
+          type: string
+          format: uuid
+          title: Target Entity Id
+        target_entity_name:
+          type: string
+          title: Target Entity Name
+        target_entity_display_name:
+          type: string
+          title: Target Entity Display Name
+        relationship_type:
+          type: string
+          title: Relationship Type
+        cardinality:
+          type: string
+          title: Cardinality
+      type: object
+      required:
+      - id
+      - name
+      - target_entity_id
+      - target_entity_name
+      - target_entity_display_name
+      - relationship_type
+      - cardinality
+      title: EntityRelationshipBrief
+      description: Relationship summary in entity detail.
     FedByProject:
       properties:
         project_id:
@@ -222,63 +322,6 @@ components:
       - project_name
       title: FedByProject
       description: Which project feeds this entity.
-    FieldFormat:
-      properties:
-        min:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Min
-        max:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Max
-        regex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Regex
-        max_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Length
-        date_min:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date Min
-        date_max:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date Max
-        allowed_mime:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Allowed Mime
-        max_size_bytes:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Size Bytes
-      type: object
-      title: FieldFormat
-      description: Type-specific value constraints. All optional; only set what applies.
-    ClearBody:
-      properties:
-        confirm:
-          type: string
-          title: Confirm
-          description: Must be the literal phrase 'clear all overlays'
-      type: object
-      required:
-      - confirm
-      title: ClearBody
     EntityPropertyRead:
       properties:
         id:
@@ -331,34 +374,62 @@ components:
       - order
       title: EntityPropertyRead
       description: Property in entity listings.
-    PromoteBody:
+    HTTPValidationError:
       properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-          description: Entity slug
-        description:
-          type: string
-          title: Description
-          default: ''
-        display_name:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    FieldFormat:
+      properties:
+        min:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min
+        max:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max
+        regex:
           anyOf:
           - type: string
           - type: 'null'
-          title: Display Name
-        key_columns:
+          title: Regex
+        max_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Length
+        date_min:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Min
+        date_max:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Max
+        allowed_mime:
           anyOf:
           - items:
               type: string
             type: array
           - type: 'null'
-          title: Key Columns
-          description: Single-element list naming the column whose values become the entity's row identity. Required for file-backed Databases (CSV uploads) whose key_columns is empty; ignored otherwise.
+          title: Allowed Mime
+        max_size_bytes:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Size Bytes
       type: object
-      required:
-      - name
-      title: PromoteBody
+      title: FieldFormat
+      description: Type-specific value constraints. All optional; only set what applies.
     FieldRules:
       properties:
         allowed_values:
@@ -379,74 +450,3 @@ components:
       type: object
       title: FieldRules
       description: Declared value rules for one entity field. Empty instance = no rules.
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    EntityRelationshipBrief:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        target_entity_id:
-          type: string
-          format: uuid
-          title: Target Entity Id
-        target_entity_name:
-          type: string
-          title: Target Entity Name
-        target_entity_display_name:
-          type: string
-          title: Target Entity Display Name
-        relationship_type:
-          type: string
-          title: Relationship Type
-        cardinality:
-          type: string
-          title: Cardinality
-      type: object
-      required:
-      - id
-      - name
-      - target_entity_id
-      - target_entity_name
-      - target_entity_display_name
-      - relationship_type
-      - cardinality
-      title: EntityRelationshipBrief
-      description: Relationship summary in entity detail.
-    ClearResponse:
-      properties:
-        deleted:
-          type: integer
-          title: Deleted
-      type: object
-      required:
-      - deleted
-      title: ClearResponse

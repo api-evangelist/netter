@@ -225,31 +225,32 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RecordRelatedResponse:
+    ValidationError:
       properties:
-        entity_name:
-          type: string
-          title: Entity Name
-        entity_display_name:
-          type: string
-          title: Entity Display Name
-        record:
-          additionalProperties: true
-          type: object
-          title: Record
-        related:
+        loc:
           items:
-            $ref: '#/components/schemas/RelatedRecordSet'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Related
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - entity_name
-      - entity_display_name
-      - record
-      - related
-      title: RecordRelatedResponse
-      description: Response for GET /ontology/entities/{id}/records/{key}/related.
+      - loc
+      - msg
+      - type
+      title: ValidationError
     HTTPValidationError:
       properties:
         detail:
@@ -288,29 +289,28 @@ components:
       - count
       title: RelatedRecordSet
       description: Related records for one entity.
-    ValidationError:
+    RecordRelatedResponse:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        entity_name:
           type: string
-          title: Message
-        type:
+          title: Entity Name
+        entity_display_name:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
+          title: Entity Display Name
+        record:
+          additionalProperties: true
           type: object
-          title: Context
+          title: Record
+        related:
+          items:
+            $ref: '#/components/schemas/RelatedRecordSet'
+          type: array
+          title: Related
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - entity_name
+      - entity_display_name
+      - record
+      - related
+      title: RecordRelatedResponse
+      description: Response for GET /ontology/entities/{id}/records/{key}/related.

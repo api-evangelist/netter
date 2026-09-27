@@ -41,16 +41,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    OntologyChatMessageResponse:
-      properties:
-        status:
-          type: string
-          title: Status
-      type: object
-      required:
-      - status
-      title: OntologyChatMessageResponse
-      description: Response after dispatching an ontology chat message.
     HTTPValidationError:
       properties:
         detail:
@@ -60,16 +50,6 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    OntologyChatMessageRequest:
-      properties:
-        content:
-          type: string
-          title: Content
-      type: object
-      required:
-      - content
-      title: OntologyChatMessageRequest
-      description: Send a message to the ontology advisor.
     ValidationError:
       properties:
         loc:
@@ -96,3 +76,23 @@ components:
       - msg
       - type
       title: ValidationError
+    OntologyChatMessageResponse:
+      properties:
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - status
+      title: OntologyChatMessageResponse
+      description: Response after dispatching an ontology chat message.
+    OntologyChatMessageRequest:
+      properties:
+        content:
+          type: string
+          title: Content
+      type: object
+      required:
+      - content
+      title: OntologyChatMessageRequest
+      description: Send a message to the ontology advisor.

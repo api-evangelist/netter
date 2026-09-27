@@ -287,51 +287,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AccessSource:
-      properties:
-        via_resource_type:
-          type: string
-          title: Via Resource Type
-        via_resource_id:
-          type: string
-          format: uuid
-          title: Via Resource Id
-        via_resource_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Via Resource Name
-        grantee_type:
-          $ref: '#/components/schemas/GranteeType'
-        grantee_id:
-          type: string
-          format: uuid
-          title: Grantee Id
-        level:
-          $ref: '#/components/schemas/PermissionLevel'
-        dataflow_capped:
-          type: boolean
-          title: Dataflow Capped
-      type: object
-      required:
-      - via_resource_type
-      - via_resource_id
-      - via_resource_name
-      - grantee_type
-      - grantee_id
-      - level
-      - dataflow_capped
-      title: AccessSource
-      description: One contributing grant path for a user's effective access on a resource.
     ResourceType:
       type: string
       enum:
@@ -347,6 +302,86 @@ components:
       - integration
       title: ResourceType
       description: Resources that can carry permissions. Polymorphic ``resource_id``.
+    PermissionLevel:
+      type: string
+      enum:
+      - viewer
+      - editor
+      - admin
+      title: PermissionLevel
+      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
+    UserPermissionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        resource_type:
+          $ref: '#/components/schemas/ResourceType'
+        resource_id:
+          type: string
+          format: uuid
+          title: Resource Id
+        resource_name:
+          type: string
+          title: Resource Name
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+      type: object
+      required:
+      - id
+      - resource_type
+      - resource_id
+      - resource_name
+      - level
+      title: UserPermissionRead
+      description: Permission with resource name for display in user permission lists.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EffectiveAccessEntry:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+        sources:
+          items:
+            $ref: '#/components/schemas/AccessSource'
+          type: array
+          title: Sources
+      type: object
+      required:
+      - user_id
+      - level
+      - sources
+      title: EffectiveAccessEntry
+      description: A user's effective access level on a resource, with all contributing sources.
     PermissionRead:
       properties:
         id:
@@ -398,60 +433,6 @@ components:
       - group
       title: GranteeType
       description: Who a resource grant targets — a user or a user group.
-    PermissionLevel:
-      type: string
-      enum:
-      - viewer
-      - editor
-      - admin
-      title: PermissionLevel
-      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
-    UserPermissionRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        resource_type:
-          $ref: '#/components/schemas/ResourceType'
-        resource_id:
-          type: string
-          format: uuid
-          title: Resource Id
-        resource_name:
-          type: string
-          title: Resource Name
-        level:
-          $ref: '#/components/schemas/PermissionLevel'
-      type: object
-      required:
-      - id
-      - resource_type
-      - resource_id
-      - resource_name
-      - level
-      title: UserPermissionRead
-      description: Permission with resource name for display in user permission lists.
-    EffectiveAccessEntry:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        level:
-          $ref: '#/components/schemas/PermissionLevel'
-        sources:
-          items:
-            $ref: '#/components/schemas/AccessSource'
-          type: array
-          title: Sources
-      type: object
-      required:
-      - user_id
-      - level
-      - sources
-      title: EffectiveAccessEntry
-      description: A user's effective access level on a resource, with all contributing sources.
     PermissionGrant:
       properties:
         grantee_type:
@@ -468,6 +449,51 @@ components:
       - grantee_id
       - level
       title: PermissionGrant
+    AccessSource:
+      properties:
+        via_resource_type:
+          type: string
+          title: Via Resource Type
+        via_resource_id:
+          type: string
+          format: uuid
+          title: Via Resource Id
+        via_resource_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Via Resource Name
+        grantee_type:
+          $ref: '#/components/schemas/GranteeType'
+        grantee_id:
+          type: string
+          format: uuid
+          title: Grantee Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
+        dataflow_capped:
+          type: boolean
+          title: Dataflow Capped
+      type: object
+      required:
+      - via_resource_type
+      - via_resource_id
+      - via_resource_name
+      - grantee_type
+      - grantee_id
+      - level
+      - dataflow_capped
+      title: AccessSource
+      description: One contributing grant path for a user's effective access on a resource.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PermissionUpdate:
       properties:
         level:
@@ -476,29 +502,3 @@ components:
       required:
       - level
       title: PermissionUpdate
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError

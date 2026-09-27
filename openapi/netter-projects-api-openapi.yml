@@ -590,30 +590,193 @@ components:
       - created_at
       - updated_at
       title: DatabaseRead
-    HTTPValidationError:
+    ProjectCreate:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    SuppressionPreview:
-      properties:
-        databases:
-          items:
-            $ref: '#/components/schemas/DatabaseWithConsumers'
-          type: array
-          title: Databases
-        owned_database_count:
-          type: integer
-          title: Owned Database Count
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+          default: ''
       type: object
       required:
-      - databases
-      - owned_database_count
-      title: SuppressionPreview
+      - name
+      title: ProjectCreate
+    LineageExternalNode:
+      properties:
+        id:
+          type: string
+          title: Id
+        app_key:
+          type: string
+          title: App Key
+        display_name:
+          type: string
+          title: Display Name
+        node_type:
+          type: string
+          title: Node Type
+        description:
+          type: string
+          title: Description
+          default: ''
+        category:
+          type: string
+          title: Category
+          default: ''
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+      type: object
+      required:
+      - id
+      - app_key
+      - display_name
+      - node_type
+      title: LineageExternalNode
+      description: An external system (source or sink).
+    app__projects__schemas__EntityRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        order:
+          type: integer
+          title: Order
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - id
+      - name
+      - order
+      - status
+      title: EntityRead
+      description: Entity response for lineage view.
+    ConsumerRef:
+      properties:
+        type:
+          type: string
+          title: Type
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - type
+      - id
+      - name
+      - project_id
+      - project_name
+      title: ConsumerRef
+    DashboardRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        status:
+          type: string
+          title: Status
+        current_version_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Current Version Id
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - project_id
+      - user_id
+      - name
+      - description
+      - status
+      - bundle_url
+      - bundle_css
+      - bundle_imports
+      - error_message
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: DashboardRead
     LineageEdge:
       properties:
         source:
@@ -632,6 +795,60 @@ components:
       - relation
       title: LineageEdge
       description: An edge in the lineage DAG.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    LineageTriggerNode:
+      properties:
+        id:
+          type: string
+          title: Id
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        trigger_type:
+          type: string
+          title: Trigger Type
+        label:
+          type: string
+          title: Label
+        cron:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Cron
+      type: object
+      required:
+      - id
+      - step_id
+      - trigger_type
+      - label
+      title: LineageTriggerNode
+      description: A step trigger (schedule or manual).
     ProjectRead:
       properties:
         id:
@@ -703,118 +920,45 @@ components:
       - created_at
       - updated_at
       title: ProjectRead
-    LineageExternalNode:
+    ProjectUpdate:
       properties:
-        id:
-          type: string
-          title: Id
-        app_key:
-          type: string
-          title: App Key
-        display_name:
-          type: string
-          title: Display Name
-        node_type:
-          type: string
-          title: Node Type
-        description:
-          type: string
-          title: Description
-          default: ''
-        category:
-          type: string
-          title: Category
-          default: ''
-        domain:
+        name:
           anyOf:
           - type: string
           - type: 'null'
-          title: Domain
+          title: Name
+        folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Folder Id
       type: object
-      required:
-      - id
-      - app_key
-      - display_name
-      - node_type
-      title: LineageExternalNode
-      description: An external system (source or sink).
-    ProjectCreate:
+      title: ProjectUpdate
+    DatabaseWithConsumers:
       properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
         name:
           type: string
           title: Name
-        description:
+        table_name:
           type: string
-          title: Description
-          default: ''
-      type: object
-      required:
-      - name
-      title: ProjectCreate
-    ProjectLineageResponse:
-      properties:
-        steps:
+          title: Table Name
+        consumers:
           items:
-            $ref: '#/components/schemas/LineageStepNode'
+            $ref: '#/components/schemas/ConsumerRef'
           type: array
-          title: Steps
-        entities:
-          items:
-            $ref: '#/components/schemas/app__projects__schemas__EntityRead'
-          type: array
-          title: Entities
-          default: []
-        externals:
-          items:
-            $ref: '#/components/schemas/LineageExternalNode'
-          type: array
-          title: Externals
-        triggers:
-          items:
-            $ref: '#/components/schemas/LineageTriggerNode'
-          type: array
-          title: Triggers
-          default: []
-        edges:
-          items:
-            $ref: '#/components/schemas/LineageEdge'
-          type: array
-          title: Edges
-      type: object
-      required:
-      - steps
-      - externals
-      - edges
-      title: ProjectLineageResponse
-      description: Full project lineage DAG for the Foundry-style view.
-    LineageTriggerNode:
-      properties:
-        id:
-          type: string
-          title: Id
-        step_id:
-          type: string
-          format: uuid
-          title: Step Id
-        trigger_type:
-          type: string
-          title: Trigger Type
-        label:
-          type: string
-          title: Label
-        cron:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Cron
+          title: Consumers
       type: object
       required:
       - id
-      - step_id
-      - trigger_type
-      - label
-      title: LineageTriggerNode
-      description: A step trigger (schedule or manual).
+      - name
+      - table_name
+      - consumers
+      title: DatabaseWithConsumers
     LineageStepNode:
       properties:
         id:
@@ -940,207 +1084,63 @@ components:
       - order
       title: LineageStepNode
       description: A single step in the project DAG (includes virtual steps).
-    ConsumerRef:
+    SuppressionPreview:
       properties:
-        type:
-          type: string
-          title: Type
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
-      type: object
-      required:
-      - type
-      - id
-      - name
-      - project_id
-      - project_name
-      title: ConsumerRef
-    ValidationError:
-      properties:
-        loc:
+        databases:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/DatabaseWithConsumers'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    DashboardRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Step Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        status:
-          type: string
-          title: Status
-        current_version_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Current Version Id
-        bundle_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Url
-        bundle_css:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Css
-        bundle_imports:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Bundle Imports
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - company_id
-      - project_id
-      - user_id
-      - name
-      - description
-      - status
-      - bundle_url
-      - bundle_css
-      - bundle_imports
-      - error_message
-      - is_suppressed
-      - created_at
-      - updated_at
-      title: DashboardRead
-    ProjectUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Folder Id
-      type: object
-      title: ProjectUpdate
-    app__projects__schemas__EntityRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        order:
+          title: Databases
+        owned_database_count:
           type: integer
-          title: Order
-        status:
-          type: string
-          title: Status
+          title: Owned Database Count
       type: object
       required:
-      - id
-      - name
-      - order
-      - status
-      title: EntityRead
-      description: Entity response for lineage view.
-    DatabaseWithConsumers:
+      - databases
+      - owned_database_count
+      title: SuppressionPreview
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        table_name:
-          type: string
-          title: Table Name
-        consumers:
+        detail:
           items:
-            $ref: '#/components/schemas/ConsumerRef'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Consumers
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ProjectLineageResponse:
+      properties:
+        steps:
+          items:
+            $ref: '#/components/schemas/LineageStepNode'
+          type: array
+          title: Steps
+        entities:
+          items:
+            $ref: '#/components/schemas/app__projects__schemas__EntityRead'
+          type: array
+          title: Entities
+          default: []
+        externals:
+          items:
+            $ref: '#/components/schemas/LineageExternalNode'
+          type: array
+          title: Externals
+        triggers:
+          items:
+            $ref: '#/components/schemas/LineageTriggerNode'
+          type: array
+          title: Triggers
+          default: []
+        edges:
+          items:
+            $ref: '#/components/schemas/LineageEdge'
+          type: array
+          title: Edges
       type: object
       required:
-      - id
-      - name
-      - table_name
-      - consumers
-      title: DatabaseWithConsumers
+      - steps
+      - externals
+      - edges
+      title: ProjectLineageResponse
+      description: Full project lineage DAG for the Foundry-style view.

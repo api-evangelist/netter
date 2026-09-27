@@ -35,49 +35,81 @@ paths:
                 $ref: '#/components/schemas/MonitoringInsights'
 components:
   schemas:
-    ActivityEvent:
+    StepStats:
       properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        event_type:
-          type: string
-          title: Event Type
-        title:
-          type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-      type: object
-      required:
-      - timestamp
-      - event_type
-      - title
-      - description
-      title: ActivityEvent
-    StatusBanner:
-      properties:
-        status:
-          type: string
-          title: Status
-        headline:
-          type: string
-          title: Headline
-        summary:
-          type: string
-          title: Summary
-        health_score:
+        total:
           type: integer
-          title: Health Score
+          title: Total
+        active:
+          type: integer
+          title: Active
+        draft:
+          type: integer
+          title: Draft
+        paused:
+          type: integer
+          title: Paused
+        archived:
+          type: integer
+          title: Archived
       type: object
       required:
-      - status
-      - headline
-      - summary
-      - health_score
-      title: StatusBanner
+      - total
+      - active
+      - draft
+      - paused
+      - archived
+      title: StepStats
+    ActiveTrigger:
+      properties:
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        step_title:
+          type: string
+          title: Step Title
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+        trigger_type:
+          type: string
+          title: Trigger Type
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+        last_triggered_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Triggered At
+        next_trigger_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Next Trigger At
+      type: object
+      required:
+      - step_id
+      - step_title
+      - project_id
+      - project_name
+      - trigger_type
+      - trigger_config
+      - last_triggered_at
+      - next_trigger_at
+      title: ActiveTrigger
     DashboardStats:
       properties:
         total:
@@ -103,70 +135,61 @@ components:
       - generating
       - error
       title: DashboardStats
-    RecentRun:
+    PriorityAction:
       properties:
         id:
           type: string
-          format: uuid
           title: Id
-        run_id:
+        priority:
+          type: integer
+          title: Priority
+        title:
           type: string
-          format: uuid
-          title: Run Id
+          title: Title
+        description:
+          type: string
+          title: Description
+        impact:
+          type: string
+          title: Impact
+        category:
+          type: string
+          title: Category
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        step_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Step Title
         project_id:
-          type: string
-          format: uuid
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
           title: Project Id
         project_name:
           anyOf:
           - type: string
           - type: 'null'
           title: Project Name
-        root_step_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Root Step Title
-        status:
-          type: string
-          title: Status
-        trigger_source:
-          type: string
-          title: Trigger Source
-        started_at:
-          type: string
-          format: date-time
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        error_summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Summary
       type: object
       required:
       - id
-      - run_id
+      - priority
+      - title
+      - description
+      - impact
+      - category
+      - step_id
+      - step_title
       - project_id
       - project_name
-      - root_step_title
-      - status
-      - trigger_source
-      - started_at
-      - finished_at
-      - error
-      - error_summary
-      title: RecentRun
+      title: PriorityAction
     MonitoringInsights:
       properties:
         status_banner:
@@ -193,63 +216,28 @@ components:
       - smart_insights
       - activity_timeline
       title: MonitoringInsights
-    StepStats:
+    SmartInsight:
       properties:
-        total:
-          type: integer
-          title: Total
-        active:
-          type: integer
-          title: Active
-        draft:
-          type: integer
-          title: Draft
-        paused:
-          type: integer
-          title: Paused
-        archived:
-          type: integer
-          title: Archived
+        icon:
+          type: string
+          title: Icon
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        action_label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Action Label
       type: object
       required:
-      - total
-      - active
-      - draft
-      - paused
-      - archived
-      title: StepStats
-    MonitoringOverview:
-      properties:
-        steps:
-          $ref: '#/components/schemas/StepStats'
-        dashboards:
-          $ref: '#/components/schemas/DashboardStats'
-        runs_last_7d:
-          $ref: '#/components/schemas/RunStats'
-        recent_runs:
-          items:
-            $ref: '#/components/schemas/RecentRun'
-          type: array
-          title: Recent Runs
-        recent_errors:
-          items:
-            $ref: '#/components/schemas/RecentError'
-          type: array
-          title: Recent Errors
-        active_triggers:
-          items:
-            $ref: '#/components/schemas/ActiveTrigger'
-          type: array
-          title: Active Triggers
-      type: object
-      required:
-      - steps
-      - dashboards
-      - runs_last_7d
-      - recent_runs
-      - recent_errors
-      - active_triggers
-      title: MonitoringOverview
+      - icon
+      - title
+      - description
+      title: SmartInsight
     RecentError:
       properties:
         id:
@@ -314,28 +302,123 @@ components:
       - error_summary
       - trigger_source
       title: RecentError
-    SmartInsight:
+    RecentRun:
       properties:
-        icon:
+        id:
           type: string
-          title: Icon
-        title:
+          format: uuid
+          title: Id
+        run_id:
           type: string
-          title: Title
-        description:
+          format: uuid
+          title: Run Id
+        project_id:
           type: string
-          title: Description
-        action_label:
+          format: uuid
+          title: Project Id
+        project_name:
           anyOf:
           - type: string
           - type: 'null'
-          title: Action Label
+          title: Project Name
+        root_step_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Root Step Title
+        status:
+          type: string
+          title: Status
+        trigger_source:
+          type: string
+          title: Trigger Source
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
       type: object
       required:
-      - icon
-      - title
-      - description
-      title: SmartInsight
+      - id
+      - run_id
+      - project_id
+      - project_name
+      - root_step_title
+      - status
+      - trigger_source
+      - started_at
+      - finished_at
+      - error
+      - error_summary
+      title: RecentRun
+    MonitoringOverview:
+      properties:
+        steps:
+          $ref: '#/components/schemas/StepStats'
+        dashboards:
+          $ref: '#/components/schemas/DashboardStats'
+        runs_last_7d:
+          $ref: '#/components/schemas/RunStats'
+        recent_runs:
+          items:
+            $ref: '#/components/schemas/RecentRun'
+          type: array
+          title: Recent Runs
+        recent_errors:
+          items:
+            $ref: '#/components/schemas/RecentError'
+          type: array
+          title: Recent Errors
+        active_triggers:
+          items:
+            $ref: '#/components/schemas/ActiveTrigger'
+          type: array
+          title: Active Triggers
+      type: object
+      required:
+      - steps
+      - dashboards
+      - runs_last_7d
+      - recent_runs
+      - recent_errors
+      - active_triggers
+      title: MonitoringOverview
+    StatusBanner:
+      properties:
+        status:
+          type: string
+          title: Status
+        headline:
+          type: string
+          title: Headline
+        summary:
+          type: string
+          title: Summary
+        health_score:
+          type: integer
+          title: Health Score
+      type: object
+      required:
+      - status
+      - headline
+      - summary
+      - health_score
+      title: StatusBanner
     RunStats:
       properties:
         total:
@@ -361,108 +444,25 @@ components:
       - running
       - cancelled
       title: RunStats
-    ActiveTrigger:
+    ActivityEvent:
       properties:
-        step_id:
+        timestamp:
           type: string
-          format: uuid
-          title: Step Id
-        step_title:
+          format: date-time
+          title: Timestamp
+        event_type:
           type: string
-          title: Step Title
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Project Name
-        trigger_type:
-          type: string
-          title: Trigger Type
-        trigger_config:
-          additionalProperties: true
-          type: object
-          title: Trigger Config
-        last_triggered_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Triggered At
-        next_trigger_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Next Trigger At
-      type: object
-      required:
-      - step_id
-      - step_title
-      - project_id
-      - project_name
-      - trigger_type
-      - trigger_config
-      - last_triggered_at
-      - next_trigger_at
-      title: ActiveTrigger
-    PriorityAction:
-      properties:
-        id:
-          type: string
-          title: Id
-        priority:
-          type: integer
-          title: Priority
+          title: Event Type
         title:
           type: string
           title: Title
         description:
           type: string
           title: Description
-        impact:
-          type: string
-          title: Impact
-        category:
-          type: string
-          title: Category
-        step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Step Id
-        step_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Step Title
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Project Name
       type: object
       required:
-      - id
-      - priority
+      - timestamp
+      - event_type
       - title
       - description
-      - impact
-      - category
-      - step_id
-      - step_title
-      - project_id
-      - project_name
-      title: PriorityAction
+      title: ActivityEvent

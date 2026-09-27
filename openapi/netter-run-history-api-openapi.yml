@@ -187,15 +187,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     CascadeEventListResponse:
       properties:
         events:
@@ -207,6 +198,331 @@ components:
       required:
       - events
       title: CascadeEventListResponse
+    RunTimelineEntry:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        status:
+          type: string
+          title: Status
+        trigger_source:
+          type: string
+          title: Trigger Source
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        force_full:
+          type: boolean
+          title: Force Full
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+        total_rows_processed:
+          type: integer
+          title: Total Rows Processed
+          default: 0
+        step_count:
+          type: integer
+          title: Step Count
+          default: 0
+        incremental_count:
+          type: integer
+          title: Incremental Count
+          default: 0
+        full_count:
+          type: integer
+          title: Full Count
+          default: 0
+      type: object
+      required:
+      - id
+      - status
+      - trigger_source
+      - force_full
+      - started_at
+      - finished_at
+      title: RunTimelineEntry
+      description: One Run as seen by the project timeline view.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    app__steps__schemas__RunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+        trigger_source:
+          type: string
+          title: Trigger Source
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        temporal_workflow_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temporal Workflow Id
+        force_full:
+          type: boolean
+          title: Force Full
+          default: false
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        step_runs:
+          items:
+            $ref: '#/components/schemas/StepRunRead'
+          type: array
+          title: Step Runs
+          default: []
+      type: object
+      required:
+      - id
+      - project_id
+      - company_id
+      - user_id
+      - root_step_id
+      - status
+      - error
+      - error_summary
+      - trigger_source
+      - temporal_workflow_id
+      - started_at
+      - finished_at
+      title: RunRead
+      description: Run response.
+    StepRunRowsResponse:
+      properties:
+        step_run_id:
+          type: string
+          format: uuid
+          title: Step Run Id
+        rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Processed
+        total_rows:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Total Rows
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        truncated:
+          type: boolean
+          title: Truncated
+        duration_ms:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Duration Ms
+        logs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logs
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+      type: object
+      required:
+      - step_run_id
+      - rows_processed
+      - rows
+      - truncated
+      title: StepRunRowsResponse
+      description: 'Head-sample of rows in a single StepRun''s step output.
+
+
+        Incremental-rethink Task 13 dropped the watermark-window slicing this
+
+        used to do (``execution_mode_used`` / ``output_watermark`` no longer
+
+        exist — every step always runs full, Task 10). This is now a plain
+
+        head-sample of the step''s cumulative output parquet.'
+    CascadeEventRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        source_database_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Database Id
+        target_database_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Database Id
+        target_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Step Id
+        decision:
+          type: string
+          title: Decision
+        detail:
+          additionalProperties: true
+          type: object
+          title: Detail
+          default: {}
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+      type: object
+      required:
+      - id
+      - project_id
+      - source_run_id
+      - source_database_id
+      - target_database_id
+      - target_step_id
+      - decision
+      - occurred_at
+      title: CascadeEventRead
+    RunListResponse:
+      properties:
+        runs:
+          items:
+            $ref: '#/components/schemas/RunTimelineEntry'
+          type: array
+          title: Runs
+        next_cursor:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Next Cursor
+      type: object
+      required:
+      - runs
+      title: RunListResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     StepRunRead:
       properties:
         id:
@@ -295,319 +611,3 @@ components:
       - finished_at
       title: StepRunRead
       description: StepRun response.
-    StepRunRowsResponse:
-      properties:
-        step_run_id:
-          type: string
-          format: uuid
-          title: Step Run Id
-        rows_processed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Processed
-        total_rows:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Total Rows
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        truncated:
-          type: boolean
-          title: Truncated
-        duration_ms:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Duration Ms
-        logs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logs
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-      type: object
-      required:
-      - step_run_id
-      - rows_processed
-      - rows
-      - truncated
-      title: StepRunRowsResponse
-      description: 'Head-sample of rows in a single StepRun''s step output.
-
-
-        Incremental-rethink Task 13 dropped the watermark-window slicing this
-
-        used to do (``execution_mode_used`` / ``output_watermark`` no longer
-
-        exist — every step always runs full, Task 10). This is now a plain
-
-        head-sample of the step''s cumulative output parquet.'
-    app__steps__schemas__RunRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        root_step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Root Step Id
-        status:
-          type: string
-          title: Status
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        error_summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Summary
-        trigger_source:
-          type: string
-          title: Trigger Source
-        source_run_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Run Id
-        temporal_workflow_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Temporal Workflow Id
-        force_full:
-          type: boolean
-          title: Force Full
-          default: false
-        started_at:
-          type: string
-          format: date-time
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        step_runs:
-          items:
-            $ref: '#/components/schemas/StepRunRead'
-          type: array
-          title: Step Runs
-          default: []
-      type: object
-      required:
-      - id
-      - project_id
-      - company_id
-      - user_id
-      - root_step_id
-      - status
-      - error
-      - error_summary
-      - trigger_source
-      - temporal_workflow_id
-      - started_at
-      - finished_at
-      title: RunRead
-      description: Run response.
-    RunTimelineEntry:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        status:
-          type: string
-          title: Status
-        trigger_source:
-          type: string
-          title: Trigger Source
-        source_run_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Run Id
-        root_step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Root Step Id
-        force_full:
-          type: boolean
-          title: Force Full
-        started_at:
-          type: string
-          format: date-time
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        error_summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Summary
-        total_rows_processed:
-          type: integer
-          title: Total Rows Processed
-          default: 0
-        step_count:
-          type: integer
-          title: Step Count
-          default: 0
-        incremental_count:
-          type: integer
-          title: Incremental Count
-          default: 0
-        full_count:
-          type: integer
-          title: Full Count
-          default: 0
-      type: object
-      required:
-      - id
-      - status
-      - trigger_source
-      - force_full
-      - started_at
-      - finished_at
-      title: RunTimelineEntry
-      description: One Run as seen by the project timeline view.
-    RunListResponse:
-      properties:
-        runs:
-          items:
-            $ref: '#/components/schemas/RunTimelineEntry'
-          type: array
-          title: Runs
-        next_cursor:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Next Cursor
-      type: object
-      required:
-      - runs
-      title: RunListResponse
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CascadeEventRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        source_run_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Run Id
-        source_database_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Database Id
-        target_database_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Database Id
-        target_step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Step Id
-        decision:
-          type: string
-          title: Decision
-        detail:
-          additionalProperties: true
-          type: object
-          title: Detail
-          default: {}
-        occurred_at:
-          type: string
-          format: date-time
-          title: Occurred At
-      type: object
-      required:
-      - id
-      - project_id
-      - source_run_id
-      - source_database_id
-      - target_database_id
-      - target_step_id
-      - decision
-      - occurred_at
-      title: CascadeEventRead

@@ -476,41 +476,6 @@ components:
       - created_at
       - updated_at
       title: DatabaseRead
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DataQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: DataQueryResponse
     DatabaseCreate:
       properties:
         project_id:
@@ -536,15 +501,28 @@ components:
       - project_id
       - name
       title: DatabaseCreate
-    NLQueryRequest:
+    DatabaseUpdate:
       properties:
-        question:
-          type: string
-          title: Question
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        schema_info:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Schema Info
+        is_shared:
+          anyOf:
+          - type: boolean
+          - type: 'null'
+          title: Is Shared
       type: object
-      required:
-      - question
-      title: NLQueryRequest
+      title: DatabaseUpdate
     ValidationError:
       properties:
         loc:
@@ -608,25 +586,47 @@ components:
       description: 'NL → SQL response. ``sql`` is the generated query so the SQL editor
 
         can show it back to the user; rows/columns are the executed result.'
-    DatabaseUpdate:
+    NLQueryRequest:
       properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        schema_info:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Schema Info
-        is_shared:
-          anyOf:
-          - type: boolean
-          - type: 'null'
-          title: Is Shared
+        question:
+          type: string
+          title: Question
       type: object
-      title: DatabaseUpdate
+      required:
+      - question
+      title: NLQueryRequest
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

@@ -257,41 +257,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    LegoTurnResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    LegoMessageRequest:
-      properties:
-        content:
+        status:
           type: string
-          maxLength: 10000
-          minLength: 1
-          title: Content
-        referenced_database_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid
-            type: array
-          - type: 'null'
-          title: Referenced Database Ids
-        attachments:
-          items:
-            additionalProperties:
-              type: string
-            type: object
-          type: array
-          title: Attachments
+          title: Status
       type: object
       required:
-      - content
-      title: LegoMessageRequest
+      - status
+      title: LegoTurnResponse
     UpdateStepRequest:
       properties:
         config:
@@ -302,15 +276,32 @@ components:
       required:
       - config
       title: UpdateStepRequest
-    LegoTurnResponse:
+    ValidationError:
       properties:
-        status:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Status
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - status
-      title: LegoTurnResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AddStepRequest:
       properties:
         step_type:
@@ -347,32 +338,6 @@ components:
       - operator
       - slug
       title: AddStepRequest
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     EdgeRequest:
       properties:
         parent_slug:
@@ -386,3 +351,38 @@ components:
       - parent_slug
       - child_slug
       title: EdgeRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LegoMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Content
+        referenced_database_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Referenced Database Ids
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Attachments
+      type: object
+      required:
+      - content
+      title: LegoMessageRequest

@@ -419,72 +419,31 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    CompanyInvitationValidateRead:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CompanyMemberSummary:
-      properties:
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        role:
-          type: string
-          title: Role
-        joined_at:
-          type: string
-          format: date-time
-          title: Joined At
-      type: object
-      required:
-      - company_id
-      - user_id
-      - role
-      - joined_at
-      title: CompanyMemberSummary
-      description: 'Lightweight member view — no auth.users join.
-
-
-        Used by :class:`AcceptInvitation` to report the newly-inserted member
-
-        without reaching into ``auth.users`` for the email.'
-    CompanyMemberRead:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
         email:
           type: string
           title: Email
+        company_name:
+          type: string
+          title: Company Name
         role:
           type: string
           title: Role
-        joined_at:
-          type: string
-          format: date-time
-          title: Joined At
-        has_signed_in:
-          type: boolean
-          title: Has Signed In
       type: object
       required:
-      - user_id
       - email
+      - company_name
       - role
-      - joined_at
-      - has_signed_in
-      title: CompanyMemberRead
+      title: CompanyInvitationValidateRead
+      description: 'Public view of a pending invitation, resolved by token.
+
+
+        Returned by the unauthenticated ``/invitations/validate`` endpoint so
+
+        the accept page can show who the invite is for before the invitee
+
+        creates their account. Deliberately minimal — no ids, no inviter.'
     CompanyMemberRoleUpdate:
       properties:
         role:
@@ -508,81 +467,6 @@ components:
       required:
       - name
       title: CompanyCreate
-    CompanyInvite:
-      properties:
-        email:
-          type: string
-          title: Email
-        role:
-          type: string
-          title: Role
-          default: member
-      type: object
-      required:
-      - email
-      title: CompanyInvite
-    CompanyListResponse:
-      properties:
-        companies:
-          items:
-            $ref: '#/components/schemas/CompanyRead'
-          type: array
-          title: Companies
-        default_company_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Default Company Id
-      type: object
-      required:
-      - companies
-      - default_company_id
-      title: CompanyListResponse
-    CompanyUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-      type: object
-      title: CompanyUpdate
-    InvitationAccept:
-      properties:
-        token:
-          type: string
-          title: Token
-      type: object
-      required:
-      - token
-      title: InvitationAccept
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     CompanyInvitationRead:
       properties:
         id:
@@ -620,31 +504,120 @@ components:
       - status
       - created_at
       title: CompanyInvitationRead
-    CompanyInvitationValidateRead:
+    InvitationAccept:
+      properties:
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: InvitationAccept
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CompanyMemberRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+        has_signed_in:
+          type: boolean
+          title: Has Signed In
+      type: object
+      required:
+      - user_id
+      - email
+      - role
+      - joined_at
+      - has_signed_in
+      title: CompanyMemberRead
+    CompanyInvite:
       properties:
         email:
           type: string
           title: Email
-        company_name:
-          type: string
-          title: Company Name
         role:
           type: string
           title: Role
+          default: member
       type: object
       required:
       - email
-      - company_name
+      title: CompanyInvite
+    CompanyUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+      type: object
+      title: CompanyUpdate
+    CompanyMemberSummary:
+      properties:
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+      type: object
+      required:
+      - company_id
+      - user_id
       - role
-      title: CompanyInvitationValidateRead
-      description: 'Public view of a pending invitation, resolved by token.
+      - joined_at
+      title: CompanyMemberSummary
+      description: 'Lightweight member view — no auth.users join.
 
 
-        Returned by the unauthenticated ``/invitations/validate`` endpoint so
+        Used by :class:`AcceptInvitation` to report the newly-inserted member
 
-        the accept page can show who the invite is for before the invitee
-
-        creates their account. Deliberately minimal — no ids, no inviter.'
+        without reaching into ``auth.users`` for the email.'
     CompanyRead:
       properties:
         id:
@@ -668,3 +641,30 @@ components:
       - role
       - created_at
       title: CompanyRead
+    CompanyListResponse:
+      properties:
+        companies:
+          items:
+            $ref: '#/components/schemas/CompanyRead'
+          type: array
+          title: Companies
+        default_company_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Default Company Id
+      type: object
+      required:
+      - companies
+      - default_company_id
+      title: CompanyListResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

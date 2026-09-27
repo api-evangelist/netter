@@ -232,15 +232,68 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    EntitySyncStatus:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        last_synced_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Synced At
+        source_row_count:
+          type: integer
+          title: Source Row Count
+        overlay_count:
+          type: integer
+          title: Overlay Count
+        state:
+          type: string
+          title: State
+          description: '''idle'' | ''syncing'' | ''error'''
       type: object
-      title: HTTPValidationError
+      required:
+      - last_synced_at
+      - source_row_count
+      - overlay_count
+      - state
+      title: EntitySyncStatus
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    EntityRowInsert:
+      properties:
+        values:
+          additionalProperties: true
+          type: object
+          title: Values
+          description: Column → value for the new row. Must be a subset of entity columns.
+      type: object
+      required:
+      - values
+      title: EntityRowInsert
     EntityRowList:
       properties:
         rows:
@@ -270,79 +323,15 @@ components:
       - total_source
       - total_overlay_only
       title: EntityRowList
-    EntityRowInsert:
+    HTTPValidationError:
       properties:
-        values:
-          additionalProperties: true
-          type: object
-          title: Values
-          description: Column → value for the new row. Must be a subset of entity columns.
-      type: object
-      required:
-      - values
-      title: EntityRowInsert
-    EntityRowPatch:
-      properties:
-        patch:
-          additionalProperties: true
-          type: object
-          title: Patch
-          description: Column → new value. Sparse — only changed columns.
-      type: object
-      required:
-      - patch
-      title: EntityRowPatch
-    ValidationError:
-      properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    EntitySyncStatus:
-      properties:
-        last_synced_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Synced At
-        source_row_count:
-          type: integer
-          title: Source Row Count
-        overlay_count:
-          type: integer
-          title: Overlay Count
-        state:
-          type: string
-          title: State
-          description: '''idle'' | ''syncing'' | ''error'''
-      type: object
-      required:
-      - last_synced_at
-      - source_row_count
-      - overlay_count
-      - state
-      title: EntitySyncStatus
+      title: HTTPValidationError
     EntityRowRead:
       properties:
         row_key:
@@ -389,3 +378,14 @@ components:
       - values
       title: EntityRowRead
       description: One merged row (source ⊕ overlay).
+    EntityRowPatch:
+      properties:
+        patch:
+          additionalProperties: true
+          type: object
+          title: Patch
+          description: Column → new value. Sparse — only changed columns.
+      type: object
+      required:
+      - patch
+      title: EntityRowPatch

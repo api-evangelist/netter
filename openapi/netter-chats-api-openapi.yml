@@ -438,44 +438,32 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AttachmentRead:
-      properties:
-        id:
+          title: Location
+        msg:
           type: string
-          title: Id
-        url:
+          title: Message
+        type:
           type: string
-          title: Url
-        filename:
-          type: string
-          title: Filename
-        content_type:
-          type: string
-          title: Content Type
-        category:
-          type: string
-          title: Category
-        s3_key:
-          type: string
-          title: S3 Key
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - id
-      - url
-      - filename
-      - content_type
-      - category
-      - s3_key
-      title: AttachmentRead
+      - loc
+      - msg
+      - type
+      title: ValidationError
     Body_upload_attachment_api_v1_chats__chat_id__attachments_post:
       properties:
         file:
@@ -541,6 +529,99 @@ components:
       - extra_metadata
       - created_at
       title: MessageRead
+    MessageCreate:
+      properties:
+        role:
+          type: string
+          title: Role
+          default: user
+        content:
+          type: string
+          title: Content
+        extra_metadata:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Extra Metadata
+      type: object
+      required:
+      - content
+      title: MessageCreate
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    ChatTitleUpdate:
+      properties:
+        title:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Title
+      type: object
+      required:
+      - title
+      title: ChatTitleUpdate
+    AttachmentRead:
+      properties:
+        id:
+          type: string
+          title: Id
+        url:
+          type: string
+          title: Url
+        filename:
+          type: string
+          title: Filename
+        content_type:
+          type: string
+          title: Content Type
+        category:
+          type: string
+          title: Category
+        s3_key:
+          type: string
+          title: S3 Key
+      type: object
+      required:
+      - id
+      - url
+      - filename
+      - content_type
+      - category
+      - s3_key
+      title: AttachmentRead
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChatCreate:
+      properties:
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        chat_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+          default: New Chat
+      type: object
+      title: ChatCreate
     ChatRead:
       properties:
         id:
@@ -603,84 +684,3 @@ components:
       - created_at
       - updated_at
       title: ChatRead
-    MessageCreate:
-      properties:
-        role:
-          type: string
-          title: Role
-          default: user
-        content:
-          type: string
-          title: Content
-        extra_metadata:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Extra Metadata
-      type: object
-      required:
-      - content
-      title: MessageCreate
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ChatTitleUpdate:
-      properties:
-        title:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Title
-      type: object
-      required:
-      - title
-      title: ChatTitleUpdate
-    ChatCreate:
-      properties:
-        dashboard_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Dashboard Id
-        chat_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Chat Type
-        title:
-          type: string
-          title: Title
-          default: New Chat
-      type: object
-      title: ChatCreate

@@ -313,99 +313,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AttributeAutomationConfigured:
+    AttributeDefinitionUpdate:
       properties:
-        automation:
-          $ref: '#/components/schemas/AttributeAutomationRead'
-        stats:
-          $ref: '#/components/schemas/AttributeSyncStats'
-      type: object
-      required:
-      - automation
-      - stats
-      title: AttributeAutomationConfigured
-    MemberAttributesWrite:
-      properties:
-        values:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          propertyNames:
-            format: uuid
-          type: object
-          title: Values
-      type: object
-      required:
-      - values
-      title: MemberAttributesWrite
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AttributeDefinitionRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        key:
-          type: string
-          title: Key
         label:
           type: string
           title: Label
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
       type: object
       required:
-      - id
-      - key
       - label
-      - created_at
-      title: AttributeDefinitionRead
-    MemberAttributesRead:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        attributes:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-          title: Attributes
-      type: object
-      required:
-      - user_id
-      - attributes
-      title: MemberAttributesRead
-    AttributeSyncStats:
-      properties:
-        matched:
-          type: integer
-          title: Matched
-        unmatched:
-          type: integer
-          title: Unmatched
-        total_rows:
-          type: integer
-          title: Total Rows
-      type: object
-      required:
-      - matched
-      - unmatched
-      - total_rows
-      title: AttributeSyncStats
+      title: AttributeDefinitionUpdate
     AttributeDefinitionCreate:
       properties:
         key:
@@ -446,6 +362,72 @@ components:
       - msg
       - type
       title: ValidationError
+    AttributeSyncStats:
+      properties:
+        matched:
+          type: integer
+          title: Matched
+        unmatched:
+          type: integer
+          title: Unmatched
+        total_rows:
+          type: integer
+          title: Total Rows
+      type: object
+      required:
+      - matched
+      - unmatched
+      - total_rows
+      title: AttributeSyncStats
+    AttributeAutomationConfigured:
+      properties:
+        automation:
+          $ref: '#/components/schemas/AttributeAutomationRead'
+        stats:
+          $ref: '#/components/schemas/AttributeSyncStats'
+      type: object
+      required:
+      - automation
+      - stats
+      title: AttributeAutomationConfigured
+    AttributeDefinitionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        key:
+          type: string
+          title: Key
+        label:
+          type: string
+          title: Label
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - key
+      - label
+      - created_at
+      title: AttributeDefinitionRead
+    MemberAttributesWrite:
+      properties:
+        values:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          propertyNames:
+            format: uuid
+          type: object
+          title: Values
+      type: object
+      required:
+      - values
+      title: MemberAttributesWrite
     AttributeAutomationRead:
       properties:
         definition_id:
@@ -496,15 +478,15 @@ components:
       - last_sync_matched
       - last_sync_unmatched
       title: AttributeAutomationRead
-    AttributeDefinitionUpdate:
+    HTTPValidationError:
       properties:
-        label:
-          type: string
-          title: Label
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - label
-      title: AttributeDefinitionUpdate
+      title: HTTPValidationError
     AttributeAutomationWrite:
       properties:
         entity_id:
@@ -530,3 +512,21 @@ components:
       - match_column
       - value_column
       title: AttributeAutomationWrite
+    MemberAttributesRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        attributes:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+          title: Attributes
+      type: object
+      required:
+      - user_id
+      - attributes
+      title: MemberAttributesRead

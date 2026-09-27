@@ -84,15 +84,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     AppQueryBatchResponse:
       properties:
         results:
@@ -130,6 +121,65 @@ components:
       - total_rows
       - truncated
       title: AppQueryResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AppQueryBatchItem:
+      properties:
+        id:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Id
+        sql:
+          type: string
+          maxLength: 50000
+          minLength: 1
+          title: Sql
+        limit:
+          anyOf:
+          - type: integer
+            maximum: 5000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Limit
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - sql
+      title: AppQueryBatchItem
+      description: 'One query in a batch.
+
+
+        ``id`` is a caller-supplied correlation key (e.g. the widget id) echoed
+
+        back on the matching result so the client maps results without relying on
+
+        order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
     AppQueryBatchItemResult:
       properties:
         id:
@@ -170,39 +220,6 @@ components:
         meaningful: on failure ``columns``/``rows`` are empty and ``error`` holds
 
         the message.'
-    AppQueryBatchItem:
-      properties:
-        id:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Id
-        sql:
-          type: string
-          maxLength: 50000
-          minLength: 1
-          title: Sql
-        limit:
-          anyOf:
-          - type: integer
-            maximum: 5000.0
-            minimum: 1.0
-          - type: 'null'
-          title: Limit
-      additionalProperties: false
-      type: object
-      required:
-      - id
-      - sql
-      title: AppQueryBatchItem
-      description: 'One query in a batch.
-
-
-        ``id`` is a caller-supplied correlation key (e.g. the widget id) echoed
-
-        back on the matching result so the client maps results without relying on
-
-        order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
     AppQueryBatchRequest:
       properties:
         queries:
@@ -231,32 +248,6 @@ components:
         Per-query errors are isolated — a failing query returns its ``error``
 
         field without aborting the rest of the batch.'
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     AppQueryRequest:
       properties:
         sql:
@@ -290,3 +281,12 @@ components:
         real OFFSET (silently returned the same first ``page_size`` rows on
 
         every page) — see PR #375 review.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

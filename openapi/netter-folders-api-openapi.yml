@@ -153,25 +153,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FolderMove:
-      properties:
-        parent_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Parent Folder Id
-      type: object
-      title: FolderMove
     FolderRead:
       properties:
         id:
@@ -213,15 +194,21 @@ components:
       - created_at
       - updated_at
       title: FolderRead
-    FolderUpdate:
+    FolderCreate:
       properties:
         name:
+          type: string
+          title: Name
+        parent_folder_id:
           anyOf:
           - type: string
+            format: uuid
           - type: 'null'
-          title: Name
+          title: Parent Folder Id
       type: object
-      title: FolderUpdate
+      required:
+      - name
+      title: FolderCreate
     ValidationError:
       properties:
         loc:
@@ -248,11 +235,17 @@ components:
       - msg
       - type
       title: ValidationError
-    FolderCreate:
+    FolderUpdate:
       properties:
         name:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Name
+      type: object
+      title: FolderUpdate
+    FolderMove:
+      properties:
         parent_folder_id:
           anyOf:
           - type: string
@@ -260,6 +253,13 @@ components:
           - type: 'null'
           title: Parent Folder Id
       type: object
-      required:
-      - name
-      title: FolderCreate
+      title: FolderMove
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

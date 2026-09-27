@@ -67,15 +67,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    WorkflowTurnResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        status:
+          type: string
+          title: Status
       type: object
-      title: HTTPValidationError
+      required:
+      - status
+      title: WorkflowTurnResponse
     WorkflowChatRead:
       properties:
         id:
@@ -134,12 +134,12 @@ components:
       - msg
       - type
       title: ValidationError
-    WorkflowTurnResponse:
+    HTTPValidationError:
       properties:
-        status:
-          type: string
-          title: Status
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - status
-      title: WorkflowTurnResponse
+      title: HTTPValidationError
