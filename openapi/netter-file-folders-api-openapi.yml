@@ -534,39 +534,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    FileFolderCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-        parent_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Parent Folder Id
-      type: object
-      required:
-      - name
-      title: FileFolderCreate
-    FileFolderDeletePreview:
-      properties:
-        folder_count:
-          type: integer
-          title: Folder Count
-        file_count:
-          type: integer
-          title: File Count
-        has_merge:
-          type: boolean
-          title: Has Merge
-      type: object
-      required:
-      - folder_count
-      - file_count
-      - has_merge
-      title: FileFolderDeletePreview
-      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.
     ValidationError:
       properties:
         loc:
@@ -593,34 +560,78 @@ components:
       - msg
       - type
       title: ValidationError
-    BatchSummary:
+    DatasetMemberRead:
       properties:
+        source_filename:
+          type: string
+          title: Source Filename
+        user_file_id:
+          type: string
+          title: User File Id
+        row_count:
+          type: integer
+          title: Row Count
+        merge_error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Error
+        merge_warning:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Warning
+        superseded_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Superseded At
+        last_refreshed_at:
+          type: string
+          title: Last Refreshed At
         batch_key:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Batch Key
-        count:
-          type: integer
-          title: Count
-        size:
-          type: integer
-          title: Size
-        status:
+        created_at:
           type: string
-          title: Status
-        oldest_created_at:
-          type: string
-          title: Oldest Created At
+          title: Created At
+          default: ''
       type: object
       required:
-      - batch_key
-      - count
-      - size
-      - status
-      - oldest_created_at
-      title: BatchSummary
-      description: 'One batch group (by ``batch_key``) in a folder''s ingestion pipeline,
+      - source_filename
+      - user_file_id
+      - row_count
+      - last_refreshed_at
+      title: DatasetMemberRead
+      description: One contributing file in a merge-enabled folder's collection dataset.
+    GroupKeyTestRequest:
+      properties:
+        pattern:
+          type: string
+          title: Pattern
+      type: object
+      required:
+      - pattern
+      title: GroupKeyTestRequest
+      description: 'POST /file-folders/{id}/group-key:test payload — a candidate
 
-        with its read-time computed lifecycle status.'
+        ``batch_key_pattern`` regex to dry-run (not yet saved).'
+    FileFolderBreadcrumb:
+      properties:
+        id:
+          type: string
+          title: Id
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: FileFolderBreadcrumb
+      description: One node on the breadcrumb path returned by the explorer endpoint.
     FileFolderRead:
       properties:
         id:
@@ -696,77 +707,58 @@ components:
       - schema_mode
       - merge_database_id
       title: FileFolderRead
-    FileFolderMove:
+    BatchSummary:
       properties:
-        target_parent_id:
+        batch_key:
+          type: string
+          title: Batch Key
+        count:
+          type: integer
+          title: Count
+        size:
+          type: integer
+          title: Size
+        status:
+          type: string
+          title: Status
+        oldest_created_at:
+          type: string
+          title: Oldest Created At
+      type: object
+      required:
+      - batch_key
+      - count
+      - size
+      - status
+      - oldest_created_at
+      title: BatchSummary
+      description: 'One batch group (by ``batch_key``) in a folder''s ingestion pipeline,
+
+        with its read-time computed lifecycle status.'
+    FileFolderCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
           anyOf:
           - type: string
             format: uuid
           - type: 'null'
-          title: Target Parent Id
-      type: object
-      title: FileFolderMove
-      description: POST /file-folders/{id}/move payload.
-    FileFolderBreadcrumb:
-      properties:
-        id:
-          type: string
-          title: Id
-        name:
-          type: string
-          title: Name
+          title: Parent Folder Id
       type: object
       required:
-      - id
       - name
-      title: FileFolderBreadcrumb
-      description: One node on the breadcrumb path returned by the explorer endpoint.
-    DatasetMemberRead:
+      title: FileFolderCreate
+    HTTPValidationError:
       properties:
-        source_filename:
-          type: string
-          title: Source Filename
-        user_file_id:
-          type: string
-          title: User File Id
-        row_count:
-          type: integer
-          title: Row Count
-        merge_error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Merge Error
-        merge_warning:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Merge Warning
-        superseded_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Superseded At
-        last_refreshed_at:
-          type: string
-          title: Last Refreshed At
-        batch_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Batch Key
-        created_at:
-          type: string
-          title: Created At
-          default: ''
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - source_filename
-      - user_file_id
-      - row_count
-      - last_refreshed_at
-      title: DatasetMemberRead
-      description: One contributing file in a merge-enabled folder's collection dataset.
+      title: HTTPValidationError
     FileFolderUpdate:
       properties:
         name:
@@ -836,27 +828,17 @@ components:
         then merge toggle, so a rename of a soon-to-be-merge folder picks up the
 
         new collection name without an extra round-trip).'
-    GroupKeyTestRequest:
+    FileFolderMove:
       properties:
-        pattern:
-          type: string
-          title: Pattern
+        target_parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Parent Id
       type: object
-      required:
-      - pattern
-      title: GroupKeyTestRequest
-      description: 'POST /file-folders/{id}/group-key:test payload — a candidate
-
-        ``batch_key_pattern`` regex to dry-run (not yet saved).'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
+      title: FileFolderMove
+      description: POST /file-folders/{id}/move payload.
     FileFolderDelete:
       properties:
         confirm_with_name:
@@ -874,3 +856,21 @@ components:
         ``confirm_with_name`` once the typed value matches; the backend re-checks
 
         so the gate can''t be bypassed by a hand-rolled client.'
+    FileFolderDeletePreview:
+      properties:
+        folder_count:
+          type: integer
+          title: Folder Count
+        file_count:
+          type: integer
+          title: File Count
+        has_merge:
+          type: boolean
+          title: Has Merge
+      type: object
+      required:
+      - folder_count
+      - file_count
+      - has_merge
+      title: FileFolderDeletePreview
+      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.

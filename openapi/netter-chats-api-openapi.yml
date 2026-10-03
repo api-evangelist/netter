@@ -464,6 +464,68 @@ components:
       - msg
       - type
       title: ValidationError
+    ChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead
     Body_upload_attachment_api_v1_chats__chat_id__attachments_post:
       properties:
         file:
@@ -548,23 +610,15 @@ components:
       required:
       - content
       title: MessageCreate
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
-    ChatTitleUpdate:
+    HTTPValidationError:
       properties:
-        title:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Title
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - title
-      title: ChatTitleUpdate
+      title: HTTPValidationError
     AttachmentRead:
       properties:
         id:
@@ -594,15 +648,6 @@ components:
       - category
       - s3_key
       title: AttachmentRead
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     ChatCreate:
       properties:
         dashboard_id:
@@ -622,65 +667,20 @@ components:
           default: New Chat
       type: object
       title: ChatCreate
-    ChatRead:
+    ChatTitleUpdate:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        dashboard_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Dashboard Id
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        chat_type:
-          type: string
-          title: Chat Type
         title:
           type: string
+          maxLength: 200
+          minLength: 1
           title: Title
-        status:
-          $ref: '#/components/schemas/ChatStatus'
-        generation_token:
-          type: integer
-          title: Generation Token
-          default: 0
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
       type: object
       required:
-      - id
-      - company_id
-      - user_id
-      - dashboard_id
-      - chat_type
       - title
-      - status
-      - is_suppressed
-      - created_at
-      - updated_at
-      title: ChatRead
+      title: ChatTitleUpdate
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus

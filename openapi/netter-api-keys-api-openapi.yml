@@ -99,56 +99,6 @@ components:
       - msg
       - type
       title: ValidationError
-    ApiKeyCreated:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        key_prefix:
-          type: string
-          title: Key Prefix
-        is_active:
-          type: boolean
-          title: Is Active
-        last_used_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Used At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        key:
-          type: string
-          title: Key
-      type: object
-      required:
-      - id
-      - name
-      - key_prefix
-      - is_active
-      - last_used_at
-      - created_at
-      - key
-      title: ApiKeyCreated
-      description: Returned only on creation — includes the full key (shown once).
-    ApiKeyCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 100
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: ApiKeyCreate
     ApiKeyRead:
       properties:
         id:
@@ -193,3 +143,53 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    ApiKeyCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: ApiKeyCreate
+    ApiKeyCreated:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        key_prefix:
+          type: string
+          title: Key Prefix
+        is_active:
+          type: boolean
+          title: Is Active
+        last_used_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Used At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        key:
+          type: string
+          title: Key
+      type: object
+      required:
+      - id
+      - name
+      - key_prefix
+      - is_active
+      - last_used_at
+      - created_at
+      - key
+      title: ApiKeyCreated
+      description: Returned only on creation — includes the full key (shown once).

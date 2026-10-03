@@ -240,41 +240,6 @@ components:
       - msg
       - type
       title: ValidationError
-    DataQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: DataQueryResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     DashboardQueryRequest:
       properties:
         sql:
@@ -338,3 +303,38 @@ components:
       - total_rows
       - total_pages
       title: PaginatedQueryResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse

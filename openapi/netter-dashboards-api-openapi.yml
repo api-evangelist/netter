@@ -301,6 +301,135 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    ChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead
+    DashboardUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      title: DashboardUpdate
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DashboardCreate:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        name:
+          type: string
+          title: Name
+          default: New Dashboard
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      required:
+      - project_id
+      title: DashboardCreate
     DashboardRead:
       properties:
         id:
@@ -390,138 +519,9 @@ components:
       - created_at
       - updated_at
       title: DashboardRead
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     ChatStatus:
       type: string
       enum:
       - idle
       - generating
       title: ChatStatus
-    DashboardCreate:
-      properties:
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        name:
-          type: string
-          title: Name
-          default: New Dashboard
-        description:
-          type: string
-          title: Description
-          default: ''
-      type: object
-      required:
-      - project_id
-      title: DashboardCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DashboardUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      title: DashboardUpdate
-    ChatRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        dashboard_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Dashboard Id
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        chat_type:
-          type: string
-          title: Chat Type
-        title:
-          type: string
-          title: Title
-        status:
-          $ref: '#/components/schemas/ChatStatus'
-        generation_token:
-          type: integer
-          title: Generation Token
-          default: 0
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - company_id
-      - user_id
-      - dashboard_id
-      - chat_type
-      - title
-      - status
-      - is_suppressed
-      - created_at
-      - updated_at
-      title: ChatRead

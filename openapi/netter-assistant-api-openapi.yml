@@ -55,54 +55,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AssistantMessageRequest:
-      properties:
-        content:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Content
-        tagged_entities:
-          items:
-            $ref: '#/components/schemas/TaggedEntity'
-          type: array
-          maxItems: 10
-          title: Tagged Entities
-        referenced_database_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          maxItems: 10
-          title: Referenced Database Ids
-        attachments:
-          items:
-            additionalProperties:
-              type: string
-            type: object
-          type: array
-          maxItems: 10
-          title: Attachments
-      type: object
-      required:
-      - content
-      title: AssistantMessageRequest
-    TaggedEntity:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - id
-      - name
-      title: TaggedEntity
     ValidationError:
       properties:
         loc:
@@ -191,21 +143,6 @@ components:
       - created_at
       - updated_at
       title: ChatRead
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     AssistantTurnResponse:
       properties:
         status:
@@ -215,3 +152,66 @@ components:
           default: generating
       type: object
       title: AssistantTurnResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    AssistantMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Content
+        tagged_entities:
+          items:
+            $ref: '#/components/schemas/TaggedEntity'
+          type: array
+          maxItems: 10
+          title: Tagged Entities
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          maxItems: 10
+          title: Referenced Database Ids
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          maxItems: 10
+          title: Attachments
+      type: object
+      required:
+      - content
+      title: AssistantMessageRequest
+    TaggedEntity:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - id
+      - name
+      title: TaggedEntity

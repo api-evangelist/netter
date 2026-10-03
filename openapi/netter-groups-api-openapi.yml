@@ -221,31 +221,6 @@ components:
       - msg
       - type
       title: ValidationError
-    GroupUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        rule:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/GroupRuleCondition'
-            type: array
-          - type: 'null'
-          title: Rule
-        clear_rule:
-          type: boolean
-          title: Clear Rule
-          default: false
-      type: object
-      title: GroupUpdate
     GroupMembersRead:
       properties:
         group_id:
@@ -301,6 +276,15 @@ components:
       - rule
       - created_at
       title: GroupRead
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     GroupCreate:
       properties:
         name:
@@ -321,6 +305,31 @@ components:
       required:
       - name
       title: GroupCreate
+    GroupUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+        rule:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GroupRuleCondition'
+            type: array
+          - type: 'null'
+          title: Rule
+        clear_rule:
+          type: boolean
+          title: Clear Rule
+          default: false
+      type: object
+      title: GroupUpdate
     GroupRuleCondition:
       properties:
         attribute_key:
@@ -343,12 +352,3 @@ components:
       - operator
       - values
       title: GroupRuleCondition
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

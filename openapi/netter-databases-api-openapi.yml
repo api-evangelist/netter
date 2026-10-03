@@ -335,6 +335,67 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse
     DatabaseRead:
       properties:
         id:
@@ -476,6 +537,43 @@ components:
       - created_at
       - updated_at
       title: DatabaseRead
+    NLQueryResponse:
+      properties:
+        title:
+          type: string
+          title: Title
+        sql:
+          type: string
+          title: Sql
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - title
+      - sql
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: NLQueryResponse
+      description: 'NL → SQL response. ``sql`` is the generated query so the SQL editor
+
+        can show it back to the user; rows/columns are the executed result.'
     DatabaseCreate:
       properties:
         project_id:
@@ -523,69 +621,6 @@ components:
           title: Is Shared
       type: object
       title: DatabaseUpdate
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    NLQueryResponse:
-      properties:
-        title:
-          type: string
-          title: Title
-        sql:
-          type: string
-          title: Sql
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - title
-      - sql
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: NLQueryResponse
-      description: 'NL → SQL response. ``sql`` is the generated query so the SQL editor
-
-        can show it back to the user; rows/columns are the executed result.'
     NLQueryRequest:
       properties:
         question:
@@ -595,38 +630,3 @@ components:
       required:
       - question
       title: NLQueryRequest
-    DataQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: DataQueryResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

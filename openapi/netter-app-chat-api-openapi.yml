@@ -53,6 +53,23 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
+    AppChatRequest:
+      properties:
+        content:
+          type: string
+          title: Content
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Attachments
+          default: []
+      type: object
+      required:
+      - content
+      title: AppChatRequest
     ValidationError:
       properties:
         loc:
@@ -79,20 +96,3 @@ components:
       - msg
       - type
       title: ValidationError
-    AppChatRequest:
-      properties:
-        content:
-          type: string
-          title: Content
-        attachments:
-          items:
-            additionalProperties:
-              type: string
-            type: object
-          type: array
-          title: Attachments
-          default: []
-      type: object
-      required:
-      - content
-      title: AppChatRequest

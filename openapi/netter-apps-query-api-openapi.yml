@@ -84,43 +84,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    AppQueryBatchResponse:
-      properties:
-        results:
-          items:
-            $ref: '#/components/schemas/AppQueryBatchItemResult'
-          type: array
-          title: Results
-      type: object
-      required:
-      - results
-      title: AppQueryBatchResponse
-    AppQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: AppQueryResponse
     ValidationError:
       properties:
         loc:
@@ -180,6 +143,32 @@ components:
         back on the matching result so the client maps results without relying on
 
         order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
+    AppQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: AppQueryResponse
     AppQueryBatchItemResult:
       properties:
         id:
@@ -220,34 +209,26 @@ components:
         meaningful: on failure ``columns``/``rows`` are empty and ``error`` holds
 
         the message.'
-    AppQueryBatchRequest:
+    HTTPValidationError:
       properties:
-        queries:
+        detail:
           items:
-            $ref: '#/components/schemas/AppQueryBatchItem'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          maxItems: 50
-          minItems: 1
-          title: Queries
-      additionalProperties: false
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppQueryBatchResponse:
+      properties:
+        results:
+          items:
+            $ref: '#/components/schemas/AppQueryBatchItemResult'
+          type: array
+          title: Results
       type: object
       required:
-      - queries
-      title: AppQueryBatchRequest
-      description: 'Body for POST /api/v1/apps/{app_id}/query/batch.
-
-
-        Runs every query against the app''s bound entities on a SINGLE shared
-
-        DuckDB connection: the source⊕overlay merge is materialized once and
-
-        reused across all queries, instead of N parallel single-query requests
-
-        each re-materializing the same entities on their own pooled connection.
-
-        Per-query errors are isolated — a failing query returns its ``error``
-
-        field without aborting the rest of the batch.'
+      - results
+      title: AppQueryBatchResponse
     AppQueryRequest:
       properties:
         sql:
@@ -281,12 +262,31 @@ components:
         real OFFSET (silently returned the same first ``page_size`` rows on
 
         every page) — see PR #375 review.'
-    HTTPValidationError:
+    AppQueryBatchRequest:
       properties:
-        detail:
+        queries:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/AppQueryBatchItem'
           type: array
-          title: Detail
+          maxItems: 50
+          minItems: 1
+          title: Queries
+      additionalProperties: false
       type: object
-      title: HTTPValidationError
+      required:
+      - queries
+      title: AppQueryBatchRequest
+      description: 'Body for POST /api/v1/apps/{app_id}/query/batch.
+
+
+        Runs every query against the app''s bound entities on a SINGLE shared
+
+        DuckDB connection: the source⊕overlay merge is materialized once and
+
+        reused across all queries, instead of N parallel single-query requests
+
+        each re-materializing the same entities on their own pooled connection.
+
+        Per-query errors are isolated — a failing query returns its ``error``
+
+        field without aborting the rest of the batch.'

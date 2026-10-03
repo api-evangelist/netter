@@ -137,26 +137,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RelationshipUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        relationship_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Relationship Type
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      title: RelationshipUpdate
-      description: Input for PATCH /ontology/relationships/{id}.
     ValidationError:
       properties:
         loc:
@@ -183,15 +163,6 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     RelationshipRead:
       properties:
         id:
@@ -260,6 +231,26 @@ components:
       - updated_at
       title: RelationshipRead
       description: Full relationship for GET endpoints.
+    RelationshipUpdate:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        relationship_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Relationship Type
+        description:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Description
+      type: object
+      title: RelationshipUpdate
+      description: Input for PATCH /ontology/relationships/{id}.
     RelationshipCreate:
       properties:
         from_entity_id:
@@ -300,3 +291,12 @@ components:
       - to_key
       title: RelationshipCreate
       description: Input for POST /ontology/relationships.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError

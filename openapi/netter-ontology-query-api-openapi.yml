@@ -35,6 +35,24 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    QueryRequest:
+      properties:
+        question:
+          type: string
+          title: Question
+      type: object
+      required:
+      - question
+      title: QueryRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -61,21 +79,3 @@ components:
       - msg
       - type
       title: ValidationError
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    QueryRequest:
-      properties:
-        question:
-          type: string
-          title: Question
-      type: object
-      required:
-      - question
-      title: QueryRequest

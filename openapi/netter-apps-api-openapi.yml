@@ -756,17 +756,33 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RunNowResponse:
+    ValidationError:
       properties:
-        run_id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          format: uuid
-          title: Run Id
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - run_id
-      title: RunNowResponse
-    AppVersionDetail:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AppVersionSummary:
       properties:
         id:
           type: string
@@ -807,32 +823,6 @@ components:
           type: string
           format: date-time
           title: Created At
-        files:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Files
-        bundle_css:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Css
-        bundle_imports:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Bundle Imports
-        generation_context:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Generation Context
       type: object
       required:
       - id
@@ -844,41 +834,102 @@ components:
       - error_message
       - created_by
       - created_at
-      - files
-      - bundle_css
-      - bundle_imports
-      - generation_context
-      title: AppVersionDetail
-    BindingRead:
+      title: AppVersionSummary
+    ChatRead:
       properties:
         id:
           type: string
           format: uuid
           title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead
+    Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+      type: object
+      required:
+      - file
+      title: Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post
+    Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
         entity_id:
           type: string
           format: uuid
           title: Entity Id
-        mode:
+        row_key:
           type: string
-          title: Mode
+          title: Row Key
+        column:
+          type: string
+          title: Column
       type: object
       required:
-      - id
+      - file
       - entity_id
-      - mode
-      title: BindingRead
-    AppList:
-      properties:
-        apps:
-          items:
-            $ref: '#/components/schemas/AppRead'
-          type: array
-          title: Apps
-      type: object
-      required:
-      - apps
-      title: AppList
+      - row_key
+      - column
+      title: Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post
     SheetAnalysis:
       properties:
         name:
@@ -947,82 +998,14 @@ components:
       - size_bytes
       - created_at
       title: EntityFileUploadResponse
-    Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post:
+    AppAutomationRunRequest:
       properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        entity_id:
-          type: string
-          format: uuid
-          title: Entity Id
-        row_key:
-          type: string
-          title: Row Key
-        column:
-          type: string
-          title: Column
+        input:
+          additionalProperties: true
+          type: object
+          title: Input
       type: object
-      required:
-      - file
-      - entity_id
-      - row_key
-      - column
-      title: Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post
-    AppVersionSummary:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        app_id:
-          type: string
-          format: uuid
-          title: App Id
-        version_number:
-          type: integer
-          title: Version Number
-        status:
-          type: string
-          title: Status
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-        bundle_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Url
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Created By
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - app_id
-      - version_number
-      - status
-      - label
-      - bundle_url
-      - error_message
-      - created_by
-      - created_at
-      title: AppVersionSummary
+      title: AppAutomationRunRequest
     HTTPValidationError:
       properties:
         detail:
@@ -1129,80 +1112,116 @@ components:
       - created_at
       - updated_at
       title: AppRead
-    ChatRead:
+    AppList:
+      properties:
+        apps:
+          items:
+            $ref: '#/components/schemas/AppRead'
+          type: array
+          title: Apps
+      type: object
+      required:
+      - apps
+      title: AppList
+    AppVersionDetail:
       properties:
         id:
           type: string
           format: uuid
           title: Id
-        company_id:
+        app_id:
           type: string
           format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        dashboard_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Dashboard Id
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        chat_type:
-          type: string
-          title: Chat Type
-        title:
-          type: string
-          title: Title
-        status:
-          $ref: '#/components/schemas/ChatStatus'
-        generation_token:
+          title: App Id
+        version_number:
           type: integer
-          title: Generation Token
-          default: 0
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
+          title: Version Number
+        status:
+          type: string
+          title: Status
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
         created_at:
           type: string
           format: date-time
           title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
+        files:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Files
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        generation_context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Generation Context
       type: object
       required:
       - id
-      - company_id
-      - user_id
-      - dashboard_id
-      - chat_type
-      - title
+      - app_id
+      - version_number
       - status
-      - is_suppressed
+      - label
+      - bundle_url
+      - error_message
+      - created_by
       - created_at
-      - updated_at
-      title: ChatRead
-    AppCreate:
+      - files
+      - bundle_css
+      - bundle_imports
+      - generation_context
+      title: AppVersionDetail
+    RunNowResponse:
       properties:
-        name:
+        run_id:
           type: string
-          title: Name
-          default: New App
-        description:
-          type: string
-          title: Description
-          default: ''
+          format: uuid
+          title: Run Id
       type: object
-      title: AppCreate
+      required:
+      - run_id
+      title: RunNowResponse
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
     AppUpdate:
       properties:
         name:
@@ -1217,38 +1236,6 @@ components:
           title: Description
       type: object
       title: AppUpdate
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     UserFileUploadResponse:
       properties:
         id:
@@ -1294,16 +1281,6 @@ components:
       - size_bytes
       - created_at
       title: UserFileUploadResponse
-    Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-      type: object
-      required:
-      - file
-      title: Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post
     DatabaseStub:
       properties:
         id:
@@ -1328,14 +1305,25 @@ components:
         The full Database row is filled in asynchronously by the parse workflow.
 
         Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
-    AppAutomationRunRequest:
+    BindingRead:
       properties:
-        input:
-          additionalProperties: true
-          type: object
-          title: Input
+        id:
+          type: string
+          format: uuid
+          title: Id
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        mode:
+          type: string
+          title: Mode
       type: object
-      title: AppAutomationRunRequest
+      required:
+      - id
+      - entity_id
+      - mode
+      title: BindingRead
     AppFileTargetSummary:
       properties:
         id:
@@ -1364,3 +1352,15 @@ components:
       - label
       - file_folder_id
       title: AppFileTargetSummary
+    AppCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+          default: New App
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      title: AppCreate

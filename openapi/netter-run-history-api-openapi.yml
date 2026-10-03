@@ -187,17 +187,177 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    CascadeEventListResponse:
+    ValidationError:
       properties:
-        events:
+        loc:
           items:
-            $ref: '#/components/schemas/CascadeEventRead'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Events
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - events
-      title: CascadeEventListResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CascadeEventRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        source_database_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Database Id
+        target_database_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Database Id
+        target_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Step Id
+        decision:
+          type: string
+          title: Decision
+        detail:
+          additionalProperties: true
+          type: object
+          title: Detail
+          default: {}
+        occurred_at:
+          type: string
+          format: date-time
+          title: Occurred At
+      type: object
+      required:
+      - id
+      - project_id
+      - source_run_id
+      - source_database_id
+      - target_database_id
+      - target_step_id
+      - decision
+      - occurred_at
+      title: CascadeEventRead
+    StepRunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        logs:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Logs
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Processed
+        output_row_count:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Output Row Count
+        rows_new:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows New
+        rows_changed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Changed
+        rows_removed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Rows Removed
+        ai_rows_cached:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Cached
+        ai_rows_processed:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Ai Rows Processed
+      type: object
+      required:
+      - id
+      - run_id
+      - step_id
+      - status
+      - error
+      - logs
+      - started_at
+      - finished_at
+      title: StepRunRead
+      description: StepRun response.
     RunTimelineEntry:
       properties:
         id:
@@ -271,32 +431,26 @@ components:
       - finished_at
       title: RunTimelineEntry
       description: One Run as seen by the project timeline view.
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CascadeEventListResponse:
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/CascadeEventRead'
+          type: array
+          title: Events
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - events
+      title: CascadeEventListResponse
     app__steps__schemas__RunRead:
       properties:
         id:
@@ -441,63 +595,6 @@ components:
         exist — every step always runs full, Task 10). This is now a plain
 
         head-sample of the step''s cumulative output parquet.'
-    CascadeEventRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        source_run_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Run Id
-        source_database_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Database Id
-        target_database_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Database Id
-        target_step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Step Id
-        decision:
-          type: string
-          title: Decision
-        detail:
-          additionalProperties: true
-          type: object
-          title: Detail
-          default: {}
-        occurred_at:
-          type: string
-          format: date-time
-          title: Occurred At
-      type: object
-      required:
-      - id
-      - project_id
-      - source_run_id
-      - source_database_id
-      - target_database_id
-      - target_step_id
-      - decision
-      - occurred_at
-      title: CascadeEventRead
     RunListResponse:
       properties:
         runs:
@@ -514,100 +611,3 @@ components:
       required:
       - runs
       title: RunListResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    StepRunRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        run_id:
-          type: string
-          format: uuid
-          title: Run Id
-        step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Step Id
-        status:
-          type: string
-          title: Status
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        logs:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Logs
-        started_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        rows_processed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Processed
-        output_row_count:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Output Row Count
-        rows_new:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows New
-        rows_changed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Changed
-        rows_removed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Rows Removed
-        ai_rows_cached:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Ai Rows Cached
-        ai_rows_processed:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Ai Rows Processed
-      type: object
-      required:
-      - id
-      - run_id
-      - step_id
-      - status
-      - error
-      - logs
-      - started_at
-      - finished_at
-      title: StepRunRead
-      description: StepRun response.
