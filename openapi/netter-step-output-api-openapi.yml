@@ -87,54 +87,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    StepOutputSchemaField:
-      properties:
-        name:
-          type: string
-          title: Name
-        type:
-          type: string
-          title: Type
-      type: object
-      required:
-      - name
-      - type
-      title: StepOutputSchemaField
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     DataQueryResponse:
       properties:
         columns:
@@ -161,41 +113,54 @@ components:
       - total_rows
       - truncated
       title: DataQueryResponse
-    StepRunSummary:
+    HTTPValidationError:
       properties:
-        status:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    StepOutputSchemaField:
+      properties:
+        name:
           type: string
-          title: Status
-        started_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
+          title: Name
+        type:
+          type: string
+          title: Type
       type: object
       required:
-      - status
-      title: StepRunSummary
-    StepOutputQueryRequest:
+      - name
+      - type
+      title: StepOutputSchemaField
+    ValidationError:
       properties:
-        sql:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          title: Sql
-        table:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Table
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - sql
-      title: StepOutputQueryRequest
+      - loc
+      - msg
+      - type
+      title: ValidationError
     StepOutputResponse:
       properties:
         format:
@@ -257,3 +222,38 @@ components:
       - format
       - step_run
       title: StepOutputResponse
+    StepOutputQueryRequest:
+      properties:
+        sql:
+          type: string
+          title: Sql
+        table:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table
+      type: object
+      required:
+      - sql
+      title: StepOutputQueryRequest
+    StepRunSummary:
+      properties:
+        status:
+          type: string
+          title: Status
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+      type: object
+      required:
+      - status
+      title: StepRunSummary

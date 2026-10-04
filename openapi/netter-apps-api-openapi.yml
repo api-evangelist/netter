@@ -756,6 +756,332 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    BindingRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        mode:
+          type: string
+          title: Mode
+      type: object
+      required:
+      - id
+      - entity_id
+      - mode
+      title: BindingRead
+    DatabaseStub:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        refresh_status:
+          type: string
+          title: Refresh Status
+      type: object
+      required:
+      - id
+      - name
+      - refresh_status
+      title: DatabaseStub
+      description: 'Minimal Database summary returned alongside a UserFile on upload.
+
+
+        The full Database row is filled in asynchronously by the parse workflow.
+
+        Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
+    ChatRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        dashboard_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Dashboard Id
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        chat_type:
+          type: string
+          title: Chat Type
+        title:
+          type: string
+          title: Title
+        status:
+          $ref: '#/components/schemas/ChatStatus'
+        generation_token:
+          type: integer
+          title: Generation Token
+          default: 0
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - dashboard_id
+      - chat_type
+      - title
+      - status
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: ChatRead
+    AppCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+          default: New App
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      title: AppCreate
+    SheetAnalysis:
+      properties:
+        name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Name
+        header_row_index:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Header Row Index
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        preview_rows:
+          items:
+            items:
+              type: string
+            type: array
+          type: array
+          title: Preview Rows
+        fail_reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Fail Reason
+      type: object
+      title: SheetAnalysis
+      description: 'Per-sheet analyzer output served by the upload wizard.
+
+
+        For CSV the wizard returns exactly one entry with ``name=None``. For
+
+        xlsx/xlsm, one entry per sheet in workbook order. ``preview_rows`` holds the
+
+        first ~10 raw rows (pre-skip) so the frontend can re-render the preview
+
+        client-side as the user changes the skip-rows input.'
+    AppVersionDetail:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        app_id:
+          type: string
+          format: uuid
+          title: App Id
+        version_number:
+          type: integer
+          title: Version Number
+        status:
+          type: string
+          title: Status
+        label:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Label
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        created_by:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Created By
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        files:
+          anyOf:
+          - items:
+              additionalProperties: true
+              type: object
+            type: array
+          - type: 'null'
+          title: Files
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        generation_context:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Generation Context
+      type: object
+      required:
+      - id
+      - app_id
+      - version_number
+      - status
+      - label
+      - bundle_url
+      - error_message
+      - created_by
+      - created_at
+      - files
+      - bundle_css
+      - bundle_imports
+      - generation_context
+      title: AppVersionDetail
+    Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post:
+      properties:
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        row_key:
+          type: string
+          title: Row Key
+        column:
+          type: string
+          title: Column
+      type: object
+      required:
+      - file
+      - entity_id
+      - row_key
+      - column
+      title: Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post
+    AppAutomationRunRequest:
+      properties:
+        input:
+          additionalProperties: true
+          type: object
+          title: Input
+      type: object
+      title: AppAutomationRunRequest
+    AppFileTargetSummary:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        label:
+          type: string
+          title: Label
+        file_folder_id:
+          type: string
+          format: uuid
+          title: File Folder Id
+        folder_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Folder Name
+        merge_enabled:
+          type: boolean
+          title: Merge Enabled
+          default: false
+      type: object
+      required:
+      - id
+      - label
+      - file_folder_id
+      title: AppFileTargetSummary
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppList:
+      properties:
+        apps:
+          items:
+            $ref: '#/components/schemas/AppRead'
+          type: array
+          title: Apps
+      type: object
+      required:
+      - apps
+      title: AppList
     ValidationError:
       properties:
         loc:
@@ -835,142 +1161,20 @@ components:
       - created_by
       - created_at
       title: AppVersionSummary
-    ChatRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        dashboard_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Dashboard Id
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        chat_type:
-          type: string
-          title: Chat Type
-        title:
-          type: string
-          title: Title
-        status:
-          $ref: '#/components/schemas/ChatStatus'
-        generation_token:
-          type: integer
-          title: Generation Token
-          default: 0
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
-      type: object
-      required:
-      - id
-      - company_id
-      - user_id
-      - dashboard_id
-      - chat_type
-      - title
-      - status
-      - is_suppressed
-      - created_at
-      - updated_at
-      title: ChatRead
-    Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-      type: object
-      required:
-      - file
-      title: Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post
-    Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post:
-      properties:
-        file:
-          type: string
-          contentMediaType: application/octet-stream
-          title: File
-        entity_id:
-          type: string
-          format: uuid
-          title: Entity Id
-        row_key:
-          type: string
-          title: Row Key
-        column:
-          type: string
-          title: Column
-      type: object
-      required:
-      - file
-      - entity_id
-      - row_key
-      - column
-      title: Body_upload_entity_file_api_v1_apps__app_id__entity_files_upload_post
-    SheetAnalysis:
+    AppUpdate:
       properties:
         name:
           anyOf:
           - type: string
           - type: 'null'
           title: Name
-        header_row_index:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Header Row Index
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        preview_rows:
-          items:
-            items:
-              type: string
-            type: array
-          type: array
-          title: Preview Rows
-        fail_reason:
+        description:
           anyOf:
           - type: string
           - type: 'null'
-          title: Fail Reason
+          title: Description
       type: object
-      title: SheetAnalysis
-      description: 'Per-sheet analyzer output served by the upload wizard.
-
-
-        For CSV the wizard returns exactly one entry with ``name=None``. For
-
-        xlsx/xlsm, one entry per sheet in workbook order. ``preview_rows`` holds the
-
-        first ~10 raw rows (pre-skip) so the frontend can re-render the preview
-
-        client-side as the user changes the skip-rows input.'
+      title: AppUpdate
     EntityFileUploadResponse:
       properties:
         id:
@@ -998,23 +1202,26 @@ components:
       - size_bytes
       - created_at
       title: EntityFileUploadResponse
-    AppAutomationRunRequest:
+    Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post:
       properties:
-        input:
-          additionalProperties: true
-          type: object
-          title: Input
+        file:
+          type: string
+          contentMediaType: application/octet-stream
+          title: File
       type: object
-      title: AppAutomationRunRequest
-    HTTPValidationError:
+      required:
+      - file
+      title: Body_upload_to_file_target_api_v1_apps__app_id__file_targets__binding_id__upload_post
+    RunNowResponse:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        run_id:
+          type: string
+          format: uuid
+          title: Run Id
       type: object
-      title: HTTPValidationError
+      required:
+      - run_id
+      title: RunNowResponse
     AppRead:
       properties:
         id:
@@ -1112,130 +1319,6 @@ components:
       - created_at
       - updated_at
       title: AppRead
-    AppList:
-      properties:
-        apps:
-          items:
-            $ref: '#/components/schemas/AppRead'
-          type: array
-          title: Apps
-      type: object
-      required:
-      - apps
-      title: AppList
-    AppVersionDetail:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        app_id:
-          type: string
-          format: uuid
-          title: App Id
-        version_number:
-          type: integer
-          title: Version Number
-        status:
-          type: string
-          title: Status
-        label:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Label
-        bundle_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Url
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
-        created_by:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Created By
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        files:
-          anyOf:
-          - items:
-              additionalProperties: true
-              type: object
-            type: array
-          - type: 'null'
-          title: Files
-        bundle_css:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Css
-        bundle_imports:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Bundle Imports
-        generation_context:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Generation Context
-      type: object
-      required:
-      - id
-      - app_id
-      - version_number
-      - status
-      - label
-      - bundle_url
-      - error_message
-      - created_by
-      - created_at
-      - files
-      - bundle_css
-      - bundle_imports
-      - generation_context
-      title: AppVersionDetail
-    RunNowResponse:
-      properties:
-        run_id:
-          type: string
-          format: uuid
-          title: Run Id
-      type: object
-      required:
-      - run_id
-      title: RunNowResponse
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
-    AppUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-      type: object
-      title: AppUpdate
     UserFileUploadResponse:
       properties:
         id:
@@ -1281,86 +1364,3 @@ components:
       - size_bytes
       - created_at
       title: UserFileUploadResponse
-    DatabaseStub:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        refresh_status:
-          type: string
-          title: Refresh Status
-      type: object
-      required:
-      - id
-      - name
-      - refresh_status
-      title: DatabaseStub
-      description: 'Minimal Database summary returned alongside a UserFile on upload.
-
-
-        The full Database row is filled in asynchronously by the parse workflow.
-
-        Frontend uses ``refresh_status`` to show a spinner until parsing lands.'
-    BindingRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        entity_id:
-          type: string
-          format: uuid
-          title: Entity Id
-        mode:
-          type: string
-          title: Mode
-      type: object
-      required:
-      - id
-      - entity_id
-      - mode
-      title: BindingRead
-    AppFileTargetSummary:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        label:
-          type: string
-          title: Label
-        file_folder_id:
-          type: string
-          format: uuid
-          title: File Folder Id
-        folder_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Folder Name
-        merge_enabled:
-          type: boolean
-          title: Merge Enabled
-          default: false
-      type: object
-      required:
-      - id
-      - label
-      - file_folder_id
-      title: AppFileTargetSummary
-    AppCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-          default: New App
-        description:
-          type: string
-          title: Description
-          default: ''
-      type: object
-      title: AppCreate

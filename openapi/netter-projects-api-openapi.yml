@@ -449,77 +449,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    SuppressionPreview:
       properties:
-        loc:
+        databases:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/DatabaseWithConsumers'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Databases
+        owned_database_count:
+          type: integer
+          title: Owned Database Count
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ConsumerRef:
+      - databases
+      - owned_database_count
+      title: SuppressionPreview
+    HTTPValidationError:
       properties:
-        type:
-          type: string
-          title: Type
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - type
-      - id
-      - name
-      - project_id
-      - project_name
-      title: ConsumerRef
-    LineageEdge:
-      properties:
-        source:
-          type: string
-          title: Source
-        target:
-          type: string
-          title: Target
-        relation:
-          type: string
-          title: Relation
-      type: object
-      required:
-      - source
-      - target
-      - relation
-      title: LineageEdge
-      description: An edge in the lineage DAG.
+      title: HTTPValidationError
     ProjectRead:
       properties:
         id:
@@ -591,8 +544,11 @@ components:
       - created_at
       - updated_at
       title: ProjectRead
-    DatabaseWithConsumers:
+    ConsumerRef:
       properties:
+        type:
+          type: string
+          title: Type
         id:
           type: string
           format: uuid
@@ -600,307 +556,49 @@ components:
         name:
           type: string
           title: Name
-        table_name:
-          type: string
-          title: Table Name
-        consumers:
-          items:
-            $ref: '#/components/schemas/ConsumerRef'
-          type: array
-          title: Consumers
-      type: object
-      required:
-      - id
-      - name
-      - table_name
-      - consumers
-      title: DatabaseWithConsumers
-    DashboardRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
         project_id:
           type: string
           format: uuid
           title: Project Id
-        user_id:
+        project_name:
           type: string
-          format: uuid
-          title: User Id
-        step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Step Id
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-        status:
-          type: string
-          title: Status
-        current_version_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Current Version Id
-        bundle_url:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Url
-        bundle_css:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Bundle Css
-        bundle_imports:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Bundle Imports
-        error_message:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Message
-        is_suppressed:
-          type: boolean
-          title: Is Suppressed
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-        updated_at:
-          type: string
-          format: date-time
-          title: Updated At
+          title: Project Name
       type: object
       required:
+      - type
       - id
-      - company_id
+      - name
       - project_id
-      - user_id
-      - name
-      - description
-      - status
-      - bundle_url
-      - bundle_css
-      - bundle_imports
-      - error_message
-      - is_suppressed
-      - created_at
-      - updated_at
-      title: DashboardRead
-    SuppressionPreview:
-      properties:
-        databases:
-          items:
-            $ref: '#/components/schemas/DatabaseWithConsumers'
-          type: array
-          title: Databases
-        owned_database_count:
-          type: integer
-          title: Owned Database Count
-      type: object
-      required:
-      - databases
-      - owned_database_count
-      title: SuppressionPreview
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    LineageStepNode:
+      - project_name
+      title: ConsumerRef
+    LineageTriggerNode:
       properties:
         id:
+          type: string
+          title: Id
+        step_id:
           type: string
           format: uuid
-          title: Id
-        slug:
+          title: Step Id
+        trigger_type:
           type: string
-          title: Slug
-        title:
+          title: Trigger Type
+        label:
           type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-        step_type:
-          type: string
-          title: Step Type
-        code_type:
-          type: string
-          title: Code Type
-          default: python
-        provider_slug:
+          title: Label
+        cron:
           anyOf:
           - type: string
           - type: 'null'
-          title: Provider Slug
-        display_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Display Name
-        order:
-          type: integer
-          title: Order
-        status:
-          type: string
-          title: Status
-          default: draft
-        is_virtual:
-          type: boolean
-          title: Is Virtual
-          default: false
-        parent_step_ids:
-          items:
-            type: string
-          type: array
-          title: Parent Step Ids
-          default: []
-        last_run_status:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Last Run Status
-        last_run_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Run At
-        operator_type:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Operator Type
-        operator_config:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Operator Config
-        entity_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Entity Id
-        entity_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Entity Name
-        resource_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Resource Id
-        table_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Table Name
-        database_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Database Name
-        schema_info:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Schema Info
-          default: []
-        row_count:
-          type: integer
-          title: Row Count
-          default: 0
-        last_refreshed_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Refreshed At
+          title: Cron
       type: object
       required:
       - id
-      - slug
-      - title
-      - description
-      - step_type
-      - order
-      title: LineageStepNode
-      description: A single step in the project DAG (includes virtual steps).
-    LineageExternalNode:
-      properties:
-        id:
-          type: string
-          title: Id
-        app_key:
-          type: string
-          title: App Key
-        display_name:
-          type: string
-          title: Display Name
-        node_type:
-          type: string
-          title: Node Type
-        description:
-          type: string
-          title: Description
-          default: ''
-        category:
-          type: string
-          title: Category
-          default: ''
-        domain:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Domain
-      type: object
-      required:
-      - id
-      - app_key
-      - display_name
-      - node_type
-      title: LineageExternalNode
-      description: An external system (source or sink).
-    ProjectCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-        description:
-          type: string
-          title: Description
-          default: ''
-      type: object
-      required:
-      - name
-      title: ProjectCreate
+      - step_id
+      - trigger_type
+      - label
+      title: LineageTriggerNode
+      description: A step trigger (schedule or manual).
     DatabaseRead:
       properties:
         id:
@@ -1042,6 +740,64 @@ components:
       - created_at
       - updated_at
       title: DatabaseRead
+    LineageExternalNode:
+      properties:
+        id:
+          type: string
+          title: Id
+        app_key:
+          type: string
+          title: App Key
+        display_name:
+          type: string
+          title: Display Name
+        node_type:
+          type: string
+          title: Node Type
+        description:
+          type: string
+          title: Description
+          default: ''
+        category:
+          type: string
+          title: Category
+          default: ''
+        domain:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Domain
+      type: object
+      required:
+      - id
+      - app_key
+      - display_name
+      - node_type
+      title: LineageExternalNode
+      description: An external system (source or sink).
+    app__projects__schemas__EntityRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        order:
+          type: integer
+          title: Order
+        status:
+          type: string
+          title: Status
+      type: object
+      required:
+      - id
+      - name
+      - order
+      - status
+      title: EntityRead
+      description: Entity response for lineage view.
     ProjectUpdate:
       properties:
         name:
@@ -1057,6 +813,87 @@ components:
           title: Folder Id
       type: object
       title: ProjectUpdate
+    LineageEdge:
+      properties:
+        source:
+          type: string
+          title: Source
+        target:
+          type: string
+          title: Target
+        relation:
+          type: string
+          title: Relation
+      type: object
+      required:
+      - source
+      - target
+      - relation
+      title: LineageEdge
+      description: An edge in the lineage DAG.
+    ProjectCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+          default: ''
+      type: object
+      required:
+      - name
+      title: ProjectCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    DatabaseWithConsumers:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        table_name:
+          type: string
+          title: Table Name
+        consumers:
+          items:
+            $ref: '#/components/schemas/ConsumerRef'
+          type: array
+          title: Consumers
+      type: object
+      required:
+      - id
+      - name
+      - table_name
+      - consumers
+      title: DatabaseWithConsumers
     ProjectLineageResponse:
       properties:
         steps:
@@ -1093,54 +930,217 @@ components:
       - edges
       title: ProjectLineageResponse
       description: Full project lineage DAG for the Foundry-style view.
-    app__projects__schemas__EntityRead:
+    LineageStepNode:
       properties:
         id:
           type: string
           format: uuid
           title: Id
-        name:
+        slug:
           type: string
-          title: Name
+          title: Slug
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        step_type:
+          type: string
+          title: Step Type
+        code_type:
+          type: string
+          title: Code Type
+          default: python
+        provider_slug:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Provider Slug
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
         order:
           type: integer
           title: Order
         status:
           type: string
           title: Status
-      type: object
-      required:
-      - id
-      - name
-      - order
-      - status
-      title: EntityRead
-      description: Entity response for lineage view.
-    LineageTriggerNode:
-      properties:
-        id:
-          type: string
-          title: Id
-        step_id:
-          type: string
-          format: uuid
-          title: Step Id
-        trigger_type:
-          type: string
-          title: Trigger Type
-        label:
-          type: string
-          title: Label
-        cron:
+          default: draft
+        is_virtual:
+          type: boolean
+          title: Is Virtual
+          default: false
+        parent_step_ids:
+          items:
+            type: string
+          type: array
+          title: Parent Step Ids
+          default: []
+        last_run_status:
           anyOf:
           - type: string
           - type: 'null'
-          title: Cron
+          title: Last Run Status
+        last_run_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Run At
+        operator_type:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Operator Type
+        operator_config:
+          anyOf:
+          - additionalProperties: true
+            type: object
+          - type: 'null'
+          title: Operator Config
+        entity_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Entity Id
+        entity_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Entity Name
+        resource_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Resource Id
+        table_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table Name
+        database_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Database Name
+        schema_info:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Schema Info
+          default: []
+        row_count:
+          type: integer
+          title: Row Count
+          default: 0
+        last_refreshed_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Refreshed At
       type: object
       required:
       - id
-      - step_id
-      - trigger_type
-      - label
-      title: LineageTriggerNode
-      description: A step trigger (schedule or manual).
+      - slug
+      - title
+      - description
+      - step_type
+      - order
+      title: LineageStepNode
+      description: A single step in the project DAG (includes virtual steps).
+    DashboardRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+        status:
+          type: string
+          title: Status
+        current_version_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Current Version Id
+        bundle_url:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Url
+        bundle_css:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Bundle Css
+        bundle_imports:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Bundle Imports
+        error_message:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Message
+        is_suppressed:
+          type: boolean
+          title: Is Suppressed
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+        updated_at:
+          type: string
+          format: date-time
+          title: Updated At
+      type: object
+      required:
+      - id
+      - company_id
+      - project_id
+      - user_id
+      - name
+      - description
+      - status
+      - bundle_url
+      - bundle_css
+      - bundle_imports
+      - error_message
+      - is_suppressed
+      - created_at
+      - updated_at
+      title: DashboardRead

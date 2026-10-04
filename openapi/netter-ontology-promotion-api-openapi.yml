@@ -102,42 +102,151 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    ClearBody:
+      title: HTTPValidationError
+    FieldRules:
       properties:
-        confirm:
+        allowed_values:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Allowed Values
+        required:
+          type: boolean
+          title: Required
+          default: false
+        format:
+          anyOf:
+          - $ref: '#/components/schemas/FieldFormat'
+          - type: 'null'
+      type: object
+      title: FieldRules
+      description: Declared value rules for one entity field. Empty instance = no rules.
+    EntityRelationshipBrief:
+      properties:
+        id:
           type: string
-          title: Confirm
-          description: Must be the literal phrase 'clear all overlays'
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        target_entity_id:
+          type: string
+          format: uuid
+          title: Target Entity Id
+        target_entity_name:
+          type: string
+          title: Target Entity Name
+        target_entity_display_name:
+          type: string
+          title: Target Entity Display Name
+        relationship_type:
+          type: string
+          title: Relationship Type
+        cardinality:
+          type: string
+          title: Cardinality
       type: object
       required:
-      - confirm
-      title: ClearBody
+      - id
+      - name
+      - target_entity_id
+      - target_entity_name
+      - target_entity_display_name
+      - relationship_type
+      - cardinality
+      title: EntityRelationshipBrief
+      description: Relationship summary in entity detail.
+    PromoteBody:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: Entity slug
+        description:
+          type: string
+          title: Description
+          default: ''
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        key_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Key Columns
+          description: Single-element list naming the column whose values become the entity's row identity. Required for file-backed Databases (CSV uploads) whose key_columns is empty; ignored otherwise.
+      type: object
+      required:
+      - name
+      title: PromoteBody
+    EntityPropertyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        column_name:
+          type: string
+          title: Column Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        data_type:
+          type: string
+          title: Data Type
+        is_primary_key:
+          type: boolean
+          title: Is Primary Key
+        order:
+          type: integer
+          title: Order
+        rules:
+          $ref: '#/components/schemas/FieldRules'
+        origin:
+          type: string
+          title: Origin
+          default: source
+        managed_default:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Managed Default
+        file_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: File Folder Id
+      type: object
+      required:
+      - id
+      - column_name
+      - display_name
+      - description
+      - data_type
+      - is_primary_key
+      - order
+      title: EntityPropertyRead
+      description: Property in entity listings.
     app__ontology__schemas__EntityRead:
       properties:
         id:
@@ -234,87 +343,47 @@ components:
       - updated_at
       title: EntityRead
       description: Full entity for GET endpoints.
-    FieldRules:
+    ValidationError:
       properties:
-        allowed_values:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Allowed Values
-        required:
-          type: boolean
-          title: Required
-          default: false
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/FieldFormat'
-          - type: 'null'
-      type: object
-      title: FieldRules
-      description: Declared value rules for one entity field. Empty instance = no rules.
-    EntityPropertyRead:
-      properties:
-        id:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
           type: string
-          format: uuid
-          title: Id
-        column_name:
+          title: Message
+        type:
           type: string
-          title: Column Name
-        display_name:
-          type: string
-          title: Display Name
-        description:
-          type: string
-          title: Description
-        data_type:
-          type: string
-          title: Data Type
-        is_primary_key:
-          type: boolean
-          title: Is Primary Key
-        order:
-          type: integer
-          title: Order
-        rules:
-          $ref: '#/components/schemas/FieldRules'
-        origin:
-          type: string
-          title: Origin
-          default: source
-        managed_default:
-          anyOf:
-          - {}
-          - type: 'null'
-          title: Managed Default
-        file_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: File Folder Id
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - id
-      - column_name
-      - display_name
-      - description
-      - data_type
-      - is_primary_key
-      - order
-      title: EntityPropertyRead
-      description: Property in entity listings.
-    HTTPValidationError:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    FedByProject:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
       type: object
-      title: HTTPValidationError
+      required:
+      - project_id
+      - project_name
+      title: FedByProject
+      description: Which project feeds this entity.
     FieldFormat:
       properties:
         min:
@@ -362,21 +431,16 @@ components:
       type: object
       title: FieldFormat
       description: Type-specific value constraints. All optional; only set what applies.
-    FedByProject:
+    ClearBody:
       properties:
-        project_id:
+        confirm:
           type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
+          title: Confirm
+          description: Must be the literal phrase 'clear all overlays'
       type: object
       required:
-      - project_id
-      - project_name
-      title: FedByProject
-      description: Which project feeds this entity.
+      - confirm
+      title: ClearBody
     ClearResponse:
       properties:
         deleted:
@@ -386,67 +450,3 @@ components:
       required:
       - deleted
       title: ClearResponse
-    PromoteBody:
-      properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-          description: Entity slug
-        description:
-          type: string
-          title: Description
-          default: ''
-        display_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Display Name
-        key_columns:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Key Columns
-          description: Single-element list naming the column whose values become the entity's row identity. Required for file-backed Databases (CSV uploads) whose key_columns is empty; ignored otherwise.
-      type: object
-      required:
-      - name
-      title: PromoteBody
-    EntityRelationshipBrief:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        target_entity_id:
-          type: string
-          format: uuid
-          title: Target Entity Id
-        target_entity_name:
-          type: string
-          title: Target Entity Name
-        target_entity_display_name:
-          type: string
-          title: Target Entity Display Name
-        relationship_type:
-          type: string
-          title: Relationship Type
-        cardinality:
-          type: string
-          title: Cardinality
-      type: object
-      required:
-      - id
-      - name
-      - target_entity_id
-      - target_entity_name
-      - target_entity_display_name
-      - relationship_type
-      - cardinality
-      title: EntityRelationshipBrief
-      description: Relationship summary in entity detail.

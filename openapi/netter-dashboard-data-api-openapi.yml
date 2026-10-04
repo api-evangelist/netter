@@ -214,32 +214,32 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    DataQueryResponse:
       properties:
-        loc:
+        columns:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            type: string
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse
     DashboardQueryRequest:
       properties:
         sql:
@@ -269,6 +269,15 @@ components:
       required:
       - sql
       title: DashboardQueryRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     PaginatedQueryResponse:
       properties:
         columns:
@@ -303,38 +312,29 @@ components:
       - total_rows
       - total_pages
       title: PaginatedQueryResponse
-    HTTPValidationError:
+    ValidationError:
       properties:
-        detail:
+        loc:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            anyOf:
+            - type: string
+            - type: integer
           type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    DataQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
       type: object
       required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: DataQueryResponse
+      - loc
+      - msg
+      - type
+      title: ValidationError

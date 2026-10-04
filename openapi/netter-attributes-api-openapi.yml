@@ -313,6 +313,158 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    MemberAttributesRead:
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        attributes:
+          additionalProperties:
+            items:
+              type: string
+            type: array
+          type: object
+          title: Attributes
+      type: object
+      required:
+      - user_id
+      - attributes
+      title: MemberAttributesRead
+    AttributeDefinitionCreate:
+      properties:
+        key:
+          type: string
+          pattern: ^[a-z0-9_]{1,64}$
+          title: Key
+        label:
+          type: string
+          title: Label
+      type: object
+      required:
+      - key
+      - label
+      title: AttributeDefinitionCreate
+    AttributeDefinitionUpdate:
+      properties:
+        label:
+          type: string
+          title: Label
+      type: object
+      required:
+      - label
+      title: AttributeDefinitionUpdate
+    AttributeSyncStats:
+      properties:
+        matched:
+          type: integer
+          title: Matched
+        unmatched:
+          type: integer
+          title: Unmatched
+        total_rows:
+          type: integer
+          title: Total Rows
+      type: object
+      required:
+      - matched
+      - unmatched
+      - total_rows
+      title: AttributeSyncStats
+    AttributeAutomationConfigured:
+      properties:
+        automation:
+          $ref: '#/components/schemas/AttributeAutomationRead'
+        stats:
+          $ref: '#/components/schemas/AttributeSyncStats'
+      type: object
+      required:
+      - automation
+      - stats
+      title: AttributeAutomationConfigured
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    AttributeAutomationWrite:
+      properties:
+        entity_id:
+          type: string
+          format: uuid
+          title: Entity Id
+        match_kind:
+          type: string
+          enum:
+          - email
+          - user_id
+          title: Match Kind
+        match_column:
+          type: string
+          title: Match Column
+        value_column:
+          type: string
+          title: Value Column
+      type: object
+      required:
+      - entity_id
+      - match_kind
+      - match_column
+      - value_column
+      title: AttributeAutomationWrite
+    AttributeDefinitionRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        key:
+          type: string
+          title: Key
+        label:
+          type: string
+          title: Label
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - key
+      - label
+      - created_at
+      title: AttributeDefinitionRead
     AttributeAutomationRead:
       properties:
         definition_id:
@@ -363,32 +515,6 @@ components:
       - last_sync_matched
       - last_sync_unmatched
       title: AttributeAutomationRead
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     MemberAttributesWrite:
       properties:
         values:
@@ -404,129 +530,3 @@ components:
       required:
       - values
       title: MemberAttributesWrite
-    AttributeDefinitionUpdate:
-      properties:
-        label:
-          type: string
-          title: Label
-      type: object
-      required:
-      - label
-      title: AttributeDefinitionUpdate
-    AttributeSyncStats:
-      properties:
-        matched:
-          type: integer
-          title: Matched
-        unmatched:
-          type: integer
-          title: Unmatched
-        total_rows:
-          type: integer
-          title: Total Rows
-      type: object
-      required:
-      - matched
-      - unmatched
-      - total_rows
-      title: AttributeSyncStats
-    MemberAttributesRead:
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        attributes:
-          additionalProperties:
-            items:
-              type: string
-            type: array
-          type: object
-          title: Attributes
-      type: object
-      required:
-      - user_id
-      - attributes
-      title: MemberAttributesRead
-    AttributeDefinitionRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        key:
-          type: string
-          title: Key
-        label:
-          type: string
-          title: Label
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - key
-      - label
-      - created_at
-      title: AttributeDefinitionRead
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    AttributeDefinitionCreate:
-      properties:
-        key:
-          type: string
-          pattern: ^[a-z0-9_]{1,64}$
-          title: Key
-        label:
-          type: string
-          title: Label
-      type: object
-      required:
-      - key
-      - label
-      title: AttributeDefinitionCreate
-    AttributeAutomationConfigured:
-      properties:
-        automation:
-          $ref: '#/components/schemas/AttributeAutomationRead'
-        stats:
-          $ref: '#/components/schemas/AttributeSyncStats'
-      type: object
-      required:
-      - automation
-      - stats
-      title: AttributeAutomationConfigured
-    AttributeAutomationWrite:
-      properties:
-        entity_id:
-          type: string
-          format: uuid
-          title: Entity Id
-        match_kind:
-          type: string
-          enum:
-          - email
-          - user_id
-          title: Match Kind
-        match_column:
-          type: string
-          title: Match Column
-        value_column:
-          type: string
-          title: Value Column
-      type: object
-      required:
-      - entity_id
-      - match_kind
-      - match_column
-      - value_column
-      title: AttributeAutomationWrite

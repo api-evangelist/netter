@@ -232,6 +232,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -258,31 +267,6 @@ components:
       - msg
       - type
       title: ValidationError
-    EntitySyncStatus:
-      properties:
-        last_synced_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Synced At
-        source_row_count:
-          type: integer
-          title: Source Row Count
-        overlay_count:
-          type: integer
-          title: Overlay Count
-        state:
-          type: string
-          title: State
-          description: '''idle'' | ''syncing'' | ''error'''
-      type: object
-      required:
-      - last_synced_at
-      - source_row_count
-      - overlay_count
-      - state
-      title: EntitySyncStatus
     EntityRowPatch:
       properties:
         patch:
@@ -294,6 +278,17 @@ components:
       required:
       - patch
       title: EntityRowPatch
+    EntityRowInsert:
+      properties:
+        values:
+          additionalProperties: true
+          type: object
+          title: Values
+          description: Column → value for the new row. Must be a subset of entity columns.
+      type: object
+      required:
+      - values
+      title: EntityRowInsert
     EntityRowRead:
       properties:
         row_key:
@@ -340,26 +335,6 @@ components:
       - values
       title: EntityRowRead
       description: One merged row (source ⊕ overlay).
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    EntityRowInsert:
-      properties:
-        values:
-          additionalProperties: true
-          type: object
-          title: Values
-          description: Column → value for the new row. Must be a subset of entity columns.
-      type: object
-      required:
-      - values
-      title: EntityRowInsert
     EntityRowList:
       properties:
         rows:
@@ -389,3 +364,28 @@ components:
       - total_source
       - total_overlay_only
       title: EntityRowList
+    EntitySyncStatus:
+      properties:
+        last_synced_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Synced At
+        source_row_count:
+          type: integer
+          title: Source Row Count
+        overlay_count:
+          type: integer
+          title: Overlay Count
+        state:
+          type: string
+          title: State
+          description: '''idle'' | ''syncing'' | ''error'''
+      type: object
+      required:
+      - last_synced_at
+      - source_row_count
+      - overlay_count
+      - state
+      title: EntitySyncStatus

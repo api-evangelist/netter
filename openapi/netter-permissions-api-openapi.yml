@@ -287,47 +287,31 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ResourceType:
-      type: string
-      enum:
-      - project
-      - database
-      - folder
-      - app
-      - entity
-      - automation
-      - dashboard
-      - file
-      - file_folder
-      - integration
-      title: ResourceType
-      description: Resources that can carry permissions. Polymorphic ``resource_id``.
-    ValidationError:
+    PermissionGrant:
       properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
+        grantee_type:
+          $ref: '#/components/schemas/GranteeType'
+        grantee_id:
           type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          format: uuid
+          title: Grantee Id
+        level:
+          $ref: '#/components/schemas/PermissionLevel'
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - grantee_type
+      - grantee_id
+      - level
+      title: PermissionGrant
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     EffectiveAccessEntry:
       properties:
         user_id:
@@ -348,14 +332,21 @@ components:
       - sources
       title: EffectiveAccessEntry
       description: A user's effective access level on a resource, with all contributing sources.
-    PermissionLevel:
+    ResourceType:
       type: string
       enum:
-      - viewer
-      - editor
-      - admin
-      title: PermissionLevel
-      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
+      - project
+      - database
+      - folder
+      - app
+      - entity
+      - automation
+      - dashboard
+      - file
+      - file_folder
+      - integration
+      title: ResourceType
+      description: Resources that can carry permissions. Polymorphic ``resource_id``.
     UserPermissionRead:
       properties:
         id:
@@ -382,15 +373,6 @@ components:
       - level
       title: UserPermissionRead
       description: Permission with resource name for display in user permission lists.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PermissionRead:
       properties:
         id:
@@ -435,22 +417,6 @@ components:
       - created_at
       - updated_at
       title: PermissionRead
-    PermissionGrant:
-      properties:
-        grantee_type:
-          $ref: '#/components/schemas/GranteeType'
-        grantee_id:
-          type: string
-          format: uuid
-          title: Grantee Id
-        level:
-          $ref: '#/components/schemas/PermissionLevel'
-      type: object
-      required:
-      - grantee_type
-      - grantee_id
-      - level
-      title: PermissionGrant
     GranteeType:
       type: string
       enum:
@@ -466,6 +432,40 @@ components:
       required:
       - level
       title: PermissionUpdate
+    PermissionLevel:
+      type: string
+      enum:
+      - viewer
+      - editor
+      - admin
+      title: PermissionLevel
+      description: Permission tiers, strictly ordered VIEWER < EDITOR < ADMIN.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     AccessSource:
       properties:
         via_resource_type:

@@ -143,6 +143,20 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    UsedByProject:
+      properties:
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - project_id
+      - project_name
+      title: UsedByProject
     OntologyGraphEdge:
       properties:
         source_database_id:
@@ -204,88 +218,15 @@ components:
       - muted_at
       - mute_reason
       title: OntologyGraphEdge
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          title: Detail
       type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CascadeEdgeMuteRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        source_database_id:
-          type: string
-          format: uuid
-          title: Source Database Id
-        target_database_id:
-          type: string
-          format: uuid
-          title: Target Database Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        muted_by_user_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Muted By User Id
-        muted_at:
-          type: string
-          format: date-time
-          title: Muted At
-        reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Reason
-      type: object
-      required:
-      - id
-      - source_database_id
-      - target_database_id
-      - project_id
-      - muted_by_user_id
-      - muted_at
-      title: CascadeEdgeMuteRead
-    UsedByProject:
-      properties:
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
-      type: object
-      required:
-      - project_id
-      - project_name
-      title: UsedByProject
+      title: HTTPValidationError
     OntologyGraphNode:
       properties:
         id:
@@ -397,6 +338,139 @@ components:
       - trigger_types
       - database_step_id
       title: OntologyGraphNode
+    CascadeDependency:
+      properties:
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        step_title:
+          type: string
+          title: Step Title
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        project_name:
+          type: string
+          title: Project Name
+      type: object
+      required:
+      - step_id
+      - step_title
+      - project_id
+      - project_name
+      title: CascadeDependency
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    OntologyGraphRead:
+      properties:
+        nodes:
+          items:
+            $ref: '#/components/schemas/OntologyGraphNode'
+          type: array
+          title: Nodes
+        edges:
+          items:
+            $ref: '#/components/schemas/OntologyGraphEdge'
+          type: array
+          title: Edges
+      type: object
+      required:
+      - nodes
+      - edges
+      title: OntologyGraphRead
+    CascadeEdgeMuteRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        source_database_id:
+          type: string
+          format: uuid
+          title: Source Database Id
+        target_database_id:
+          type: string
+          format: uuid
+          title: Target Database Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        muted_by_user_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Muted By User Id
+        muted_at:
+          type: string
+          format: date-time
+          title: Muted At
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - id
+      - source_database_id
+      - target_database_id
+      - project_id
+      - muted_by_user_id
+      - muted_at
+      title: CascadeEdgeMuteRead
+    CascadeEdgeMuteCreate:
+      properties:
+        source_database_id:
+          type: string
+          format: uuid
+          title: Source Database Id
+        target_database_id:
+          type: string
+          format: uuid
+          title: Target Database Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        reason:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Reason
+      type: object
+      required:
+      - source_database_id
+      - target_database_id
+      - project_id
+      title: CascadeEdgeMuteCreate
     OntologyDatabaseRead:
       properties:
         id:
@@ -570,77 +644,3 @@ components:
       - updated_at
       title: OntologyDatabaseRead
       description: 'Database with extra ontology context: source project name, usage, and cascade deps.'
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CascadeDependency:
-      properties:
-        step_id:
-          type: string
-          format: uuid
-          title: Step Id
-        step_title:
-          type: string
-          title: Step Title
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        project_name:
-          type: string
-          title: Project Name
-      type: object
-      required:
-      - step_id
-      - step_title
-      - project_id
-      - project_name
-      title: CascadeDependency
-    OntologyGraphRead:
-      properties:
-        nodes:
-          items:
-            $ref: '#/components/schemas/OntologyGraphNode'
-          type: array
-          title: Nodes
-        edges:
-          items:
-            $ref: '#/components/schemas/OntologyGraphEdge'
-          type: array
-          title: Edges
-      type: object
-      required:
-      - nodes
-      - edges
-      title: OntologyGraphRead
-    CascadeEdgeMuteCreate:
-      properties:
-        source_database_id:
-          type: string
-          format: uuid
-          title: Source Database Id
-        target_database_id:
-          type: string
-          format: uuid
-          title: Target Database Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        reason:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Reason
-      type: object
-      required:
-      - source_database_id
-      - target_database_id
-      - project_id
-      title: CascadeEdgeMuteCreate

@@ -802,203 +802,6 @@ paths:
                 title: Response Nango Webhook Api V1 Integrations Webhook Post
 components:
   schemas:
-    CrawlerSchemaRead:
-      properties:
-        tables:
-          items:
-            $ref: '#/components/schemas/CrawlerTableSchema'
-          type: array
-          title: Tables
-        poll_interval_options_seconds:
-          items:
-            type: integer
-          type: array
-          title: Poll Interval Options Seconds
-        min_poll_interval_seconds:
-          type: integer
-          title: Min Poll Interval Seconds
-        default_poll_interval_seconds:
-          type: integer
-          title: Default Poll Interval Seconds
-        max_backfill_window_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Backfill Window Days
-        default_backfill_window_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Default Backfill Window Days
-      type: object
-      required:
-      - tables
-      - poll_interval_options_seconds
-      - min_poll_interval_seconds
-      - default_poll_interval_seconds
-      - max_backfill_window_days
-      - default_backfill_window_days
-      title: CrawlerSchemaRead
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    CrawlerConfigPatchResponse:
-      properties:
-        config:
-          $ref: '#/components/schemas/CrawlerConfigRead'
-        pending_actions:
-          items:
-            type: string
-          type: array
-          title: Pending Actions
-        warnings:
-          items:
-            type: string
-          type: array
-          title: Warnings
-      type: object
-      required:
-      - config
-      - pending_actions
-      - warnings
-      title: CrawlerConfigPatchResponse
-    IntegrationRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        provider_id:
-          type: string
-          format: uuid
-          title: Provider Id
-        nango_connection_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Nango Connection Id
-        status:
-          type: string
-          title: Status
-        has_credentials:
-          type: boolean
-          title: Has Credentials
-          default: false
-        connected_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Connected At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - company_id
-      - user_id
-      - provider_id
-      - nango_connection_id
-      - status
-      - connected_at
-      - created_at
-      title: IntegrationRead
-    SnowflakeColumnSchema:
-      properties:
-        name:
-          type: string
-          title: Name
-        polars_type:
-          type: string
-          title: Polars Type
-      type: object
-      required:
-      - name
-      - polars_type
-      title: SnowflakeColumnSchema
-      description: 'One column from ``DESCRIBE TABLE`` mapped to a Polars-style type.
-
-
-        The wizard echoes this list back in the ``crawler_table_configs``
-
-        PATCH so the lifecycle layer can populate ``Database.schema_info``
-
-        without a fresh round-trip.'
-    DatabricksColumnSchema:
-      properties:
-        name:
-          type: string
-          title: Name
-        polars_type:
-          type: string
-          title: Polars Type
-      type: object
-      required:
-      - name
-      - polars_type
-      title: DatabricksColumnSchema
-      description: 'One column from Unity Catalog mapped to a Polars-style type.
-
-
-        The wizard echoes this list back in the ``crawler_table_configs``
-
-        PATCH so the lifecycle layer can populate ``Database.schema_info``
-
-        without a fresh round-trip.'
-    IntegrationCreate:
-      properties:
-        provider_id:
-          type: string
-          format: uuid
-          title: Provider Id
-        nango_connection_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Nango Connection Id
-        credentials:
-          anyOf:
-          - additionalProperties: true
-            type: object
-          - type: 'null'
-          title: Credentials
-      type: object
-      required:
-      - provider_id
-      title: IntegrationCreate
     CrawlerConfigRead:
       properties:
         poll_interval_seconds:
@@ -1054,7 +857,38 @@ components:
       - config_revision
       - crawler_config_updated_at
       title: CrawlerConfigRead
-    DatabricksDiscoveryItem:
+    ProviderActionRead:
+      properties:
+        key:
+          type: string
+          title: Key
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        params_json_schema:
+          additionalProperties: true
+          type: object
+          title: Params Json Schema
+      type: object
+      required:
+      - key
+      - display_name
+      - description
+      - params_json_schema
+      title: ProviderActionRead
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DatabricksWarehouseItem:
       properties:
         id:
           type: string
@@ -1071,17 +905,56 @@ components:
       required:
       - id
       - label
-      title: DatabricksDiscoveryItem
-      description: 'Item returned by Unity Catalog discovery (catalogs / schemas / tables).
+      title: DatabricksWarehouseItem
+      description: 'One SQL warehouse from ``GET /api/2.0/sql/warehouses``.
 
 
-        ``id`` is the namespaced selector the wizard later passes back —
+        ``id`` is the value the wizard writes to
 
-        e.g. ``"analytics"`` for a catalog, ``"analytics.sales"`` for a
+        ``DatabricksTableConfig.warehouse_id``. ``hint`` carries state +
 
-        schema, ``"analytics.sales.orders"`` for a table. ``hint`` holds
+        cluster size so the user can pick the right warehouse without
 
-        optional metadata (table type, comment) for UI tooltips.'
+        leaving the wizard.'
+    CrawlerScopeOption:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: CrawlerScopeOption
+    DatabricksColumnSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        polars_type:
+          type: string
+          title: Polars Type
+      type: object
+      required:
+      - name
+      - polars_type
+      title: DatabricksColumnSchema
+      description: 'One column from Unity Catalog mapped to a Polars-style type.
+
+
+        The wizard echoes this list back in the ``crawler_table_configs``
+
+        PATCH so the lifecycle layer can populate ``Database.schema_info``
+
+        without a fresh round-trip.'
     SnowflakeDiscoveryItem:
       properties:
         id:
@@ -1110,15 +983,47 @@ components:
         schema, ``"ANALYTICS.PUBLIC.ORDERS"`` for a table. ``hint`` holds
 
         optional metadata (row count, comment) for UI tooltips.'
-    HTTPValidationError:
+    CrawlerConfigPatchBody:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
+        poll_interval_seconds:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Poll Interval Seconds
+        backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Backfill Window Days
+        selected_tables:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Selected Tables
+        scope_filters:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Scope Filters
+        crawler_table_configs:
+          anyOf:
+          - additionalProperties:
+              additionalProperties: true
+              type: object
+            type: object
+          - type: 'null'
+          title: Crawler Table Configs
+        purge_removed:
+          type: boolean
+          title: Purge Removed
+          default: false
       type: object
-      title: HTTPValidationError
+      title: CrawlerConfigPatchBody
     ProviderRead:
       properties:
         id:
@@ -1176,6 +1081,148 @@ components:
       - description
       - category
       title: ProviderRead
+    CrawlerSchemaRead:
+      properties:
+        tables:
+          items:
+            $ref: '#/components/schemas/CrawlerTableSchema'
+          type: array
+          title: Tables
+        poll_interval_options_seconds:
+          items:
+            type: integer
+          type: array
+          title: Poll Interval Options Seconds
+        min_poll_interval_seconds:
+          type: integer
+          title: Min Poll Interval Seconds
+        default_poll_interval_seconds:
+          type: integer
+          title: Default Poll Interval Seconds
+        max_backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Backfill Window Days
+        default_backfill_window_days:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Default Backfill Window Days
+      type: object
+      required:
+      - tables
+      - poll_interval_options_seconds
+      - min_poll_interval_seconds
+      - default_poll_interval_seconds
+      - max_backfill_window_days
+      - default_backfill_window_days
+      title: CrawlerSchemaRead
+    DatabricksDiscoveryItem:
+      properties:
+        id:
+          type: string
+          title: Id
+        label:
+          type: string
+          title: Label
+        hint:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Hint
+      type: object
+      required:
+      - id
+      - label
+      title: DatabricksDiscoveryItem
+      description: 'Item returned by Unity Catalog discovery (catalogs / schemas / tables).
+
+
+        ``id`` is the namespaced selector the wizard later passes back —
+
+        e.g. ``"analytics"`` for a catalog, ``"analytics.sales"`` for a
+
+        schema, ``"analytics.sales.orders"`` for a table. ``hint`` holds
+
+        optional metadata (table type, comment) for UI tooltips.'
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    IntegrationRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        provider_id:
+          type: string
+          format: uuid
+          title: Provider Id
+        nango_connection_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Nango Connection Id
+        status:
+          type: string
+          title: Status
+        has_credentials:
+          type: boolean
+          title: Has Credentials
+          default: false
+        connected_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Connected At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - company_id
+      - user_id
+      - provider_id
+      - nango_connection_id
+      - status
+      - connected_at
+      - created_at
+      title: IntegrationRead
     CrawlerTableSchema:
       properties:
         name:
@@ -1204,112 +1251,65 @@ components:
       - name
       - description
       title: CrawlerTableSchema
-    ProviderActionRead:
+    IntegrationCreate:
       properties:
-        key:
+        provider_id:
           type: string
-          title: Key
-        display_name:
-          type: string
-          title: Display Name
-        description:
-          type: string
-          title: Description
-        params_json_schema:
-          additionalProperties: true
-          type: object
-          title: Params Json Schema
-      type: object
-      required:
-      - key
-      - display_name
-      - description
-      - params_json_schema
-      title: ProviderActionRead
-    CrawlerConfigPatchBody:
-      properties:
-        poll_interval_seconds:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Poll Interval Seconds
-        backfill_window_days:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Backfill Window Days
-        selected_tables:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Selected Tables
-        scope_filters:
-          anyOf:
-          - additionalProperties:
-              additionalProperties: true
-              type: object
-            type: object
-          - type: 'null'
-          title: Scope Filters
-        crawler_table_configs:
-          anyOf:
-          - additionalProperties:
-              additionalProperties: true
-              type: object
-            type: object
-          - type: 'null'
-          title: Crawler Table Configs
-        purge_removed:
-          type: boolean
-          title: Purge Removed
-          default: false
-      type: object
-      title: CrawlerConfigPatchBody
-    DatabricksWarehouseItem:
-      properties:
-        id:
-          type: string
-          title: Id
-        label:
-          type: string
-          title: Label
-        hint:
+          format: uuid
+          title: Provider Id
+        nango_connection_id:
           anyOf:
           - type: string
           - type: 'null'
-          title: Hint
-      type: object
-      required:
-      - id
-      - label
-      title: DatabricksWarehouseItem
-      description: 'One SQL warehouse from ``GET /api/2.0/sql/warehouses``.
-
-
-        ``id`` is the value the wizard writes to
-
-        ``DatabricksTableConfig.warehouse_id``. ``hint`` carries state +
-
-        cluster size so the user can pick the right warehouse without
-
-        leaving the wizard.'
-    CrawlerScopeOption:
-      properties:
-        id:
-          type: string
-          title: Id
-        label:
-          type: string
-          title: Label
-        hint:
+          title: Nango Connection Id
+        credentials:
           anyOf:
-          - type: string
+          - additionalProperties: true
+            type: object
           - type: 'null'
-          title: Hint
+          title: Credentials
       type: object
       required:
-      - id
-      - label
-      title: CrawlerScopeOption
+      - provider_id
+      title: IntegrationCreate
+    CrawlerConfigPatchResponse:
+      properties:
+        config:
+          $ref: '#/components/schemas/CrawlerConfigRead'
+        pending_actions:
+          items:
+            type: string
+          type: array
+          title: Pending Actions
+        warnings:
+          items:
+            type: string
+          type: array
+          title: Warnings
+      type: object
+      required:
+      - config
+      - pending_actions
+      - warnings
+      title: CrawlerConfigPatchResponse
+    SnowflakeColumnSchema:
+      properties:
+        name:
+          type: string
+          title: Name
+        polars_type:
+          type: string
+          title: Polars Type
+      type: object
+      required:
+      - name
+      - polars_type
+      title: SnowflakeColumnSchema
+      description: 'One column from ``DESCRIBE TABLE`` mapped to a Polars-style type.
+
+
+        The wizard echoes this list back in the ``crawler_table_configs``
+
+        PATCH so the lifecycle layer can populate ``Database.schema_info``
+
+        without a fresh round-trip.'

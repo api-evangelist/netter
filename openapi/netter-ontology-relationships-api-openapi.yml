@@ -137,32 +137,55 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    ValidationError:
+    HTTPValidationError:
       properties:
-        loc:
+        detail:
           items:
-            anyOf:
-            - type: string
-            - type: integer
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Location
-        msg:
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RelationshipCreate:
+      properties:
+        from_entity_id:
           type: string
-          title: Message
-        type:
+          format: uuid
+          title: From Entity Id
+        to_entity_id:
           type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
+          format: uuid
+          title: To Entity Id
+        name:
+          type: string
+          title: Name
+        relationship_type:
+          type: string
+          title: Relationship Type
+        cardinality:
+          type: string
+          title: Cardinality
+        from_key:
+          type: string
+          title: From Key
+        to_key:
+          type: string
+          title: To Key
+        description:
+          type: string
+          title: Description
+          default: ''
       type: object
       required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
+      - from_entity_id
+      - to_entity_id
+      - name
+      - relationship_type
+      - cardinality
+      - from_key
+      - to_key
+      title: RelationshipCreate
+      description: Input for POST /ontology/relationships.
     RelationshipRead:
       properties:
         id:
@@ -231,6 +254,32 @@ components:
       - updated_at
       title: RelationshipRead
       description: Full relationship for GET endpoints.
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
     RelationshipUpdate:
       properties:
         name:
@@ -251,52 +300,3 @@ components:
       type: object
       title: RelationshipUpdate
       description: Input for PATCH /ontology/relationships/{id}.
-    RelationshipCreate:
-      properties:
-        from_entity_id:
-          type: string
-          format: uuid
-          title: From Entity Id
-        to_entity_id:
-          type: string
-          format: uuid
-          title: To Entity Id
-        name:
-          type: string
-          title: Name
-        relationship_type:
-          type: string
-          title: Relationship Type
-        cardinality:
-          type: string
-          title: Cardinality
-        from_key:
-          type: string
-          title: From Key
-        to_key:
-          type: string
-          title: To Key
-        description:
-          type: string
-          title: Description
-          default: ''
-      type: object
-      required:
-      - from_entity_id
-      - to_entity_id
-      - name
-      - relationship_type
-      - cardinality
-      - from_key
-      - to_key
-      title: RelationshipCreate
-      description: Input for POST /ontology/relationships.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError

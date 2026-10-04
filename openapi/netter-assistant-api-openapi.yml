@@ -55,6 +55,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     ValidationError:
       properties:
         loc:
@@ -152,21 +161,6 @@ components:
           default: generating
       type: object
       title: AssistantTurnResponse
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ChatStatus:
-      type: string
-      enum:
-      - idle
-      - generating
-      title: ChatStatus
     AssistantMessageRequest:
       properties:
         content:
@@ -199,6 +193,12 @@ components:
       required:
       - content
       title: AssistantMessageRequest
+    ChatStatus:
+      type: string
+      enum:
+      - idle
+      - generating
+      title: ChatStatus
     TaggedEntity:
       properties:
         id:

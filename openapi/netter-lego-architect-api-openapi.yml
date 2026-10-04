@@ -257,6 +257,64 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    EdgeRequest:
+      properties:
+        parent_slug:
+          type: string
+          title: Parent Slug
+        child_slug:
+          type: string
+          title: Child Slug
+      type: object
+      required:
+      - parent_slug
+      - child_slug
+      title: EdgeRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    LegoMessageRequest:
+      properties:
+        content:
+          type: string
+          maxLength: 10000
+          minLength: 1
+          title: Content
+        referenced_database_ids:
+          anyOf:
+          - items:
+              type: string
+              format: uuid
+            type: array
+          - type: 'null'
+          title: Referenced Database Ids
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Attachments
+      type: object
+      required:
+      - content
+      title: LegoMessageRequest
+    UpdateStepRequest:
+      properties:
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+      type: object
+      required:
+      - config
+      title: UpdateStepRequest
     ValidationError:
       properties:
         loc:
@@ -319,38 +377,6 @@ components:
       - operator
       - slug
       title: AddStepRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    UpdateStepRequest:
-      properties:
-        config:
-          additionalProperties: true
-          type: object
-          title: Config
-      type: object
-      required:
-      - config
-      title: UpdateStepRequest
-    EdgeRequest:
-      properties:
-        parent_slug:
-          type: string
-          title: Parent Slug
-        child_slug:
-          type: string
-          title: Child Slug
-      type: object
-      required:
-      - parent_slug
-      - child_slug
-      title: EdgeRequest
     LegoTurnResponse:
       properties:
         status:
@@ -360,29 +386,3 @@ components:
       required:
       - status
       title: LegoTurnResponse
-    LegoMessageRequest:
-      properties:
-        content:
-          type: string
-          maxLength: 10000
-          minLength: 1
-          title: Content
-        referenced_database_ids:
-          anyOf:
-          - items:
-              type: string
-              format: uuid
-            type: array
-          - type: 'null'
-          title: Referenced Database Ids
-        attachments:
-          items:
-            additionalProperties:
-              type: string
-            type: object
-          type: array
-          title: Attachments
-      type: object
-      required:
-      - content
-      title: LegoMessageRequest

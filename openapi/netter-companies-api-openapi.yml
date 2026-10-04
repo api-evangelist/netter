@@ -419,6 +419,94 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    CompanyInvite:
+      properties:
+        email:
+          type: string
+          title: Email
+        role:
+          type: string
+          title: Role
+          default: member
+      type: object
+      required:
+      - email
+      title: CompanyInvite
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    CompanyCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+      type: object
+      required:
+      - name
+      title: CompanyCreate
+    CompanyListResponse:
+      properties:
+        companies:
+          items:
+            $ref: '#/components/schemas/CompanyRead'
+          type: array
+          title: Companies
+        default_company_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Default Company Id
+      type: object
+      required:
+      - companies
+      - default_company_id
+      title: CompanyListResponse
+    CompanyMemberSummary:
+      properties:
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        role:
+          type: string
+          title: Role
+        joined_at:
+          type: string
+          format: date-time
+          title: Joined At
+      type: object
+      required:
+      - company_id
+      - user_id
+      - role
+      - joined_at
+      title: CompanyMemberSummary
+      description: 'Lightweight member view — no auth.users join.
+
+
+        Used by :class:`AcceptInvitation` to report the newly-inserted member
+
+        without reaching into ``auth.users`` for the email.'
+    InvitationAccept:
+      properties:
+        token:
+          type: string
+          title: Token
+      type: object
+      required:
+      - token
+      title: InvitationAccept
     ValidationError:
       properties:
         loc:
@@ -445,33 +533,15 @@ components:
       - msg
       - type
       title: ValidationError
-    InvitationAccept:
+    CompanyUpdate:
       properties:
-        token:
-          type: string
-          title: Token
-      type: object
-      required:
-      - token
-      title: InvitationAccept
-    CompanyListResponse:
-      properties:
-        companies:
-          items:
-            $ref: '#/components/schemas/CompanyRead'
-          type: array
-          title: Companies
-        default_company_id:
+        name:
           anyOf:
           - type: string
-            format: uuid
           - type: 'null'
-          title: Default Company Id
+          title: Name
       type: object
-      required:
-      - companies
-      - default_company_id
-      title: CompanyListResponse
+      title: CompanyUpdate
     CompanyMemberRoleUpdate:
       properties:
         role:
@@ -486,56 +556,6 @@ components:
       - role
       title: CompanyMemberRoleUpdate
       description: Request body for changing an existing member's role (owner-only).
-    CompanyRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        role:
-          type: string
-          title: Role
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - name
-      - role
-      - created_at
-      title: CompanyRead
-    CompanyUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-      type: object
-      title: CompanyUpdate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    CompanyCreate:
-      properties:
-        name:
-          type: string
-          title: Name
-      type: object
-      required:
-      - name
-      title: CompanyCreate
     CompanyInvitationRead:
       properties:
         id:
@@ -573,36 +593,6 @@ components:
       - status
       - created_at
       title: CompanyInvitationRead
-    CompanyMemberSummary:
-      properties:
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        role:
-          type: string
-          title: Role
-        joined_at:
-          type: string
-          format: date-time
-          title: Joined At
-      type: object
-      required:
-      - company_id
-      - user_id
-      - role
-      - joined_at
-      title: CompanyMemberSummary
-      description: 'Lightweight member view — no auth.users join.
-
-
-        Used by :class:`AcceptInvitation` to report the newly-inserted member
-
-        without reaching into ``auth.users`` for the email.'
     CompanyMemberRead:
       properties:
         user_id:
@@ -630,19 +620,6 @@ components:
       - joined_at
       - has_signed_in
       title: CompanyMemberRead
-    CompanyInvite:
-      properties:
-        email:
-          type: string
-          title: Email
-        role:
-          type: string
-          title: Role
-          default: member
-      type: object
-      required:
-      - email
-      title: CompanyInvite
     CompanyInvitationValidateRead:
       properties:
         email:
@@ -668,3 +645,26 @@ components:
         the accept page can show who the invite is for before the invitee
 
         creates their account. Deliberately minimal — no ids, no inviter.'
+    CompanyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        role:
+          type: string
+          title: Role
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - name
+      - role
+      - created_at
+      title: CompanyRead

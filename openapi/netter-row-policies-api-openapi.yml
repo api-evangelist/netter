@@ -140,60 +140,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    RlsAudienceType:
-      type: string
-      enum:
-      - everyone
-      - group
-      - user
-      title: RlsAudienceType
-      description: Values for the ``audience_type`` column (stored as plain VARCHAR).
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    RowAccessPolicyUpdate:
-      properties:
-        operator:
-          anyOf:
-          - $ref: '#/components/schemas/RlsOperator'
-          - type: 'null'
-        values:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Values
-        attribute_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Attribute Key
-      type: object
-      title: RowAccessPolicyUpdate
     RlsOperator:
       type: string
       enum:
@@ -268,6 +214,69 @@ components:
       - created_at
       - updated_at
       title: RowAccessPolicyRead
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    RowAccessPolicyUpdate:
+      properties:
+        operator:
+          anyOf:
+          - $ref: '#/components/schemas/RlsOperator'
+          - type: 'null'
+        values:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Values
+        attribute_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Attribute Key
+      type: object
+      title: RowAccessPolicyUpdate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    RlsAudienceType:
+      type: string
+      enum:
+      - everyone
+      - group
+      - user
+      title: RlsAudienceType
+      description: Values for the ``audience_type`` column (stored as plain VARCHAR).
     RowAccessPolicyCreate:
       properties:
         column_name:
@@ -303,15 +312,6 @@ components:
       required:
       - column_name
       title: RowAccessPolicyCreate
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     RlsValueSource:
       type: string
       enum:
