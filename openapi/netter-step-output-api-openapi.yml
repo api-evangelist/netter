@@ -87,6 +87,67 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    StepRunSummary:
+      properties:
+        status:
+          type: string
+          title: Status
+        started_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+      type: object
+      required:
+      - status
+      title: StepRunSummary
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    StepOutputQueryRequest:
+      properties:
+        sql:
+          type: string
+          title: Sql
+        table:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Table
+      type: object
+      required:
+      - sql
+      title: StepOutputQueryRequest
     DataQueryResponse:
       properties:
         columns:
@@ -135,32 +196,6 @@ components:
       - name
       - type
       title: StepOutputSchemaField
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
     StepOutputResponse:
       properties:
         format:
@@ -222,38 +257,3 @@ components:
       - format
       - step_run
       title: StepOutputResponse
-    StepOutputQueryRequest:
-      properties:
-        sql:
-          type: string
-          title: Sql
-        table:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Table
-      type: object
-      required:
-      - sql
-      title: StepOutputQueryRequest
-    StepRunSummary:
-      properties:
-        status:
-          type: string
-          title: Status
-        started_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-      type: object
-      required:
-      - status
-      title: StepRunSummary

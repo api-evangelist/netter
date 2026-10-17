@@ -182,15 +182,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     TriggerType:
       type: string
       enum:
@@ -209,6 +200,139 @@ components:
         dataset can be refreshed manually via the UI, no row needed) and is
 
         only kept here for the rejection branch in CreateTrigger.'
+    TriggerRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        step_id:
+          type: string
+          format: uuid
+          title: Step Id
+        trigger_type:
+          $ref: '#/components/schemas/TriggerType'
+        trigger_config:
+          additionalProperties: true
+          type: object
+          title: Trigger Config
+        is_active:
+          type: boolean
+          title: Is Active
+        last_triggered_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Triggered At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - step_id
+      - trigger_type
+      - trigger_config
+      - is_active
+      - last_triggered_at
+      - created_at
+      title: TriggerRead
+      description: Trigger response.
+    app__steps__schemas__RunRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        project_id:
+          type: string
+          format: uuid
+          title: Project Id
+        company_id:
+          type: string
+          format: uuid
+          title: Company Id
+        user_id:
+          type: string
+          format: uuid
+          title: User Id
+        root_step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Root Step Id
+        status:
+          type: string
+          title: Status
+        error:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error
+        error_summary:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Error Summary
+        trigger_source:
+          type: string
+          title: Trigger Source
+        source_run_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Source Run Id
+        temporal_workflow_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Temporal Workflow Id
+        force_full:
+          type: boolean
+          title: Force Full
+          default: false
+        started_at:
+          type: string
+          format: date-time
+          title: Started At
+        finished_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Finished At
+        step_runs:
+          items:
+            $ref: '#/components/schemas/StepRunRead'
+          type: array
+          title: Step Runs
+          default: []
+      type: object
+      required:
+      - id
+      - project_id
+      - company_id
+      - user_id
+      - root_step_id
+      - status
+      - error
+      - error_summary
+      - trigger_source
+      - temporal_workflow_id
+      - started_at
+      - finished_at
+      title: RunRead
+      description: Run response.
+    SinkTarget:
+      type: string
+      enum:
+      - database
+      title: SinkTarget
+      description: Where a data_sink step writes its output.
     StepRunRead:
       properties:
         id:
@@ -297,12 +421,24 @@ components:
       - finished_at
       title: StepRunRead
       description: StepRun response.
-    SinkTarget:
+    StepType:
       type: string
       enum:
+      - source
+      - data_read
+      - process
+      - data_sink
       - database
-      title: SinkTarget
-      description: Where a data_sink step writes its output.
+      - dashboard
+      title: StepType
+      description: The role a step plays in the project DAG.
+    CodeType:
+      type: string
+      enum:
+      - python
+      - sql
+      title: CodeType
+      description: Runtime language for the step code.
     ValidationError:
       properties:
         loc:
@@ -329,111 +465,15 @@ components:
       - msg
       - type
       title: ValidationError
-    StepType:
-      type: string
-      enum:
-      - source
-      - data_read
-      - process
-      - data_sink
-      - database
-      - dashboard
-      title: StepType
-      description: The role a step plays in the project DAG.
-    app__steps__schemas__RunRead:
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        project_id:
-          type: string
-          format: uuid
-          title: Project Id
-        company_id:
-          type: string
-          format: uuid
-          title: Company Id
-        user_id:
-          type: string
-          format: uuid
-          title: User Id
-        root_step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Root Step Id
-        status:
-          type: string
-          title: Status
-        error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error
-        error_summary:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Error Summary
-        trigger_source:
-          type: string
-          title: Trigger Source
-        source_run_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Source Run Id
-        temporal_workflow_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Temporal Workflow Id
-        force_full:
-          type: boolean
-          title: Force Full
-          default: false
-        started_at:
-          type: string
-          format: date-time
-          title: Started At
-        finished_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Finished At
-        step_runs:
+        detail:
           items:
-            $ref: '#/components/schemas/StepRunRead'
+            $ref: '#/components/schemas/ValidationError'
           type: array
-          title: Step Runs
-          default: []
+          title: Detail
       type: object
-      required:
-      - id
-      - project_id
-      - company_id
-      - user_id
-      - root_step_id
-      - status
-      - error
-      - error_summary
-      - trigger_source
-      - temporal_workflow_id
-      - started_at
-      - finished_at
-      title: RunRead
-      description: Run response.
-    CodeType:
-      type: string
-      enum:
-      - python
-      - sql
-      title: CodeType
-      description: Runtime language for the step code.
+      title: HTTPValidationError
     StepRead:
       properties:
         id:
@@ -579,43 +619,3 @@ components:
       - updated_at
       title: StepRead
       description: Step response.
-    TriggerRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        step_id:
-          type: string
-          format: uuid
-          title: Step Id
-        trigger_type:
-          $ref: '#/components/schemas/TriggerType'
-        trigger_config:
-          additionalProperties: true
-          type: object
-          title: Trigger Config
-        is_active:
-          type: boolean
-          title: Is Active
-        last_triggered_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Triggered At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
-      type: object
-      required:
-      - id
-      - step_id
-      - trigger_type
-      - trigger_config
-      - is_active
-      - last_triggered_at
-      - created_at
-      title: TriggerRead
-      description: Trigger response.

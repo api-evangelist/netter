@@ -44,6 +44,30 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    DashboardChatRequest:
+      properties:
+        content:
+          type: string
+          title: Content
+        attachments:
+          items:
+            additionalProperties:
+              type: string
+            type: object
+          type: array
+          title: Attachments
+          default: []
+        referenced_database_ids:
+          items:
+            type: string
+            format: uuid
+          type: array
+          title: Referenced Database Ids
+          default: []
+      type: object
+      required:
+      - content
+      title: DashboardChatRequest
     ValidationError:
       properties:
         loc:
@@ -79,27 +103,3 @@ components:
           title: Detail
       type: object
       title: HTTPValidationError
-    DashboardChatRequest:
-      properties:
-        content:
-          type: string
-          title: Content
-        attachments:
-          items:
-            additionalProperties:
-              type: string
-            type: object
-          type: array
-          title: Attachments
-          default: []
-        referenced_database_ids:
-          items:
-            type: string
-            format: uuid
-          type: array
-          title: Referenced Database Ids
-          default: []
-      type: object
-      required:
-      - content
-      title: DashboardChatRequest

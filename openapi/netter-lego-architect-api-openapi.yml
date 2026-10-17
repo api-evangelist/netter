@@ -257,28 +257,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    EdgeRequest:
-      properties:
-        parent_slug:
-          type: string
-          title: Parent Slug
-        child_slug:
-          type: string
-          title: Child Slug
-      type: object
-      required:
-      - parent_slug
-      - child_slug
-      title: EdgeRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     LegoMessageRequest:
       properties:
         content:
@@ -305,16 +283,6 @@ components:
       required:
       - content
       title: LegoMessageRequest
-    UpdateStepRequest:
-      properties:
-        config:
-          additionalProperties: true
-          type: object
-          title: Config
-      type: object
-      required:
-      - config
-      title: UpdateStepRequest
     ValidationError:
       properties:
         loc:
@@ -377,6 +345,28 @@ components:
       - operator
       - slug
       title: AddStepRequest
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    EdgeRequest:
+      properties:
+        parent_slug:
+          type: string
+          title: Parent Slug
+        child_slug:
+          type: string
+          title: Child Slug
+      type: object
+      required:
+      - parent_slug
+      - child_slug
+      title: EdgeRequest
     LegoTurnResponse:
       properties:
         status:
@@ -386,3 +376,13 @@ components:
       required:
       - status
       title: LegoTurnResponse
+    UpdateStepRequest:
+      properties:
+        config:
+          additionalProperties: true
+          type: object
+          title: Config
+      type: object
+      required:
+      - config
+      title: UpdateStepRequest

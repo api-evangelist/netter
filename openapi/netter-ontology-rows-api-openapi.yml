@@ -232,15 +232,46 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    EntityRowList:
       properties:
-        detail:
+        rows:
           items:
-            $ref: '#/components/schemas/ValidationError'
+            $ref: '#/components/schemas/EntityRowRead'
           type: array
-          title: Detail
+          title: Rows
+        page:
+          type: integer
+          title: Page
+        page_size:
+          type: integer
+          title: Page Size
+        total_source:
+          type: integer
+          title: Total Source
+          description: Source row count (excluding tombstones).
+        total_overlay_only:
+          type: integer
+          title: Total Overlay Only
+          description: Count of overlay-only inserts.
       type: object
-      title: HTTPValidationError
+      required:
+      - rows
+      - page
+      - page_size
+      - total_source
+      - total_overlay_only
+      title: EntityRowList
+    EntityRowInsert:
+      properties:
+        values:
+          additionalProperties: true
+          type: object
+          title: Values
+          description: Column → value for the new row. Must be a subset of entity columns.
+      type: object
+      required:
+      - values
+      title: EntityRowInsert
     ValidationError:
       properties:
         loc:
@@ -267,28 +298,6 @@ components:
       - msg
       - type
       title: ValidationError
-    EntityRowPatch:
-      properties:
-        patch:
-          additionalProperties: true
-          type: object
-          title: Patch
-          description: Column → new value. Sparse — only changed columns.
-      type: object
-      required:
-      - patch
-      title: EntityRowPatch
-    EntityRowInsert:
-      properties:
-        values:
-          additionalProperties: true
-          type: object
-          title: Values
-          description: Column → value for the new row. Must be a subset of entity columns.
-      type: object
-      required:
-      - values
-      title: EntityRowInsert
     EntityRowRead:
       properties:
         row_key:
@@ -335,35 +344,26 @@ components:
       - values
       title: EntityRowRead
       description: One merged row (source ⊕ overlay).
-    EntityRowList:
+    EntityRowPatch:
       properties:
-        rows:
-          items:
-            $ref: '#/components/schemas/EntityRowRead'
-          type: array
-          title: Rows
-        page:
-          type: integer
-          title: Page
-        page_size:
-          type: integer
-          title: Page Size
-        total_source:
-          type: integer
-          title: Total Source
-          description: Source row count (excluding tombstones).
-        total_overlay_only:
-          type: integer
-          title: Total Overlay Only
-          description: Count of overlay-only inserts.
+        patch:
+          additionalProperties: true
+          type: object
+          title: Patch
+          description: Column → new value. Sparse — only changed columns.
       type: object
       required:
-      - rows
-      - page
-      - page_size
-      - total_source
-      - total_overlay_only
-      title: EntityRowList
+      - patch
+      title: EntityRowPatch
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     EntitySyncStatus:
       properties:
         last_synced_at:

@@ -84,15 +84,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     AppQueryBatchResponse:
       properties:
         results:
@@ -104,98 +95,6 @@ components:
       required:
       - results
       title: AppQueryBatchResponse
-    AppQueryBatchItem:
-      properties:
-        id:
-          type: string
-          maxLength: 200
-          minLength: 1
-          title: Id
-        sql:
-          type: string
-          maxLength: 50000
-          minLength: 1
-          title: Sql
-        limit:
-          anyOf:
-          - type: integer
-            maximum: 5000.0
-            minimum: 1.0
-          - type: 'null'
-          title: Limit
-      additionalProperties: false
-      type: object
-      required:
-      - id
-      - sql
-      title: AppQueryBatchItem
-      description: 'One query in a batch.
-
-
-        ``id`` is a caller-supplied correlation key (e.g. the widget id) echoed
-
-        back on the matching result so the client maps results without relying on
-
-        order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
-    AppQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: AppQueryResponse
-    AppQueryRequest:
-      properties:
-        sql:
-          type: string
-          maxLength: 50000
-          minLength: 1
-          title: Sql
-        limit:
-          anyOf:
-          - type: integer
-            maximum: 5000.0
-            minimum: 1.0
-          - type: 'null'
-          title: Limit
-      additionalProperties: false
-      type: object
-      required:
-      - sql
-      title: AppQueryRequest
-      description: 'Body for POST /api/v1/apps/{app_id}/query.
-
-
-        Single mode: caller passes optional ``limit`` (default 1000, max 5000).
-
-        Pagination is NOT supported at this endpoint — write ``LIMIT N OFFSET M``
-
-        directly in your SQL if you need it. Earlier ``page`` / ``page_size``
-
-        params were removed because the engine never threaded ``page`` into a
-
-        real OFFSET (silently returned the same first ``page_size`` rows on
-
-        every page) — see PR #375 review.'
     AppQueryBatchItemResult:
       properties:
         id:
@@ -236,6 +135,72 @@ components:
         meaningful: on failure ``columns``/``rows`` are empty and ``error`` holds
 
         the message.'
+    AppQueryRequest:
+      properties:
+        sql:
+          type: string
+          maxLength: 50000
+          minLength: 1
+          title: Sql
+        limit:
+          anyOf:
+          - type: integer
+            maximum: 5000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Limit
+      additionalProperties: false
+      type: object
+      required:
+      - sql
+      title: AppQueryRequest
+      description: 'Body for POST /api/v1/apps/{app_id}/query.
+
+
+        Single mode: caller passes optional ``limit`` (default 1000, max 5000).
+
+        Pagination is NOT supported at this endpoint — write ``LIMIT N OFFSET M``
+
+        directly in your SQL if you need it. Earlier ``page`` / ``page_size``
+
+        params were removed because the engine never threaded ``page`` into a
+
+        real OFFSET (silently returned the same first ``page_size`` rows on
+
+        every page) — see PR #375 review.'
+    AppQueryBatchItem:
+      properties:
+        id:
+          type: string
+          maxLength: 200
+          minLength: 1
+          title: Id
+        sql:
+          type: string
+          maxLength: 50000
+          minLength: 1
+          title: Sql
+        limit:
+          anyOf:
+          - type: integer
+            maximum: 5000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Limit
+      additionalProperties: false
+      type: object
+      required:
+      - id
+      - sql
+      title: AppQueryBatchItem
+      description: 'One query in a batch.
+
+
+        ``id`` is a caller-supplied correlation key (e.g. the widget id) echoed
+
+        back on the matching result so the client maps results without relying on
+
+        order. Same ``sql`` / ``limit`` contract as the single-query endpoint.'
     ValidationError:
       properties:
         loc:
@@ -290,3 +255,38 @@ components:
         Per-query errors are isolated — a failing query returns its ``error``
 
         field without aborting the rest of the batch.'
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    AppQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: AppQueryResponse

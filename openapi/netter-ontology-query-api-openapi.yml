@@ -35,6 +35,15 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
+    QueryRequest:
+      properties:
+        question:
+          type: string
+          title: Question
+      type: object
+      required:
+      - question
+      title: QueryRequest
     ValidationError:
       properties:
         loc:
@@ -61,15 +70,6 @@ components:
       - msg
       - type
       title: ValidationError
-    QueryRequest:
-      properties:
-        question:
-          type: string
-          title: Question
-      type: object
-      required:
-      - question
-      title: QueryRequest
     HTTPValidationError:
       properties:
         detail:

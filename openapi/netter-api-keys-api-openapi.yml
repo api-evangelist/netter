@@ -73,26 +73,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    ApiKeyCreate:
-      properties:
-        name:
-          type: string
-          maxLength: 100
-          minLength: 1
-          title: Name
-      type: object
-      required:
-      - name
-      title: ApiKeyCreate
     ValidationError:
       properties:
         loc:
@@ -119,41 +99,15 @@ components:
       - msg
       - type
       title: ValidationError
-    ApiKeyRead:
+    HTTPValidationError:
       properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        name:
-          type: string
-          title: Name
-        key_prefix:
-          type: string
-          title: Key Prefix
-        is_active:
-          type: boolean
-          title: Is Active
-        last_used_at:
-          anyOf:
-          - type: string
-            format: date-time
-          - type: 'null'
-          title: Last Used At
-        created_at:
-          type: string
-          format: date-time
-          title: Created At
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      required:
-      - id
-      - name
-      - key_prefix
-      - is_active
-      - last_used_at
-      - created_at
-      title: ApiKeyRead
-      description: Returned when listing keys — never exposes the full key.
+      title: HTTPValidationError
     ApiKeyCreated:
       properties:
         id:
@@ -193,3 +147,49 @@ components:
       - key
       title: ApiKeyCreated
       description: Returned only on creation — includes the full key (shown once).
+    ApiKeyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        name:
+          type: string
+          title: Name
+        key_prefix:
+          type: string
+          title: Key Prefix
+        is_active:
+          type: boolean
+          title: Is Active
+        last_used_at:
+          anyOf:
+          - type: string
+            format: date-time
+          - type: 'null'
+          title: Last Used At
+        created_at:
+          type: string
+          format: date-time
+          title: Created At
+      type: object
+      required:
+      - id
+      - name
+      - key_prefix
+      - is_active
+      - last_used_at
+      - created_at
+      title: ApiKeyRead
+      description: Returned when listing keys — never exposes the full key.
+    ApiKeyCreate:
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 1
+          title: Name
+      type: object
+      required:
+      - name
+      title: ApiKeyCreate

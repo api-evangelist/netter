@@ -153,24 +153,31 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
+    FolderMove:
       properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FolderUpdate:
-      properties:
-        name:
+        parent_folder_id:
           anyOf:
           - type: string
+            format: uuid
           - type: 'null'
-          title: Name
+          title: Parent Folder Id
       type: object
-      title: FolderUpdate
+      title: FolderMove
+    FolderCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
+      type: object
+      required:
+      - name
+      title: FolderCreate
     FolderRead:
       properties:
         id:
@@ -238,28 +245,21 @@ components:
       - msg
       - type
       title: ValidationError
-    FolderMove:
+    HTTPValidationError:
       properties:
-        parent_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Parent Folder Id
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
       type: object
-      title: FolderMove
-    FolderCreate:
+      title: HTTPValidationError
+    FolderUpdate:
       properties:
         name:
-          type: string
-          title: Name
-        parent_folder_id:
           anyOf:
           - type: string
-            format: uuid
           - type: 'null'
-          title: Parent Folder Id
+          title: Name
       type: object
-      required:
-      - name
-      title: FolderCreate
+      title: FolderUpdate

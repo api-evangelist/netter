@@ -195,40 +195,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    GroupUpdate:
-      properties:
-        name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Name
-        description:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Description
-        rule:
-          anyOf:
-          - items:
-              $ref: '#/components/schemas/GroupRuleCondition'
-            type: array
-          - type: 'null'
-          title: Rule
-        clear_rule:
-          type: boolean
-          title: Clear Rule
-          default: false
-      type: object
-      title: GroupUpdate
     GroupMembersRead:
       properties:
         group_id:
@@ -253,6 +219,61 @@ components:
       - manual_member_ids
       - effective_member_ids
       title: GroupMembersRead
+    GroupCreate:
+      properties:
+        name:
+          type: string
+          title: Name
+        description:
+          type: string
+          title: Description
+          default: ''
+        rule:
+          anyOf:
+          - items:
+              $ref: '#/components/schemas/GroupRuleCondition'
+            type: array
+          - type: 'null'
+          title: Rule
+      type: object
+      required:
+      - name
+      title: GroupCreate
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+        input:
+          title: Input
+        ctx:
+          type: object
+          title: Context
+      type: object
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     GroupRead:
       properties:
         id:
@@ -284,41 +305,18 @@ components:
       - rule
       - created_at
       title: GroupRead
-    ValidationError:
-      properties:
-        loc:
-          items:
-            anyOf:
-            - type: string
-            - type: integer
-          type: array
-          title: Location
-        msg:
-          type: string
-          title: Message
-        type:
-          type: string
-          title: Error Type
-        input:
-          title: Input
-        ctx:
-          type: object
-          title: Context
-      type: object
-      required:
-      - loc
-      - msg
-      - type
-      title: ValidationError
-    GroupCreate:
+    GroupUpdate:
       properties:
         name:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Name
         description:
-          type: string
+          anyOf:
+          - type: string
+          - type: 'null'
           title: Description
-          default: ''
         rule:
           anyOf:
           - items:
@@ -326,10 +324,12 @@ components:
             type: array
           - type: 'null'
           title: Rule
+        clear_rule:
+          type: boolean
+          title: Clear Rule
+          default: false
       type: object
-      required:
-      - name
-      title: GroupCreate
+      title: GroupUpdate
     GroupRuleCondition:
       properties:
         attribute_key:

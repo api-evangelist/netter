@@ -214,70 +214,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    DataQueryResponse:
-      properties:
-        columns:
-          items:
-            type: string
-          type: array
-          title: Columns
-        rows:
-          items:
-            additionalProperties: true
-            type: object
-          type: array
-          title: Rows
-        total_rows:
-          type: integer
-          title: Total Rows
-        truncated:
-          type: boolean
-          title: Truncated
-      type: object
-      required:
-      - columns
-      - rows
-      - total_rows
-      - truncated
-      title: DataQueryResponse
-    DashboardQueryRequest:
-      properties:
-        sql:
-          type: string
-          maxLength: 10000
-          title: Sql
-        limit:
-          type: integer
-          maximum: 10000.0
-          minimum: 1.0
-          title: Limit
-          default: 1000
-        page:
-          anyOf:
-          - type: integer
-            minimum: 1.0
-          - type: 'null'
-          title: Page
-        page_size:
-          anyOf:
-          - type: integer
-            maximum: 1000.0
-            minimum: 1.0
-          - type: 'null'
-          title: Page Size
-      type: object
-      required:
-      - sql
-      title: DashboardQueryRequest
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
     PaginatedQueryResponse:
       properties:
         columns:
@@ -338,3 +274,67 @@ components:
       - msg
       - type
       title: ValidationError
+    DataQueryResponse:
+      properties:
+        columns:
+          items:
+            type: string
+          type: array
+          title: Columns
+        rows:
+          items:
+            additionalProperties: true
+            type: object
+          type: array
+          title: Rows
+        total_rows:
+          type: integer
+          title: Total Rows
+        truncated:
+          type: boolean
+          title: Truncated
+      type: object
+      required:
+      - columns
+      - rows
+      - total_rows
+      - truncated
+      title: DataQueryResponse
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    DashboardQueryRequest:
+      properties:
+        sql:
+          type: string
+          maxLength: 10000
+          title: Sql
+        limit:
+          type: integer
+          maximum: 10000.0
+          minimum: 1.0
+          title: Limit
+          default: 1000
+        page:
+          anyOf:
+          - type: integer
+            minimum: 1.0
+          - type: 'null'
+          title: Page
+        page_size:
+          anyOf:
+          - type: integer
+            maximum: 1000.0
+            minimum: 1.0
+          - type: 'null'
+          title: Page Size
+      type: object
+      required:
+      - sql
+      title: DashboardQueryRequest

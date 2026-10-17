@@ -35,32 +35,6 @@ paths:
                 $ref: '#/components/schemas/MonitoringInsights'
 components:
   schemas:
-    MonitoringInsights:
-      properties:
-        status_banner:
-          $ref: '#/components/schemas/StatusBanner'
-        priority_actions:
-          items:
-            $ref: '#/components/schemas/PriorityAction'
-          type: array
-          title: Priority Actions
-        smart_insights:
-          items:
-            $ref: '#/components/schemas/SmartInsight'
-          type: array
-          title: Smart Insights
-        activity_timeline:
-          items:
-            $ref: '#/components/schemas/ActivityEvent'
-          type: array
-          title: Activity Timeline
-      type: object
-      required:
-      - status_banner
-      - priority_actions
-      - smart_insights
-      - activity_timeline
-      title: MonitoringInsights
     ActiveTrigger:
       properties:
         step_id:
@@ -111,186 +85,32 @@ components:
       - last_triggered_at
       - next_trigger_at
       title: ActiveTrigger
-    PriorityAction:
+    MonitoringInsights:
       properties:
-        id:
-          type: string
-          title: Id
-        priority:
-          type: integer
-          title: Priority
-        title:
-          type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-        impact:
-          type: string
-          title: Impact
-        category:
-          type: string
-          title: Category
-        step_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Step Id
-        step_title:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Step Title
-        project_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Project Id
-        project_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Project Name
-      type: object
-      required:
-      - id
-      - priority
-      - title
-      - description
-      - impact
-      - category
-      - step_id
-      - step_title
-      - project_id
-      - project_name
-      title: PriorityAction
-    ActivityEvent:
-      properties:
-        timestamp:
-          type: string
-          format: date-time
-          title: Timestamp
-        event_type:
-          type: string
-          title: Event Type
-        title:
-          type: string
-          title: Title
-        description:
-          type: string
-          title: Description
-      type: object
-      required:
-      - timestamp
-      - event_type
-      - title
-      - description
-      title: ActivityEvent
-    MonitoringOverview:
-      properties:
-        steps:
-          $ref: '#/components/schemas/StepStats'
-        dashboards:
-          $ref: '#/components/schemas/DashboardStats'
-        runs_last_7d:
-          $ref: '#/components/schemas/RunStats'
-        recent_runs:
+        status_banner:
+          $ref: '#/components/schemas/StatusBanner'
+        priority_actions:
           items:
-            $ref: '#/components/schemas/RecentRun'
+            $ref: '#/components/schemas/PriorityAction'
           type: array
-          title: Recent Runs
-        recent_errors:
+          title: Priority Actions
+        smart_insights:
           items:
-            $ref: '#/components/schemas/RecentError'
+            $ref: '#/components/schemas/SmartInsight'
           type: array
-          title: Recent Errors
-        active_triggers:
+          title: Smart Insights
+        activity_timeline:
           items:
-            $ref: '#/components/schemas/ActiveTrigger'
+            $ref: '#/components/schemas/ActivityEvent'
           type: array
-          title: Active Triggers
+          title: Activity Timeline
       type: object
       required:
-      - steps
-      - dashboards
-      - runs_last_7d
-      - recent_runs
-      - recent_errors
-      - active_triggers
-      title: MonitoringOverview
-    DashboardStats:
-      properties:
-        total:
-          type: integer
-          title: Total
-        ready:
-          type: integer
-          title: Ready
-        draft:
-          type: integer
-          title: Draft
-        generating:
-          type: integer
-          title: Generating
-        error:
-          type: integer
-          title: Error
-      type: object
-      required:
-      - total
-      - ready
-      - draft
-      - generating
-      - error
-      title: DashboardStats
-    StepStats:
-      properties:
-        total:
-          type: integer
-          title: Total
-        active:
-          type: integer
-          title: Active
-        draft:
-          type: integer
-          title: Draft
-        paused:
-          type: integer
-          title: Paused
-        archived:
-          type: integer
-          title: Archived
-      type: object
-      required:
-      - total
-      - active
-      - draft
-      - paused
-      - archived
-      title: StepStats
-    StatusBanner:
-      properties:
-        status:
-          type: string
-          title: Status
-        headline:
-          type: string
-          title: Headline
-        summary:
-          type: string
-          title: Summary
-        health_score:
-          type: integer
-          title: Health Score
-      type: object
-      required:
-      - status
-      - headline
-      - summary
-      - health_score
-      title: StatusBanner
+      - status_banner
+      - priority_actions
+      - smart_insights
+      - activity_timeline
+      title: MonitoringInsights
     RecentError:
       properties:
         id:
@@ -355,6 +175,108 @@ components:
       - error_summary
       - trigger_source
       title: RecentError
+    StepStats:
+      properties:
+        total:
+          type: integer
+          title: Total
+        active:
+          type: integer
+          title: Active
+        draft:
+          type: integer
+          title: Draft
+        paused:
+          type: integer
+          title: Paused
+        archived:
+          type: integer
+          title: Archived
+      type: object
+      required:
+      - total
+      - active
+      - draft
+      - paused
+      - archived
+      title: StepStats
+    ActivityEvent:
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          title: Timestamp
+        event_type:
+          type: string
+          title: Event Type
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+      type: object
+      required:
+      - timestamp
+      - event_type
+      - title
+      - description
+      title: ActivityEvent
+    PriorityAction:
+      properties:
+        id:
+          type: string
+          title: Id
+        priority:
+          type: integer
+          title: Priority
+        title:
+          type: string
+          title: Title
+        description:
+          type: string
+          title: Description
+        impact:
+          type: string
+          title: Impact
+        category:
+          type: string
+          title: Category
+        step_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Step Id
+        step_title:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Step Title
+        project_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Project Id
+        project_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Project Name
+      type: object
+      required:
+      - id
+      - priority
+      - title
+      - description
+      - impact
+      - category
+      - step_id
+      - step_title
+      - project_id
+      - project_name
+      title: PriorityAction
     SmartInsight:
       properties:
         icon:
@@ -377,31 +299,27 @@ components:
       - title
       - description
       title: SmartInsight
-    RunStats:
+    StatusBanner:
       properties:
-        total:
+        status:
+          type: string
+          title: Status
+        headline:
+          type: string
+          title: Headline
+        summary:
+          type: string
+          title: Summary
+        health_score:
           type: integer
-          title: Total
-        success:
-          type: integer
-          title: Success
-        failed:
-          type: integer
-          title: Failed
-        running:
-          type: integer
-          title: Running
-        cancelled:
-          type: integer
-          title: Cancelled
+          title: Health Score
       type: object
       required:
-      - total
-      - success
-      - failed
-      - running
-      - cancelled
-      title: RunStats
+      - status
+      - headline
+      - summary
+      - health_score
+      title: StatusBanner
     RecentRun:
       properties:
         id:
@@ -466,3 +384,85 @@ components:
       - error
       - error_summary
       title: RecentRun
+    MonitoringOverview:
+      properties:
+        steps:
+          $ref: '#/components/schemas/StepStats'
+        dashboards:
+          $ref: '#/components/schemas/DashboardStats'
+        runs_last_7d:
+          $ref: '#/components/schemas/RunStats'
+        recent_runs:
+          items:
+            $ref: '#/components/schemas/RecentRun'
+          type: array
+          title: Recent Runs
+        recent_errors:
+          items:
+            $ref: '#/components/schemas/RecentError'
+          type: array
+          title: Recent Errors
+        active_triggers:
+          items:
+            $ref: '#/components/schemas/ActiveTrigger'
+          type: array
+          title: Active Triggers
+      type: object
+      required:
+      - steps
+      - dashboards
+      - runs_last_7d
+      - recent_runs
+      - recent_errors
+      - active_triggers
+      title: MonitoringOverview
+    DashboardStats:
+      properties:
+        total:
+          type: integer
+          title: Total
+        ready:
+          type: integer
+          title: Ready
+        draft:
+          type: integer
+          title: Draft
+        generating:
+          type: integer
+          title: Generating
+        error:
+          type: integer
+          title: Error
+      type: object
+      required:
+      - total
+      - ready
+      - draft
+      - generating
+      - error
+      title: DashboardStats
+    RunStats:
+      properties:
+        total:
+          type: integer
+          title: Total
+        success:
+          type: integer
+          title: Success
+        failed:
+          type: integer
+          title: Failed
+        running:
+          type: integer
+          title: Running
+        cancelled:
+          type: integer
+          title: Cancelled
+      type: object
+      required:
+      - total
+      - success
+      - failed
+      - running
+      - cancelled
+      title: RunStats

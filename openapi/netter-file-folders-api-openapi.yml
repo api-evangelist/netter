@@ -534,44 +534,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    FileFolderDeletePreview:
-      properties:
-        folder_count:
-          type: integer
-          title: Folder Count
-        file_count:
-          type: integer
-          title: File Count
-        has_merge:
-          type: boolean
-          title: Has Merge
-      type: object
-      required:
-      - folder_count
-      - file_count
-      - has_merge
-      title: FileFolderDeletePreview
-      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FileFolderMove:
-      properties:
-        target_parent_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: Target Parent Id
-      type: object
-      title: FileFolderMove
-      description: POST /file-folders/{id}/move payload.
     GroupKeyTestRequest:
       properties:
         pattern:
@@ -584,7 +546,7 @@ components:
       description: 'POST /file-folders/{id}/group-key:test payload — a candidate
 
         ``batch_key_pattern`` regex to dry-run (not yet saved).'
-    FileFolderRead:
+    FileFolderBreadcrumb:
       properties:
         id:
           type: string
@@ -592,105 +554,58 @@ components:
         name:
           type: string
           title: Name
-        parent_folder_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Parent Folder Id
-        merge_enabled:
-          type: boolean
-          title: Merge Enabled
-        schema_mode:
-          type: string
-          title: Schema Mode
-        merge_database_id:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Merge Database Id
-        write_semantics:
-          type: string
-          title: Write Semantics
-          default: append
-        coverage_columns:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Coverage Columns
-        coverage_granularity:
-          type: string
-          title: Coverage Granularity
-          default: exact
-        batch_key_pattern:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Batch Key Pattern
-        batch_size:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Batch Size
-        batch_timeout_hours:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Batch Timeout Hours
-        sealed_batch_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Sealed Batch Key
-        member_count:
-          type: integer
-          title: Member Count
-          default: 0
-        has_children:
-          type: boolean
-          title: Has Children
-          default: false
       type: object
       required:
       - id
       - name
-      - merge_enabled
-      - schema_mode
-      - merge_database_id
-      title: FileFolderRead
-    FileFolderDelete:
+      title: FileFolderBreadcrumb
+      description: One node on the breadcrumb path returned by the explorer endpoint.
+    DatasetMemberRead:
       properties:
-        confirm_with_name:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Confirm With Name
-      type: object
-      title: FileFolderDelete
-      description: 'DELETE /file-folders/{id} payload — the type-to-confirm guard.
-
-
-        The frontend renders ``"Type the folder name to confirm"`` and only sends
-
-        ``confirm_with_name`` once the typed value matches; the backend re-checks
-
-        so the gate can''t be bypassed by a hand-rolled client.'
-    FileFolderCreate:
-      properties:
-        name:
+        source_filename:
           type: string
-          title: Name
-        parent_folder_id:
+          title: Source Filename
+        user_file_id:
+          type: string
+          title: User File Id
+        row_count:
+          type: integer
+          title: Row Count
+        merge_error:
           anyOf:
           - type: string
-            format: uuid
           - type: 'null'
-          title: Parent Folder Id
+          title: Merge Error
+        merge_warning:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Warning
+        superseded_at:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Superseded At
+        last_refreshed_at:
+          type: string
+          title: Last Refreshed At
+        batch_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Batch Key
+        created_at:
+          type: string
+          title: Created At
+          default: ''
       type: object
       required:
-      - name
-      title: FileFolderCreate
+      - source_filename
+      - user_file_id
+      - row_count
+      - last_refreshed_at
+      title: DatasetMemberRead
+      description: One contributing file in a merge-enabled folder's collection dataset.
     ValidationError:
       properties:
         loc:
@@ -717,20 +632,58 @@ components:
       - msg
       - type
       title: ValidationError
-    FileFolderBreadcrumb:
+    FileFolderCreate:
       properties:
-        id:
-          type: string
-          title: Id
         name:
           type: string
           title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Parent Folder Id
       type: object
       required:
-      - id
       - name
-      title: FileFolderBreadcrumb
-      description: One node on the breadcrumb path returned by the explorer endpoint.
+      title: FileFolderCreate
+    FileFolderDelete:
+      properties:
+        confirm_with_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Confirm With Name
+      type: object
+      title: FileFolderDelete
+      description: 'DELETE /file-folders/{id} payload — the type-to-confirm guard.
+
+
+        The frontend renders ``"Type the folder name to confirm"`` and only sends
+
+        ``confirm_with_name`` once the typed value matches; the backend re-checks
+
+        so the gate can''t be bypassed by a hand-rolled client.'
+    FileFolderMove:
+      properties:
+        target_parent_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: Target Parent Id
+      type: object
+      title: FileFolderMove
+      description: POST /file-folders/{id}/move payload.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     FileFolderUpdate:
       properties:
         name:
@@ -828,49 +781,96 @@ components:
       description: 'One batch group (by ``batch_key``) in a folder''s ingestion pipeline,
 
         with its read-time computed lifecycle status.'
-    DatasetMemberRead:
+    FileFolderRead:
       properties:
-        source_filename:
+        id:
           type: string
-          title: Source Filename
-        user_file_id:
+          title: Id
+        name:
           type: string
-          title: User File Id
-        row_count:
+          title: Name
+        parent_folder_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Parent Folder Id
+        merge_enabled:
+          type: boolean
+          title: Merge Enabled
+        schema_mode:
+          type: string
+          title: Schema Mode
+        merge_database_id:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Merge Database Id
+        write_semantics:
+          type: string
+          title: Write Semantics
+          default: append
+        coverage_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Coverage Columns
+        coverage_granularity:
+          type: string
+          title: Coverage Granularity
+          default: exact
+        batch_key_pattern:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Batch Key Pattern
+        batch_size:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Batch Size
+        batch_timeout_hours:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Batch Timeout Hours
+        sealed_batch_key:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Sealed Batch Key
+        member_count:
           type: integer
-          title: Row Count
-        merge_error:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Merge Error
-        merge_warning:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Merge Warning
-        superseded_at:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Superseded At
-        last_refreshed_at:
-          type: string
-          title: Last Refreshed At
-        batch_key:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Batch Key
-        created_at:
-          type: string
-          title: Created At
-          default: ''
+          title: Member Count
+          default: 0
+        has_children:
+          type: boolean
+          title: Has Children
+          default: false
       type: object
       required:
-      - source_filename
-      - user_file_id
-      - row_count
-      - last_refreshed_at
-      title: DatasetMemberRead
-      description: One contributing file in a merge-enabled folder's collection dataset.
+      - id
+      - name
+      - merge_enabled
+      - schema_mode
+      - merge_database_id
+      title: FileFolderRead
+    FileFolderDeletePreview:
+      properties:
+        folder_count:
+          type: integer
+          title: Folder Count
+        file_count:
+          type: integer
+          title: File Count
+        has_merge:
+          type: boolean
+          title: Has Merge
+      type: object
+      required:
+      - folder_count
+      - file_count
+      - has_merge
+      title: FileFolderDeletePreview
+      description: Cascade-delete preview returned by GET /file-folders/{id}/delete-preview.

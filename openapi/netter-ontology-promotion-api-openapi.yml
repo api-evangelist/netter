@@ -102,35 +102,6 @@ paths:
                 $ref: '#/components/schemas/HTTPValidationError'
 components:
   schemas:
-    HTTPValidationError:
-      properties:
-        detail:
-          items:
-            $ref: '#/components/schemas/ValidationError'
-          type: array
-          title: Detail
-      type: object
-      title: HTTPValidationError
-    FieldRules:
-      properties:
-        allowed_values:
-          anyOf:
-          - items:
-              type: string
-            type: array
-          - type: 'null'
-          title: Allowed Values
-        required:
-          type: boolean
-          title: Required
-          default: false
-        format:
-          anyOf:
-          - $ref: '#/components/schemas/FieldFormat'
-          - type: 'null'
-      type: object
-      title: FieldRules
-      description: Declared value rules for one entity field. Empty instance = no rules.
     EntityRelationshipBrief:
       properties:
         id:
@@ -167,86 +138,53 @@ components:
       - cardinality
       title: EntityRelationshipBrief
       description: Relationship summary in entity detail.
-    PromoteBody:
+    FieldFormat:
       properties:
-        name:
-          type: string
-          minLength: 1
-          title: Name
-          description: Entity slug
-        description:
-          type: string
-          title: Description
-          default: ''
-        display_name:
+        min:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Min
+        max:
+          anyOf:
+          - type: number
+          - type: 'null'
+          title: Max
+        regex:
           anyOf:
           - type: string
           - type: 'null'
-          title: Display Name
-        key_columns:
+          title: Regex
+        max_length:
+          anyOf:
+          - type: integer
+          - type: 'null'
+          title: Max Length
+        date_min:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Min
+        date_max:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Date Max
+        allowed_mime:
           anyOf:
           - items:
               type: string
             type: array
           - type: 'null'
-          title: Key Columns
-          description: Single-element list naming the column whose values become the entity's row identity. Required for file-backed Databases (CSV uploads) whose key_columns is empty; ignored otherwise.
-      type: object
-      required:
-      - name
-      title: PromoteBody
-    EntityPropertyRead:
-      properties:
-        id:
-          type: string
-          format: uuid
-          title: Id
-        column_name:
-          type: string
-          title: Column Name
-        display_name:
-          type: string
-          title: Display Name
-        description:
-          type: string
-          title: Description
-        data_type:
-          type: string
-          title: Data Type
-        is_primary_key:
-          type: boolean
-          title: Is Primary Key
-        order:
-          type: integer
-          title: Order
-        rules:
-          $ref: '#/components/schemas/FieldRules'
-        origin:
-          type: string
-          title: Origin
-          default: source
-        managed_default:
+          title: Allowed Mime
+        max_size_bytes:
           anyOf:
-          - {}
+          - type: integer
           - type: 'null'
-          title: Managed Default
-        file_folder_id:
-          anyOf:
-          - type: string
-            format: uuid
-          - type: 'null'
-          title: File Folder Id
+          title: Max Size Bytes
       type: object
-      required:
-      - id
-      - column_name
-      - display_name
-      - description
-      - data_type
-      - is_primary_key
-      - order
-      title: EntityPropertyRead
-      description: Property in entity listings.
+      title: FieldFormat
+      description: Type-specific value constraints. All optional; only set what applies.
     app__ontology__schemas__EntityRead:
       properties:
         id:
@@ -369,6 +307,114 @@ components:
       - msg
       - type
       title: ValidationError
+    ClearResponse:
+      properties:
+        deleted:
+          type: integer
+          title: Deleted
+      type: object
+      required:
+      - deleted
+      title: ClearResponse
+    PromoteBody:
+      properties:
+        name:
+          type: string
+          minLength: 1
+          title: Name
+          description: Entity slug
+        description:
+          type: string
+          title: Description
+          default: ''
+        display_name:
+          anyOf:
+          - type: string
+          - type: 'null'
+          title: Display Name
+        key_columns:
+          anyOf:
+          - items:
+              type: string
+            type: array
+          - type: 'null'
+          title: Key Columns
+          description: Single-element list naming the column whose values become the entity's row identity. Required for file-backed Databases (CSV uploads) whose key_columns is empty; ignored otherwise.
+      type: object
+      required:
+      - name
+      title: PromoteBody
+    ClearBody:
+      properties:
+        confirm:
+          type: string
+          title: Confirm
+          description: Must be the literal phrase 'clear all overlays'
+      type: object
+      required:
+      - confirm
+      title: ClearBody
+    EntityPropertyRead:
+      properties:
+        id:
+          type: string
+          format: uuid
+          title: Id
+        column_name:
+          type: string
+          title: Column Name
+        display_name:
+          type: string
+          title: Display Name
+        description:
+          type: string
+          title: Description
+        data_type:
+          type: string
+          title: Data Type
+        is_primary_key:
+          type: boolean
+          title: Is Primary Key
+        order:
+          type: integer
+          title: Order
+        rules:
+          $ref: '#/components/schemas/FieldRules'
+        origin:
+          type: string
+          title: Origin
+          default: source
+        managed_default:
+          anyOf:
+          - {}
+          - type: 'null'
+          title: Managed Default
+        file_folder_id:
+          anyOf:
+          - type: string
+            format: uuid
+          - type: 'null'
+          title: File Folder Id
+      type: object
+      required:
+      - id
+      - column_name
+      - display_name
+      - description
+      - data_type
+      - is_primary_key
+      - order
+      title: EntityPropertyRead
+      description: Property in entity listings.
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
     FedByProject:
       properties:
         project_id:
@@ -384,69 +430,23 @@ components:
       - project_name
       title: FedByProject
       description: Which project feeds this entity.
-    FieldFormat:
+    FieldRules:
       properties:
-        min:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Min
-        max:
-          anyOf:
-          - type: number
-          - type: 'null'
-          title: Max
-        regex:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Regex
-        max_length:
-          anyOf:
-          - type: integer
-          - type: 'null'
-          title: Max Length
-        date_min:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date Min
-        date_max:
-          anyOf:
-          - type: string
-          - type: 'null'
-          title: Date Max
-        allowed_mime:
+        allowed_values:
           anyOf:
           - items:
               type: string
             type: array
           - type: 'null'
-          title: Allowed Mime
-        max_size_bytes:
+          title: Allowed Values
+        required:
+          type: boolean
+          title: Required
+          default: false
+        format:
           anyOf:
-          - type: integer
+          - $ref: '#/components/schemas/FieldFormat'
           - type: 'null'
-          title: Max Size Bytes
       type: object
-      title: FieldFormat
-      description: Type-specific value constraints. All optional; only set what applies.
-    ClearBody:
-      properties:
-        confirm:
-          type: string
-          title: Confirm
-          description: Must be the literal phrase 'clear all overlays'
-      type: object
-      required:
-      - confirm
-      title: ClearBody
-    ClearResponse:
-      properties:
-        deleted:
-          type: integer
-          title: Deleted
-      type: object
-      required:
-      - deleted
-      title: ClearResponse
+      title: FieldRules
+      description: Declared value rules for one entity field. Empty instance = no rules.
